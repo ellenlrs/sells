@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>無標題文件</title>
+</head>
+
+<body>
+<script>
+function add() {
+  var formobj = document.f ;
+  formobj.outField.options[formobj.outField.length] = formobj.field.options[formobj.field.selectedIndex];
+}
+function del() {
+  var formobj = document.f ;
+  formobj.field.options[formobj.field.length] = formobj.outField.options[formobj.outField.selectedIndex];
+}
+function up() {
+  var formobj = document.f ;
+  if ( formobj.outField.selectedIndex != 0) {
+    var options_temp1 = formobj.outField.options[formobj.outField.selectedIndex-1] ;
+	var options_temp2 = formobj.outField.options[formobj.outField.selectedIndex] ;
+	alert(options_temp1.value);
+	alert(options_temp2.value);
+    formobj.outField.options[formobj.outField.selectedIndex-1] = options_temp2 ;
+	formobj.outField.options[formobj.outField.selectedIndex-1] = options_temp1 ;
+   //formobj.outField.options[formobj.outField.selectedIndex] = options_temp1 ;
+
+//	formobj.outField.options[formobj.outField.selectedIndex] 
+//    formobj.field.options[formobj.field.length] = formobj.outField.options[formobj.outField.selectedIndex];
+
+  }
+}
+</script>
+<form name=f action=''>
+<table width="615" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td ><table width="100%" border="0" align="center" cellpadding="5" cellspacing="1" bgcolor="#FFFFFF">
+      <tbody>
+        <tr>
+          <td colspan="6" align="left" class="style5">匯出電子報</td>
+        </tr>
+        <tr>
+          <td width="18%" align="left" class="style5">分隔符號</td>
+          <td colspan="5" align="left" class="style5"><select name="status">
+            <option value=";" >;</option>
+            <option value=",">,</option>
+            <option value=" ">空白</option>
+          </select >
+          </td>
+        </tr>
+        <tr>
+          <td align="left" class="style5">匯出欄位</td>
+          <td width="20%" align="left" class="style5"><select name="field" size="7">
+            <option value="name">姓名</option>
+            <option value="email">Email</option>
+            <option value="tel">電話</option>
+            <option value="mobile">行動電話</option>
+            <option value="zip">郵遞區號</option>
+            <option value="address">地址</option>
+          </select>
+          </td>
+          <td width="8%" align="left" class="style5"><input type="button" name="Submit2" value="→" onclick="add();" />
+                <br />
+                <input type="button" name="Submit3" value="←" onclick="del();" /></td>
+          <td width="23%" align="left" class="style5"><select name="outField" size="7" id="export">
+          </select></td>
+          <td width="7%" align="left" class="style5"><input type="button" name="Submit22" value="↑" onclick="up();" />
+                <br />
+                <input type="button" name="Submit32" value="↓" onclick="down();" /></td>
+          <td width="24%" align="left" class="style5"><input type="submit" name="Submit" value="查詢" /></td>
+        </tr>
+      </tbody>
+    </table></td>
+  </tr>
+</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!-- Search Google -->
+<center>
+<form method="get" action="http://www.google.com.tw/custom" target="google_window">
+<table bgcolor="#ffffcc">
+<tr><td nowrap="nowrap" valign="top" align="left" height="32">
+
+<label for="sbi" style="display: none">輸入您的搜尋字詞</label>
+<input type="text" name="q" size="31" maxlength="255" value="" id="sbi"></input>
+<label for="sbb" style="display: none">提交搜尋表單</label>
+<input type="submit" name="sa" value="Google 搜尋" id="sbb"></input>
+<input type="hidden" name="client" value="pub-2224288299509306"></input>
+<input type="hidden" name="forid" value="1"></input>
+<input type="hidden" name="channel" value="9263276007"></input>
+<input type="hidden" name="ie" value="big5"></input>
+<input type="hidden" name="oe" value="big5"></input>
+<input type="hidden" name="cof" value="GALT:#003324;GL:1;DIV:#66CC99;VLC:FF6600;AH:center;BGC:C5DBCF;LBGC:73B59C;ALC:000000;LC:000000;T:330033;GFNT:333300;GIMP:333300;LH:50;LW:152;L:http://www.ggogo.com/img05/top_logo.gif;S:http://www.ggogo.com;FORID:1"></input>
+<input type="hidden" name="hl" value="zh-TW"></input>
+</td></tr></table>
+</form>
+</center>
+<!-- Search Google -->
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-2224288299509306";
+google_ad_width = 180;
+google_ad_height = 60;
+google_ad_format = "180x60_as_rimg";
+google_cpa_choice = "CAAQgbr9gwIaCAaLNmO5j3KVKI3ml3Q";
+google_ad_channel = "3258760023";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+<!--  AD Content -->
+<script type="text/javascript"><!--
+google_ad_client = "pub-2224288299509306";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text_image";
+//2007-03-08: iCart
+google_ad_channel = "1272982672";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+
+<!--ad icart_text-->
+<script type="text/javascript"><!--
+google_ad_client = "pub-2224288299509306";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text_image";
+//2007-03-20: iCart_text
+google_ad_channel = "9934268551";
+google_color_border = "66B5FF";
+google_color_bg = "FFFFCC";
+google_color_link = "0066CC";
+google_color_text = "333333";
+google_color_url = "940F04";
+//-->
+</script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+ this.select();
+ 
+ onclick="if (validateUserInput(-1, true)) { this.focus(); this.select(); }
+
+
+
+test url :
+http://localhost:8082/Sells/shopcar.do?itemNo=I001&itemNm=%E6%B8%AC%E8%A9%A6%E6%9D%AF%E5%AD%90&spec1=&spec2=&price=100000&qty=1&sells=S0000000010
+
+
