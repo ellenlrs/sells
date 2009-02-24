@@ -1,0 +1,26 @@
+<!--
+
+    Context configuration file for the Tomcat Manager Web App
+
+    $Id: manager.xml,v 1.3 2004/08/26 17:03:34 remm Exp $
+
+-->
+
+<Context reloadable="true" privileged="true" antiResourceLocking="false" antiJARLocking="false">
+     <Resource name="jdbc/database" auth="Container" type="javax.sql.DataSource"
+               factory="org.apache.commons.dbcp.BasicDataSourceFactory"
+               maxActive="10" maxIdle="10" maxWait="10000"
+               username="Sells" password="iCart856069" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://p50mysql7.secureserver.net/Sells?useUnicode=true&amp;characterEncoding=utf-8" />
+
+</Context>
+<!--
+<Context reloadable="true" privileged="true" antiResourceLocking="false" antiJARLocking="false">
+     <Resource name="jdbc/database" auth="Container" type="javax.sql.DataSource"
+               factory="org.apache.commons.dbcp.BasicDataSourceFactory"
+               maxActive="10" maxIdle="10" maxWait="10000"
+               username="icart" password="856069" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost/sells?useUnicode=true&amp;characterEncoding=utf-8" />
+
+</Context>
+-->

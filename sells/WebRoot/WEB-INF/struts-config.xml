@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans >
+    <form-bean name="sellForm" type="com.sells.struts.form.SellForm" />
+
+  </form-beans>
+
+  <global-exceptions />
+  <global-forwards >
+    <forward name="globalFail" path="/globalFail.jsp" />
+    <forward name="sessionLost" path="/sessionLost.jsp" />
+    <forward name="error2" path="/orderFail.jsp" />
+    <forward name="error1" path="/globalFailb.jsp" />
+    <forward name="memSessionLost" path="/member/sessionLost.jsp" />
+    <forward name="memError" path="/member/globalFail.jsp" />
+    <forward name="alert" path="/alert.jsp" />
+    <forward name="error3" path="/globalFailc.jsp" />
+    <forward name="sessionLost1" path="/sessionLosta.jsp" />
+  </global-forwards>
+
+  <action-mappings >
+    <action
+      attribute="sellForm"
+      input="/sellJoin.jsp"
+      name="sellForm"
+      path="/sellJoin"
+      scope="request"
+      type="com.sells.struts.action.SellJoinAction">
+      <forward name="success" path="/carCode4.jsp" />
+    </action>
+    <action path="/carCode1" type="com.sells.struts.action.CarCode1Action">
+      <forward name="success" path="/carCode1.jsp" />
+    </action>
+    <action path="/sellModi" type="com.sells.struts.action.SellModiAction">
+      <forward name="success" path="/update.jsp" />
+    </action>
+    <action path="/sellPayDesc" type="com.sells.struts.action.SellPayDescAction">
+      <forward name="success" path="/update.jsp" />
+    </action>
+    <action path="/sellFare" type="com.sells.struts.action.SellFareAction">
+      <forward name="success" path="/update.jsp" />
+    </action>
+    <action path="/login" type="com.sells.struts.action.LoginAction">
+      <forward name="success" path="/carCode4.jsp" />
+    </action>
+    <action path="/orderCar" type="com.sells.struts.action.OrderCarAction">
+      <forward name="success" path="/orderCarOk.jsp" />
+    </action>
+    <action path="/sellPasswd" type="com.sells.struts.action.SellPasswdAction">
+      <forward name="success" path="/update.jsp" />
+    </action>
+    <action path="/sellList" type="com.sells.struts.action.SellListAction">
+      <forward name="success" path="/sellList.jsp" />
+    </action>
+    <action path="/sellResult" type="com.sells.struts.action.SellResultAction">
+      <forward name="success" path="/sellResult.jsp" />
+    </action>
+    <action path="/sellUpdate" type="com.sells.struts.action.SellUpdateAction">
+      <forward name="success" path="/update.jsp" />
+    </action>
+    <action path="/help" type="com.sells.struts.action.HelpAction">
+      <forward name="success" path="/helpOk.jsp" />
+    </action>
+    <action path="/logout" type="com.sells.struts.action.LogoutAction">
+      <forward name="success" path="/index.jsp" />
+    </action>
+    <action path="/getPasswd" type="com.sells.struts.action.GetPasswdAction">
+      <forward name="success" path="/getPasswdOk.jsp" />
+    </action>
+    <action path="/help1" type="com.sells.struts.action.Help1Action">
+      <forward name="success" path="/helpOk1.jsp" />
+    </action>
+    <action path="/carCode2" type="com.sells.struts.action.CarCode2Action">
+      <forward name="success" path="/carCode2.jsp" />
+    </action>
+    <action path="/carCode3" type="com.sells.struts.action.CarCode3Action">
+      <forward name="success" path="/carCode3.jsp" />
+    </action>
+    <action path="/shopcar" type="com.sells.struts.action.ShopcarAction">
+      <forward name="successTofu" path="/shopCarTofu.jsp" />
+      <forward name="success2" path="/shopCar2.jsp" />
+      <forward name="success" path="/shopCar1.jsp" />
+    </action>
+    <action path="/order" type="com.sells.struts.action.OrderAction">
+      <forward name="success" path="/order.jsp" />
+      <forward name="error" path="/orderErr.jsp" />
+      <forward name="successTofu" path="/orderTofu.jsp" />
+    </action>
+    <action path="/orderSend" type="com.sells.struts.action.OrderSendAction">
+      <forward name="success" path="/orderSend.jsp" />
+      <forward name="payment" path="/paymentSend.jsp" />
+    </action>
+    <action path="/carCode5" type="com.sells.struts.action.CarCode5Action">
+      <forward name="success" path="/carCode5.jsp" />
+    </action>
+    
+    <action path="/loginMember" type="com.sells.struts.action.member.LoginMemberAction">
+      <forward name="success" path="/member/funcMember.jsp" />
+    </action>
+
+    <action path="/saveMember" type="com.sells.struts.action.member.SaveMemberAction">
+      <forward
+        name="successJoin"
+        path="/joinMemberOk.do"
+        redirect="true" />
+      <forward
+        name="successUpdate"
+        path="/updateMemberOk.do"
+        redirect="true" />
+    </action>
+
+    
+    <action path="/qrpwdMember" type="com.sells.struts.action.member.QrpwdMemberAction">
+      <forward name="success" path="/member/pwdMemberResult.jsp" />
+    </action>
+    <action path="/funcMember" type="com.sells.struts.action.member.JoinMemberAction">
+      <forward name="successLogin" path="/member/loginMember.jsp" />
+      
+      <forward name="successQrpwd" path="/member/pwdMember.jsp" />
+      <forward name="success" path="/member/join.jsp" />
+      <forward name="successLoginSession" path="/member/loginMemberSession.jsp" />
+      
+    </action>
+    <action path="/memSessionEx" type="com.sells.struts.action.member.MemSessionExAction">
+      <forward name="success" path="/member/sessionLost.jsp" />
+    </action>
+    <action path="/infoMember" type="com.sells.struts.action.member.InfoMemberAction">
+      <forward name="successInfo" path="/member/infoC.jsp" />
+      <forward name="successPwd" path="/member/infoPassC.jsp" />
+    </action>
+    <action path="/joinMemberOk" type="com.sells.struts.action.member.JoinMemberOkAction" >
+      <forward name="success" path="/member/joinOk.jsp" />
+      
+    </action>
+    <action path="/updateMemberOk" type="com.sells.struts.action.member.UpdateMemberOkAction" >
+      <forward name="success" path="/member/updateOk.jsp" />
+    </action>
+    <action path="/memberQuery" type="com.sells.struts.action.member.MemberQueryAction" >
+      <forward name="success" path="/memberQ.jsp" />
+    </action>
+
+    <action path="/memberInfoMis" type="com.sells.struts.action.member.MemberInfoMisAction" >
+      <forward name="successInfo" path="/infoMemberMis.jsp" />
+      <forward name="successPwd" path="/infoMemberPassMis.jsp" />
+    </action>
+
+    <action path="/memberUpdateMis" type="com.sells.struts.action.member.MemberUpdateMisAction" >
+      <forward name="success" path="/infoMemberUpdateOk.jsp" />
+    </action>
+    <action path="/memberQuery2" type="com.sells.struts.action.member.MemberQuery2Action" >
+      <forward name="success" path="/memberQ2.jsp" />
+    </action>
+
+    <action path="/memberQuery3" type="com.sells.struts.action.member.MemberQuery3Action" >
+      <forward name="success" path="/memberQ3.jsp" />
+    </action>
+    <action path="/sellOrderQuery" type="com.sells.struts.action.order.SellOrderQueryAction" >
+      <forward name="success" path="/orderQ.jsp" />
+    </action>
+
+    <action path="/memOrderQuery" type="com.sells.struts.action.order.MemOrderQueryAction">
+      <forward name="success" path="/member/mOrderQ.jsp" />
+    </action>
+
+    <action path="/memOrderMessageList" type="com.sells.struts.action.order.MemOrderMessageListAction" >
+      <forward name="success" path="/member/mOrderMessList.jsp" />
+    </action>
+
+    <action path="/memOrderMessageUpdate" type="com.sells.struts.action.order.MemOrderMessageUpdateAction" >
+      
+    </action>
+
+    <action path="/sellOrderMessageList" type="com.sells.struts.action.order.SellOrderMessageListAction" >
+      <forward name="success" path="/orderMessList.jsp" />
+    </action>
+
+    <action path="/sellOrderMessageUpdate" type="com.sells.struts.action.order.SellOrderMessageUpdateAction" >
+      
+      
+      
+    </action>
+
+    <action path="/sellOrderDetail" type="com.sells.struts.action.order.SellOrderDetailAction" >
+      <forward name="success" path="/orderDetail.jsp" />
+    </action>
+
+    <action path="/sellOrderMessageInput" type="com.sells.struts.action.order.SellOrderMessageInputAction" >
+      <forward name="success" path="/orderMessInput.jsp" />
+    </action>
+    <action path="/orderStUpdate" type="com.sells.struts.action.order.OrderStUpdateAction" >
+      
+    </action>
+    <action path="/memOrderDetail" type="com.sells.struts.action.order.MemOrderDetailAction" >
+      <forward name="success" path="/member/mOrderDetail.jsp" />
+    </action>
+
+    <action path="/memOrderMessageInput" type="com.sells.struts.action.order.MemOrderMessageInputAction" >
+      <forward name="success" path="/member/mOrderMessInput.jsp" />
+    </action>
+    <action path="/contactSellsInput" type="com.sells.struts.action.member.ContactSellsInputAction" >
+      <forward name="success" path="/member/contactInput.jsp" />
+    </action>
+
+    <action path="/contactSellsSend" type="com.sells.struts.action.member.ContactSellsSendAction">
+      <forward name="success" path="/member/contactSended.jsp" />
+    </action>
+    <action path="/logoutMember" type="com.sells.struts.action.member.LogoutMemberAction" >
+      <forward name="success" path="/member/logout.jsp" />
+    </action>
+    <action path="/loginMemberSess" type="com.sells.struts.action.member.LoginMemberSessAction" >
+      <forward name="success" path="/member/funcMember.jsp" />
+    </action>
+    <action path="/carCode6" type="com.sells.struts.action.CarCode6Action" >
+      <forward name="success" path="/carCode6.jsp" />
+    </action>
+    <action path="/paymentFeedback" type="com.sells.struts.action.PaymentFeedbackAction" >
+      <forward name="success" path="/paymentFeedback.jsp" />
+    </action>
+    <action path="/paymentReceive" type="com.sells.struts.action.PaymentReceiveAction" >
+      
+      <forward name="fail" path="/paymentErr.jsp" />
+      <forward name="fail-check" path="/paymentErrCheck.jsp" />
+      <forward name="success" path="/paymentReceive.jsp" />
+    </action>
+    <action path="/reOrder" type="com.sells.struts.action.ReOrderAction" >
+      <forward name="success" path="/reOrder.jsp" />
+      <forward name="fail-check" path="/paymentErrCheck.jsp" />
+    </action>
+    <action path="/paymentFinal" type="com.sells.struts.action.PaymentFinalAction" >
+      <forward name="success" path="/paymentOk.jsp" />
+      <forward name="fail-check" path="/paymentErrCheck.jsp" />
+    </action>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+  </action-mappings>
+
+  <message-resources parameter="com.sells.struts.ApplicationResources" />
+</struts-config>
+

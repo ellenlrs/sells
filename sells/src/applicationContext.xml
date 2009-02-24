@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="dataSource"
+    class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName">
+      <value>java:comp/env/jdbc/database</value>
+    </property>
+  </bean>
+<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+  <property name="driverClassName">
+    <value>com.mysql.jdbc.Driver</value>
+  </property>
+  <property name="url">
+    <value>jdbc:mysql://p50mysql7.secureserver.net/Sells</value>
+  </property>
+  <property name="username">
+    <value>Sells</value>
+  </property>
+  <property name="password">
+    <value>iCart856069</value>
+  </property>
+  <property name="initialSize">
+    <value>2</value>
+  </property>
+  <property name="maxActive">
+    <value>10</value>
+  </property>
+  <property name="maxIdle">
+    <value>2</value>
+  </property>
+</bean>
+ -->
+<bean id="sessionFactory"
+    class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="mappingResources">
+      <list>
+        <value>com/sells/dao/LoginRec.hbm.xml</value>
+        <value>com/sells/dao/LoginData.hbm.xml</value>
+        <value>com/sells/dao/Sells.hbm.xml</value>
+        <value>com/sells/dao/SellsRec.hbm.xml</value>
+        <value>com/sells/dao/Orders.hbm.xml</value>
+        <value>com/sells/dao/OrdersItem.hbm.xml</value>
+        <value>com/sells/dao/Member.hbm.xml</value>
+        <value>com/sells/dao/OrdersMsg.hbm.xml</value>
+      </list>
+    </property>
+
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">
+          org.hibernate.dialect.MySQLDialect
+<!--      org.hibernate.dialect.SQLServerDialect-->
+        </prop>
+      </props>
+    </property>
+    <property name="dataSource">
+      <ref bean="dataSource" />
+    </property>
+  </bean>
+
+  <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+  <bean id="transactionManager"
+    class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory">
+      <ref local="sessionFactory" />
+    </property>
+  </bean>
+  
+  <bean id="loginRecDAO" class="com.sells.dao.LoginRecDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean>
+  <bean id="loginDataDAO" class="com.sells.dao.LoginDataDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean>
+  <bean id="sellsDAO" class="com.sells.dao.SellsDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean>
+  <bean id="sellsRecDAO" class="com.sells.dao.SellsRecDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean>
+  <bean id="ordersDAO" class="com.sells.dao.OrdersDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean>
+  <bean id="memberDAO" class="com.sells.dao.MemberDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean>
+  <bean id="sellsService"
+    class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <property name="transactionManager">
+      <ref local="transactionManager" />
+    </property>
+    <property name="target">
+      <ref local="sellsTarget" />
+    </property>
+    <property name="transactionAttributes">
+      <props>
+        <prop key="save*">PROPAGATION_REQUIRED</prop>
+        <prop key="list*">PROPAGATION_REQUIRED,readOnly</prop>
+        <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+        <prop key="find*">PROPAGATION_REQUIRED</prop>
+        <prop key="update*">PROPAGATION_REQUIRED</prop>
+        <prop key="dele*">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+  <bean id="sellsTarget"
+    class="com.sells.service.imp.SellsServiceImp">
+    <property name="loginRecDAO">
+      <ref local="loginRecDAO" />
+    </property>
+    <property name="loginDataDAO">
+      <ref local="loginDataDAO" />
+    </property>
+    <property name="sellsDAO">
+      <ref local="sellsDAO" />
+    </property>
+    <property name="ordersDAO">
+      <ref local="ordersDAO" />
+    </property>
+    <property name="sellsRecDAO">
+      <ref local="sellsRecDAO" />
+    </property>
+    <property name="ordersItemDAO">
+      <ref local="ordersItemDAO" />
+    </property>
+    <property name="ordersMsgDAO">
+      <ref local="ordersMsgDAO" />
+    </property>
+  </bean>
+  
+  <bean id="memberService"
+    class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <property name="transactionManager">
+      <ref local="transactionManager" />
+    </property>
+    <property name="target">
+      <ref local="memberTarget" />
+    </property>
+    <property name="transactionAttributes">
+      <props>
+        <prop key="save*">PROPAGATION_REQUIRED</prop>
+        <prop key="list*">PROPAGATION_REQUIRED,readOnly</prop>
+        <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+        <prop key="find*">PROPAGATION_REQUIRED</prop>
+        <prop key="update*">PROPAGATION_REQUIRED</prop>
+        <prop key="dele*">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+  <bean id="memberTarget"
+    class="com.sells.service.imp.MemberServiceImp">
+    <property name="memberDAO">
+      <ref local="memberDAO" />
+    </property>
+  </bean>  
+  
+  <bean id="ordersItemDAO" class="com.sells.dao.OrdersItemDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean>
+  <bean id="ordersMsgDAO" class="com.sells.dao.OrdersMsgDAO">
+  	<property name="sessionFactory">
+  		<ref bean="sessionFactory" />
+  	</property>
+  </bean></beans>

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2006/3/17 上午 11:52:55                                                        
+
+     ggogoWeb    
+     ggogoWeb Project
+                   
+     davide                                                                
+     ====================================================================== -->
+<project name="Sells" default="Sells.war">
+	<description>
+     Sells Project
+  </description>
+	<property name="src.dir" value="src" />
+	<property name="classes.dir" value="WebRoot\WEB-INF\classes" />
+	<property name="lib.dir" value="WebRoot\WEB-INF\lib" />
+	<property name="dist.dir" value="" />
+	
+	<!--
+	  設定Classpath & Jar File
+	-->
+
+	<path id="lib.path">
+	<pathelement path="${classes}"/>
+	<fileset dir="WebRoot/WEB-INF/lib/">
+	  <include name="*.jar"/>
+	</fileset>
+	<pathelement path="${classes.dir}"/>
+	</path>
+	
+	<target name="Sells.war" depends="Initialize, Compile ,Archive">
+		<echo message="Ant at work!"/>
+	</target>
+	
+	<target name="Initialize">
+		<delete dir="${classes.dir}"/>
+		<mkdir dir="${lib.dir}"/>
+		<mkdir dir="${classes.dir}"/>
+	</target>
+	
+	<target name="Compile" depends="Initialize">
+		<javac srcdir="${src.dir}" 
+		    destdir="${classes.dir}" encoding="UTF-8">
+			<classpath refid="lib.path"/>
+		</javac>
+		
+		<copy todir="${classes.dir}">
+		    <fileset dir="${src.dir}">
+		      <include name="**/*.xml"/>
+		    	<include name="**/*.dtd"/>
+		    	<include name="**/*.conf"/>
+		      <include name="**/*.hbm"/>
+		      <include name="**/*.properties"/>
+		    </fileset>
+		</copy>
+	</target>
+ 
+	<target name="Archive" depends="Initialize">
+		<war destfile="Sells.war" webxml="WebRoot/WEB-INF/web.xml">
+  		<fileset dir="WebRoot" excludes="WEB-INF/web.xml"/>
+		</war>
+	</target>
+</project>
