@@ -136,11 +136,21 @@ public class Mail implements Runnable {
   public void setFrom() throws MessagingException {
     try {
       Address fromAddress;
-      if (mailBean.getFromName().equals("")) {
-        fromAddress = new InternetAddress(mailBean.getFrom());
+      String[] fromList = mailBean.getFrom().split(",");
+      if (fromList.length > 1 ) {
+        if (mailBean.getFromName().equals("")) {
+          fromAddress = new InternetAddress(fromList[0]);
+        } else {
+          fromAddress = new InternetAddress(fromList[0], mailBean
+              .getFromName(), mailBean.getCharset());
+        }
       } else {
-        fromAddress = new InternetAddress(mailBean.getFrom(), mailBean
-            .getFromName(), mailBean.getCharset());
+        if (mailBean.getFromName().equals("")) {
+          fromAddress = new InternetAddress(mailBean.getFrom());
+        } else {
+          fromAddress = new InternetAddress(mailBean.getFrom(), mailBean
+              .getFromName(), mailBean.getCharset());
+        }
       }
       mMessage_.setFrom(fromAddress);
     } catch (Exception e) {
