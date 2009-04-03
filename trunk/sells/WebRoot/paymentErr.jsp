@@ -47,7 +47,7 @@ body {
 <center><BR><BR><BR>
 <table width="800" border="0" align="center" cellpadding="4" cellspacing="2" class="tb1">
   <tr>
-    <td class="tb2" align=center><span class="style8" >交易失敗:${msg}<br><form action='reOrder.do' name='a' method='post'>
+    <td class="tb2" align=center><span class="style8" >${msg}<br><form action='reOrder.do' name='a' method='post'>
     <input type="hidden" name=orderNo value='${requestScope.orderNo}' >
     <input type="hidden" name=checksum value='${requestScope.checksum}' >
     <input name="b123" onClick="goHome();" value="返回首頁" type="button" class="button">
