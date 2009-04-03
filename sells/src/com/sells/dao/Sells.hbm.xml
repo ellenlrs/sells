@@ -85,7 +85,7 @@
             <column name="PROCESS" />
         </property>
         <property name="payType5" type="java.lang.String">
-            <column name="PAY_TYPE5" length="1" not-null="true" />
+            <column name="PAY_TYPE5" length="1" />
         </property>
         <property name="feedbackCode" type="java.lang.String">
             <column name="FEEDBACK_CODE" length="30" />
@@ -95,6 +95,18 @@
         </property>
         <property name="storeId" type="java.lang.String">
             <column name="STORE_ID" length="20" />
+        </property>
+        <property name="payTypeNobook" type="java.lang.String">
+            <column name="PAY_TYPE_NOBOOK" length="1" />
+        </property>
+        <property name="payType711" type="java.lang.String">
+            <column name="PAY_TYPE_711" length="1" />
+        </property>
+        <property name="payTypeHilife" type="java.lang.String">
+            <column name="PAY_TYPE_HILIFE" length="1" />
+        </property>
+        <property name="payTypeFamily" type="java.lang.String">
+            <column name="PAY_TYPE_FAMILY" length="1" />
         </property>
     </class>
 </hibernate-mapping>
