@@ -87,9 +87,13 @@ function checkForm(formObj){
      alert("請選擇付款方式!");
 	 formObj.payTp.focus();
 	 return false ;
-  }
+  }  
   if ( formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('貨到付款') == -1 && 
-       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('線上刷卡') == -1) {
+       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('線上刷卡') == -1 && 
+       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('7-11繳款') == -1 && 
+       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('萊爾富繳款') == -1 && 
+       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('全家繳款') == -1 && 
+       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('無摺存款') == -1) {
     if ( formObj.exportId.value=="" ) {
       alert("請輸入轉出帳號後5碼!");
 	    formObj.payTp.focus();
@@ -339,6 +343,10 @@ ${total+requestScope.sells.freightFare}元 (含運費) <BR><c:if test="${request
 		   </c:otherwise>
 		</c:choose>
 		</c:if>
+		<c:if test="${requestScope.sells.payTypeNobook == '1' }"><option value='無摺存款'>無摺存款</option></c:if> 
+		<c:if test="${requestScope.sells.payType711 == '1' }"><option value='7-11繳款'>7-11繳款</option></c:if> 
+		<c:if test="${requestScope.sells.payTypeHilife == '1' }"><option value='萊爾富繳款'>萊爾富繳款</option></c:if> 
+		<c:if test="${requestScope.sells.payTypeFamily == '1' }"><option value='全家繳款'>全家繳款</option></c:if> 
 	  </select>
 	  <c:if test="${requestScope.sells.payType4 == '1' }">
       <c:choose>
