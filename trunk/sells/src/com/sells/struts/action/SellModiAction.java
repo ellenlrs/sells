@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.sells.dao.LoginData;
 import com.sells.dao.Sells;
 import com.sells.service.imp.SellsService;
@@ -103,6 +105,12 @@ public class SellModiAction extends Action {
         sells.setPayType3(StringUtils.defaultString(request.getParameter("payType3"),"0"));
         sells.setPayType4(StringUtils.defaultString(request.getParameter("payType4"),"0"));
         sells.setPayType5(StringUtils.defaultString(request.getParameter("payType5"),"0"));
+        
+        sells.setPayType711(StringUtils.defaultString(request.getParameter("payType711"),"0"));
+        sells.setPayTypeFamily(StringUtils.defaultString(request.getParameter("payTypeFamily"),"0"));
+        sells.setPayTypeHilife(StringUtils.defaultString(request.getParameter("payTypeHilife"),"0"));
+        sells.setPayTypeNobook(StringUtils.defaultString(request.getParameter("payTypeNobook"),"0"));
+        
         sells.setStoreId(StringUtils.defaultString(request.getParameter("storeId")));
         sells.setFeedbackCode(StringUtils.defaultString(request.getParameter("feedbackCode")));
         sells.setSendCode(StringUtils.defaultString(request.getParameter("sendCode")));

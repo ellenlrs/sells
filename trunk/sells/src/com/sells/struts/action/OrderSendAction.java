@@ -122,7 +122,11 @@ public class OrderSendAction extends Action {
         return mapping.findForward("error2");
       }
       if (StringUtils.defaultString(request.getParameter("payTp")).indexOf("貨到付款")== -1 && 
-          StringUtils.defaultString(request.getParameter("payTp")).indexOf("線上刷卡")== -1 ) {
+          StringUtils.defaultString(request.getParameter("payTp")).indexOf("線上刷卡")== -1 && 
+          StringUtils.defaultString(request.getParameter("payTp")).indexOf("7-11繳款")== -1 && 
+          StringUtils.defaultString(request.getParameter("payTp")).indexOf("萊爾富繳款")== -1 && 
+          StringUtils.defaultString(request.getParameter("payTp")).indexOf("全家繳款")== -1 && 
+          StringUtils.defaultString(request.getParameter("payTp")).indexOf("無摺存款")== -1) {
         if (StringUtils.isBlank(request.getParameter("exportId"))) {
           errors.add("errMsg", new ActionError("alert.Error", "請輸入匯出帳號"));
           saveErrors(request, errors);
@@ -282,6 +286,10 @@ public class OrderSendAction extends Action {
             String.valueOf(Integer.parseInt(orders.getOrderNo()))+
             sells.getSendCode()+
             String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
+        log.info("getStoreId:"+sells.getStoreId());
+        log.info("getOrderNo:"+String.valueOf(Integer.parseInt(orders.getOrderNo())));
+        log.info("getSendCode:"+sells.getSendCode());
+        log.info("amt:"+String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
         request.setAttribute("sslNo", Integer.parseInt(orders.getOrderNo()));
         request.setAttribute("checksum", checksum);
         request.setAttribute("sells", sells);
