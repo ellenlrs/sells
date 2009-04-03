@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.sells.common.mail.Mail;
 import com.sells.common.mail.MailBean;
 import com.sells.common.util.EcServer;
@@ -119,6 +121,12 @@ public class SellUpdateAction extends Action {
           sellsvo.setPayType3(StringUtils.defaultString(request.getParameter("payType3"),"0"));
           sellsvo.setPayType4(StringUtils.defaultString(request.getParameter("payType4"),"0"));
           sellsvo.setPayType5(StringUtils.defaultString(request.getParameter("payType5"),"0"));
+          
+          sellsvo.setPayType711(StringUtils.defaultString(request.getParameter("payType711"),"0"));
+          sellsvo.setPayTypeFamily(StringUtils.defaultString(request.getParameter("payTypeFamily"),"0"));
+          sellsvo.setPayTypeHilife(StringUtils.defaultString(request.getParameter("payTypeHilife"),"0"));
+          sellsvo.setPayTypeNobook(StringUtils.defaultString(request.getParameter("payTypeNobook"),"0"));
+          
           sellsvo.setFeedbackCode(StringUtils.defaultString(request.getParameter("feedbackCode"),""));
           sellsvo.setSendCode(StringUtils.defaultString(request.getParameter("sendCode"),""));
           sellsvo.setStoreId(StringUtils.defaultString(request.getParameter("storeId"),""));
