@@ -37,6 +37,10 @@ public class Sells implements java.io.Serializable {
   private String feedbackCode;
   private String sendCode;
   private String storeId;
+  private String payTypeNobook;
+  private String payType711;
+  private String payTypeHilife;
+  private String payTypeFamily;
 
   // Constructors
   /** default constructor */
@@ -44,9 +48,8 @@ public class Sells implements java.io.Serializable {
   }
 
   /** minimal constructor */
-  public Sells(String sellsNo, String payType5) {
+  public Sells(String sellsNo) {
     this.sellsNo = sellsNo;
-    this.payType5 = payType5;
   }
 
   /** full constructor */
@@ -57,7 +60,8 @@ public class Sells implements java.io.Serializable {
       Integer nofreightFare, Integer nofreightQty, Integer lowAccount,
       Date updateDt, String color1, String color2, String colorTp,
       Integer process, String payType5, String feedbackCode, String sendCode,
-      String storeId) {
+      String storeId, String payTypeNobook, String payType711,
+      String payTypeHilife, String payTypeFamily) {
     this.sellsNo = sellsNo;
     this.sellsNm = sellsNm;
     this.email = email;
@@ -86,6 +90,10 @@ public class Sells implements java.io.Serializable {
     this.feedbackCode = feedbackCode;
     this.sendCode = sendCode;
     this.storeId = storeId;
+    this.payTypeNobook = payTypeNobook;
+    this.payType711 = payType711;
+    this.payTypeHilife = payTypeHilife;
+    this.payTypeFamily = payTypeFamily;
   }
 
   // Property accessors
@@ -311,5 +319,37 @@ public class Sells implements java.io.Serializable {
 
   public void setStoreId(String storeId) {
     this.storeId = storeId;
+  }
+
+  public String getPayTypeNobook() {
+    return this.payTypeNobook;
+  }
+
+  public void setPayTypeNobook(String payTypeNobook) {
+    this.payTypeNobook = payTypeNobook;
+  }
+
+  public String getPayType711() {
+    return this.payType711;
+  }
+
+  public void setPayType711(String payType711) {
+    this.payType711 = payType711;
+  }
+
+  public String getPayTypeHilife() {
+    return this.payTypeHilife;
+  }
+
+  public void setPayTypeHilife(String payTypeHilife) {
+    this.payTypeHilife = payTypeHilife;
+  }
+
+  public String getPayTypeFamily() {
+    return this.payTypeFamily;
+  }
+
+  public void setPayTypeFamily(String payTypeFamily) {
+    this.payTypeFamily = payTypeFamily;
   }
 }
