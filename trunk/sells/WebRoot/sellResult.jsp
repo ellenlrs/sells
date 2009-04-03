@@ -133,8 +133,9 @@ function checkForm(formObj){
 						<table width="320" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="160" valign="top" class="t1"><input name="payType1" type="checkbox" ${requestScope.sells.payType1 == '1' ?'checked' :''} value="1">
-                      <span class="style5">ATM </span> </td>
-                  <td width="160" valign="top" class="t1"><input name="payType2" type="checkbox" ${requestScope.sells.payType2 == '1' ?'checked' :''} value="1"><span class="style5">銀行匯款</span></td>
+                     <span class="style5">ATM </span> </td>
+                  <td width="160" valign="top" class="t1"><input name="payType2" type="checkbox" ${requestScope.sells.payType2 == '1' ?'checked' :''} value="1">
+                     <span class="style5">銀行匯款</span></td>
                 </tr>
                 <tr>
                   <td valign="top" class="t1"><input name="payType3" type="checkbox" ${requestScope.sells.payType3 == '1' ?'checked' :''} value="1">
@@ -142,7 +143,19 @@ function checkForm(formObj){
                   <td valign="top" class="t1"><input name="payType4" type="checkbox" ${requestScope.sells.payType4 == '1' ?'checked' :''} value="1">
                       <span class="style5">貨到付款</span></td>
                 </tr>
-            </table>        </td>
+                <tr>
+                  <td valign="top" class="t1"><input name="payTypeNobook" type="checkbox" ${requestScope.sells.payTypeNobook == '1' ?'checked' :''} value="1">
+                      <span class="style5">無摺存款</span></td>
+                  <td valign="top" class="t1"><input name="payType711" type="checkbox" ${requestScope.sells.payType711 == '1' ?'checked' :''} value="1">
+                      <span class="style5">7-11繳費</span></td>
+                </tr>
+                <tr>
+                  <td valign="top" class="t1"><input name="payTypeHilife" type="checkbox" ${requestScope.sells.payTypeHilife == '1' ?'checked' :''} value="1">
+                      <span class="style5">萊爾富繳費</span></td>
+                  <td valign="top" class="t1"><input name="payTypeFamily" type="checkbox" ${requestScope.sells.payTypeFamily == '1' ?'checked' :''} value="1">
+                      <span class="style5">全家繳費</span></td>
+                </tr>
+            </table></td>
     </tr>
      <tr >
       <td class="style5" bgcolor="#FFFFFF" align="center" >購 物 車 色 系</td>

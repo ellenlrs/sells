@@ -148,6 +148,18 @@ function checkForm(formObj){
           <td valign="middle" class="t1"><label><input name="payType4" type="checkbox" ${sessionScope.sells.payType4 == '1' ?'checked' :''} value="1"> <span class="style5">貨到付款</span></label></td>
         </tr>
         <tr>
+                  <td valign="top" class="t1"><input name="payTypeNobook" type="checkbox" ${sessionScope.sells.payTypeNobook == '1' ?'checked' :''} value="1">
+                      <span class="style5">無摺存款</span></td>
+                  <td valign="top" class="t1"><input name="payType711" type="checkbox" ${sessionScope.sells.payType711 == '1' ?'checked' :''} value="1">
+                      <span class="style5">7-11繳費</span></td>
+                </tr>
+                <tr>
+                  <td valign="top" class="t1"><input name="payTypeHilife" type="checkbox" ${sessionScope.sells.payTypeHilife == '1' ?'checked' :''} value="1">
+                      <span class="style5">萊爾富繳費</span></td>
+                  <td valign="top" class="t1"><input name="payTypeFamily" type="checkbox" ${sessionScope.sells.payTypeFamily == '1' ?'checked' :''} value="1">
+                      <span class="style5">全家繳費</span></td>
+        </tr>
+        <tr>
           <td valign="middle" height="35" class="t1"><label><input name="payType5" type="checkbox" ${sessionScope.sells.payType5 == '1' ?'checked' :''} value="1"> <span class="style5">藍星上刷卡</span></label></td>
           <td valign="middle" class="t1"><span class="style1">商城編號</span><input name=storeId type=text value="${sessionScope.sells.storeId}" maxlength="10" size="10"></td>
         </tr>
