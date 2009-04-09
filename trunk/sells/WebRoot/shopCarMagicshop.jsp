@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=Utf-8"%>
+<%@ page contentType="text/html; charset=Utf-8"%>
 <%@ include file="taglibs.jsp"%>
 <html>
 <head>
@@ -81,21 +81,20 @@ body {
         <tr>
           <td height="28" colspan=6 class="tb2">您選購了 ${totQty} 個商品 </td>
         </tr>
+        <c:if test="${requestScope.sells.lowAccount > '0'}">
         <tr>
           <td height="28" colspan=6 bgcolor=#ffffff>最低結帳金額︰${requestScope.sells.lowAccount}元<span class="style1"> <br>
             （結帳時沒有超過此金額，將無法結帳，不包含運費金額）</span></td>
         </tr>
+        </c:if>
         <tr>
           <td height="28" colspan=6 bgcolor=#ffffff>商品金額為︰${total}元</td>
         </tr>
-		<c:if test="${requestScope.sells.process > '0'}">
-		<tr>
-          <td height="28" colspan=6 bgcolor=#ffffff> 若您結帳時選擇<span class="style1">貨到付款</span>將加收物流處理費︰${requestScope.sells.process}元 </td>
-        </tr>
-		</c:if>
 		<c:if test="${requestScope.sells.freightTp == '0'}">
         <tr>
-          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元 </td>
+          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元 
+<c:if test="${requestScope.sells.process > '0'}"> ，若您結帳時選擇<span class="style1">貨到付款,超商繳費[7-11,萊爾富,全家]</span>將加收物流處理費︰${requestScope.sells.process}元</c:if>
+          </td>
         </tr>
         <tr>
           <td height="28" colspan=6 class="tb2">購物總金額為︰${total + requestScope.sells.freightFare}元 (含運費)</td>
@@ -103,8 +102,10 @@ body {
 		</c:if>
 		<c:if test="${requestScope.sells.freightTp == '1'}"><!--價格-->
         <tr>
-          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元 <span class="style1"><br>
-（當消費金額超過 ${requestScope.sells.nofreightFare}元，享有免運費服務<c:if test="${requestScope.sells.process > '0'}">及貨到付款物流處理費</c:if>）</span></td>
+          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元
+          <c:if test="${requestScope.sells.process > '0'}"> ，若您結帳時選擇<span class="style1">貨到付款,超商繳費[7-11,萊爾富,全家]</span>將加收物流處理費︰${requestScope.sells.process}元</c:if>
+          <span class="style1"><br>
+（當消費金額超過 ${requestScope.sells.nofreightFare}元，享有免運費服務<c:if test="${requestScope.sells.process > '0'}">及貨到付款,超商繳費[7-11,萊爾富,全家]物流處理費</c:if>）</span></td>
         </tr>
         <tr>
           <td height="28" colspan=6 class="tb2">
@@ -115,8 +116,9 @@ body {
 		</c:if>
 		<c:if test="${requestScope.sells.freightTp == '2'}"><!--數量-->
         <tr>
-          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元<span class="style1"><br>
-（當數量超過 ${requestScope.sells.nofreightQty}件，享有免運費服務<c:if test="${requestScope.sells.process > '0'}">及貨到付款物流處理費</c:if>） </span></td>
+          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元<c:if test="${requestScope.sells.process > '0'}"> ，若您結帳時選擇<span class="style1">貨到付款,超商繳費[7-11,萊爾富,全家]</span>將加收物流處理費︰${requestScope.sells.process}元</c:if>
+          <span class="style1"><br>
+（當數量超過 ${requestScope.sells.nofreightQty}件，享有免運費服務<c:if test="${requestScope.sells.process > '0'}">及貨到付款物,超商繳費[7-11,萊爾富,全家]流處理費</c:if>） </span></td>
         </tr>
         <tr>
           <td height="28" colspan=6 class="tb2">
@@ -127,7 +129,9 @@ body {
 		</c:if>
     <c:if test="${requestScope.sells.freightTp == '3'}"><!--價格-->
         <tr>
-          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元 <span class="style1"><br>
+          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元
+          <c:if test="${requestScope.sells.process > '0'}"> ，若您結帳時選擇<span class="style1">貨到付款,超商繳費[7-11,萊爾富,全家]</span>將加收物流處理費︰${requestScope.sells.process}元</c:if>
+          <span class="style1"><br>
 （當消費金額超過 ${requestScope.sells.nofreightFare}元，享有免運費服務）</span></td>
         </tr>
         <tr>
@@ -139,7 +143,9 @@ body {
     </c:if>
     <c:if test="${requestScope.sells.freightTp == '4'}"><!--數量-->
         <tr>
-          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元<span class="style1"><br>
+          <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元
+          <c:if test="${requestScope.sells.process > '0'}"> ，若您結帳時選擇<span class="style1">貨到付款,超商繳費[7-11,萊爾富,全家]</span>將加收物流處理費︰${requestScope.sells.process}元</c:if>
+          <span class="style1"><br>
 （當數量超過 ${requestScope.sells.nofreightQty}件，享有免運費服務）</span></td>
         </tr>
         <tr>
@@ -152,27 +158,12 @@ body {
 		<tr>
 		  <td colspan=6 align="center" bgcolor=#ffffff>
 		  <table border=0 width=70% cellspacing="1" class="tb1" cellpadding="2">
-  <tr>
-    <td width="30%" align="center" bgcolor="#FFFFFF">帳號</td>
-    <td width="70%" bgcolor="#FFFFFF"><input type="text" name="email"> 
-      <a href="javascript:joinMember();" class="style3">加入會員</a></td>
-  </tr>
-  <tr>
-    <td align="center" bgcolor="#ffffff">密碼</td>
-    <td bgcolor="#ffffff"><input type="password" name="password">
-      <a href="javascript:query();" class="style3">忘記密碼</a></td>
-  </tr>
 </table></td>
 		</tr>
 		<tr>
           <td height="28" colspan=6 align="center" bgcolor=#ffffff>
             <input name="b121" type=button onClick="gotoPage('order')" value="直接結帳" class="button">
-            <c:if test="${requestScope.sess == 'haveSess'}">
-            <input name="b122" value="我是 ${sessionScope.icMemNm}；直接登入" type="button" onclick="gotoPageSess('ordermembersess')" class="button">
-            </c:if>
-            <input name="b1212" type=button onClick="gotoPage('ordermember')" value="登入會員後結帳" class="button">
             <input name="b122" onClick="history.go(-1)" value="繼續購物" type="button" class="button">
-            <input name="b123" onClick="goHome();'" value="返回首頁" type="button" class="button">
             <INPUT name="b1" type=button onClick="gotoPage('REMOVEALL')" value="清空購物車" class="button">
 <input type="hidden" name="member" value="0"></td>
         </tr>

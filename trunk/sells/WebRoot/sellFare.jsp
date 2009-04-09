@@ -110,8 +110,8 @@ function checkForm(formObj){
           <label><input name="freightTp" type="radio" ${sessionScope.sells.freightTp == '0' ? 'checked':''} value="0"><span class="style5">不設定</span></label>
 					<label><input name="freightTp" type="radio" ${sessionScope.sells.freightTp == '1' ? 'checked':''} value="1"><span class="style5">價格</span></label>
 					<label><input name="freightTp" type="radio" ${sessionScope.sells.freightTp == '2' ? 'checked':''} value="2"><span class="style5">數量</span></label><BR>
-					<label><input name="freightTp" type="radio" ${sessionScope.sells.freightTp == '3' ? 'checked':''} value="3"><span class="style5">價格(貨到付款一律收取)</span></label><BR>
-					<label><input name="freightTp" type="radio" ${sessionScope.sells.freightTp == '4' ? 'checked':''} value="4"><span class="style5">數量(貨到付款一律收取)</span></label>
+					<label><input name="freightTp" type="radio" ${sessionScope.sells.freightTp == '3' ? 'checked':''} value="3"><span class="style5">價格(貨到付款處理費一律收取)</span></label><BR>
+					<label><input name="freightTp" type="radio" ${sessionScope.sells.freightTp == '4' ? 'checked':''} value="4"><span class="style5">數量(貨到付款處理費一律收取)</span></label>
 					</td>
         </tr>
         <tr>
