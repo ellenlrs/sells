@@ -79,10 +79,30 @@ function checkForm(formObj){
 	 formObj.homepage.focus();
 	 return false ;
   }
-  if ( !(formObj.payType1.checked ||  formObj.payType2.checked || formObj.payType3.checked || formObj.payType4.checked )) {
-     alert("請選擇一種付款方式!");
-	 formObj.payType1.focus();
-	 return false ;
+  if ( !(formObj.payType5.checked || formObj.payType1.checked 
+  ||  formObj.payType2.checked || formObj.payType3.checked 
+  || formObj.payType4.checked || formObj.payTypeNobook.checked
+  || formObj.payType711.checked　|| formObj.payTypeHilife.checked　|| formObj.payTypeFamily.checked)) {
+    alert("請選擇一種付款方式!");
+    formObj.payType1.focus();
+    return false ;
+  }
+  if (formObj.payType5.checked) {
+    if (formObj.storeId.value == '' ) {
+      alert("您已勾選藍星線上付款，請輸入商城代碼!");
+      formObj.storeId.focus();
+      return false ;
+    }
+    if (formObj.sendCode.value == '' ) {
+      alert("您已勾選藍星線上付款，請輸入r_Code!");
+      formObj.sendCode.focus();
+      return false ;
+    }
+    if (formObj.feedbackCode.value == '' ) {
+      alert("您已勾選藍星線上付款，請輸入Code!");
+      formObj.feedbackCode.focus();
+      return false ;
+    }
   }
   if ( formObj.color.selectedIndex == '0') {
      alert("請選擇購物車色系!");
@@ -155,6 +175,15 @@ function checkForm(formObj){
                   <td valign="top" class="t1"><input name="payTypeFamily" type="checkbox" ${requestScope.sells.payTypeFamily == '1' ?'checked' :''} value="1">
                       <span class="style5">全家繳費</span></td>
                 </tr>
+                <tr>
+          <td valign="middle" height="35" class="t1"><label><input name="payType5" type="checkbox" ${sessionScope.sells.payType5 == '1' ?'checked' :''} value="1"> <span class="style5">藍星線上刷卡</span></label></td>
+          <td valign="middle" class="t1"><span class="style1">商城編號</span><input name=storeId type=text value="${sessionScope.sells.storeId}" maxlength="10" size="10"></td>
+        </tr>
+        <tr>
+          <td valign="middle" height="35" class="t1"><span class="style1">r_Code</span><input name=sendCode type=text value="${sessionScope.sells.sendCode}" maxlength="10" size="10"></td>
+
+          <td valign="middle" class="t1"><span class="style1">Code</span><input name=feedbackCode type=text value="${sessionScope.sells.feedbackCode}" maxlength="10" size="10"></td>
+        </tr>
             </table></td>
     </tr>
      <tr >
