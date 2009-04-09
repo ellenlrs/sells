@@ -83,15 +83,18 @@
       <forward name="successTofu" path="/shopCarTofu.jsp" />
       <forward name="success2" path="/shopCar2.jsp" />
       <forward name="success" path="/shopCar1.jsp" />
+      <forward name="successMagicshop" path="/shopCarMagicshop.jsp" />
     </action>
     <action path="/order" type="com.sells.struts.action.OrderAction">
       <forward name="success" path="/order.jsp" />
       <forward name="error" path="/orderErr.jsp" />
       <forward name="successTofu" path="/orderTofu.jsp" />
+      <forward name="successMagicshop" path="/orderMagicshop.jsp" />
     </action>
     <action path="/orderSend" type="com.sells.struts.action.OrderSendAction">
       <forward name="success" path="/orderSend.jsp" />
       <forward name="payment" path="/paymentSend.jsp" />
+      <forward name="successMagicshop" path="/orderSendMagic.jsp" />
     </action>
     <action path="/carCode5" type="com.sells.struts.action.CarCode5Action">
       <forward name="success" path="/carCode5.jsp" />
