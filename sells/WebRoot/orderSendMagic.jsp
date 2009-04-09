@@ -93,7 +93,6 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
 	  <br>
 	  希望抵達時間︰${requestScope.deTime}
     <br>
-    ${requestScope.desc}
 	  備註︰
 	  <br>
 	  ${requestScope.desc}

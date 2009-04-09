@@ -68,7 +68,10 @@ function checkForm(formObj){
 	 formObj.homepage.focus();
 	 return false ;
   }
-  if ( !(formObj.payType5.checked || formObj.payType1.checked ||  formObj.payType2.checked || formObj.payType3.checked || formObj.payType4.checked )) {
+  if ( !(formObj.payType5.checked || formObj.payType1.checked 
+  ||  formObj.payType2.checked || formObj.payType3.checked 
+  || formObj.payType4.checked || formObj.payTypeNobook.checked
+  || formObj.payType711.checked　|| formObj.payTypeHilife.checked　|| formObj.payTypeFamily.checked)) {
     alert("請選擇一種付款方式!");
 	  formObj.payType1.focus();
 	  return false ;
@@ -160,7 +163,7 @@ function checkForm(formObj){
                       <span class="style5">全家繳費</span></td>
         </tr>
         <tr>
-          <td valign="middle" height="35" class="t1"><label><input name="payType5" type="checkbox" ${sessionScope.sells.payType5 == '1' ?'checked' :''} value="1"> <span class="style5">藍星上刷卡</span></label></td>
+          <td valign="middle" height="35" class="t1"><label><input name="payType5" type="checkbox" ${sessionScope.sells.payType5 == '1' ?'checked' :''} value="1"> <span class="style5">藍星線上刷卡</span></label></td>
           <td valign="middle" class="t1"><span class="style1">商城編號</span><input name=storeId type=text value="${sessionScope.sells.storeId}" maxlength="10" size="10"></td>
         </tr>
         <tr>
