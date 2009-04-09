@@ -78,17 +78,17 @@ function checkForm(formObj){
   }
   if (formObj.payType5.checked) {
     if (formObj.storeId.value == '' ) {
-      alert("您已勾選藍星線上付款，請輸入商城代碼!");
+      alert("您已勾選藍新線上付款，請輸入商城代碼!");
       formObj.storeId.focus();
       return false ;
     }
     if (formObj.sendCode.value == '' ) {
-      alert("您已勾選藍星線上付款，請輸入r_Code!");
+      alert("您已勾選藍新線上付款，請輸入r_Code!");
       formObj.sendCode.focus();
       return false ;
     }
     if (formObj.feedbackCode.value == '' ) {
-      alert("您已勾選藍星線上付款，請輸入Code!");
+      alert("您已勾選藍新線上付款，請輸入Code!");
       formObj.feedbackCode.focus();
       return false ;
     }
@@ -163,7 +163,7 @@ function checkForm(formObj){
                       <span class="style5">全家繳費</span></td>
         </tr>
         <tr>
-          <td valign="middle" height="35" class="t1"><label><input name="payType5" type="checkbox" ${sessionScope.sells.payType5 == '1' ?'checked' :''} value="1"> <span class="style5">藍星線上刷卡</span></label></td>
+          <td valign="middle" height="35" class="t1"><label><input name="payType5" type="checkbox" ${sessionScope.sells.payType5 == '1' ?'checked' :''} value="1"> <span class="style5">藍新線上刷卡</span></label></td>
           <td valign="middle" class="t1"><span class="style1">商城編號</span><input name=storeId type=text value="${sessionScope.sells.storeId}" maxlength="10" size="10"></td>
         </tr>
         <tr>
