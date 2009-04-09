@@ -214,7 +214,11 @@ public class OrderAction extends Action {
         session.setAttribute(sellsNo, carItemList);
         request.setAttribute("car", carItemList);
         request.setAttribute("sells", sells);
-        return mapping.findForward("success");
+        if (sellsNo.equals("S0000000135")) {
+          return mapping.findForward("successMagicshop");
+        } else {
+          return mapping.findForward("success");
+        }
       }
     } catch (Exception e) {
       return mapping.findForward("success");
