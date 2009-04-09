@@ -5,6 +5,7 @@
 package com.sells.struts.action;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -161,13 +162,14 @@ public class ShopcarAction extends Action {
           for(int i=0; i < carts.length; i++ ) {
             String[] cartsDetail = carts[i].split(",");
             CarItem carItem = new CarItem();
+            /*
             log.info("cart 0="+cartsDetail[0]);
             log.info("cart 1="+cartsDetail[1]);
             log.info("cart 2="+cartsDetail[2]);
             log.info("cart 3="+cartsDetail[3]);
             log.info("cart 4="+cartsDetail[4]);
             log.info("cart 5="+cartsDetail[5]);
-            
+            */            
             carItem.setItemNm(cartsDetail[1]);
             carItem.setItemNo(cartsDetail[0]);
             carItem.setPrice(cartsDetail[2]);
@@ -194,6 +196,13 @@ public class ShopcarAction extends Action {
       } else { //新加入購物車
         ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo) ;
         CarItem carItem = new CarItem();
+        log.info("CharaEncoding:"+request.getCharacterEncoding());
+        log.info("getContentType:"+request.getContentType());
+        log.info("getHeader:"+request.getHeader("Content-Type"));
+        for (Enumeration enum1=request.getHeaderNames(); enum1.hasMoreElements();) {
+          String headerName = (String)enum1.nextElement();
+          log.info("Name = " + headerName+";header:"+request.getHeader(headerName));
+        }
         carItem.setItemNm(java.net.URLDecoder.decode(StringUtils.defaultString(request.getParameter("itemNm")),"Utf-8"));
         carItem.setItemNo(java.net.URLDecoder.decode(StringUtils.defaultString(request.getParameter("itemNo")),"Utf-8"));
         carItem.setPrice(StringUtils.defaultString(request.getParameter("price")));
@@ -264,7 +273,11 @@ public class ShopcarAction extends Action {
         if ( StringUtils.defaultString(request.getParameter("formtp")).equals("free")) {
           return mapping.findForward("success2");
         } else {
-          return mapping.findForward("success");
+          if (sellsNo.equals("S0000000135")) {
+            return mapping.findForward("successMagicshop");
+          } else {
+            return mapping.findForward("success");
+          }
         }
       }
     } catch (Exception e ) {
@@ -275,7 +288,11 @@ public class ShopcarAction extends Action {
         if ( StringUtils.defaultString(request.getParameter("formtp")).equals("free")) {
           return mapping.findForward("success2");
         } else {
-          return mapping.findForward("success");
+          if (sellsNo.equals("S0000000135")) {
+            return mapping.findForward("successMagicshop");
+          } else {
+            return mapping.findForward("success");
+          }
         }
       }
     }

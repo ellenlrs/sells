@@ -134,7 +134,17 @@ public class OrderSendAction extends Action {
         }
       }
       Orders orders = new Orders();
-      orders.setAddress(request.getParameter("address"));
+      
+      if (StringUtils.isNotBlank(request.getParameter("addressList"))) {
+        orders.setAddress(request.getParameter("address")+"-"+request.getParameter("addressList"));
+      }else {
+        orders.setAddress(request.getParameter("address"));
+      }
+      if (StringUtils.isNotBlank(request.getParameter("deTime"))) {
+        orders.setDescTxt(StringUtils.substring("希望送達時間："+StringUtils.defaultString(request.getParameter("deTime"))+","+StringUtils.defaultString(request.getParameter("desc")),0,1500));
+      }else {
+        orders.setDescTxt(StringUtils.substring(StringUtils.defaultString(request.getParameter("desc")),0,1500));
+      }
       orders.setEmail(request.getParameter("email"));
       orders.setIp(request.getRemoteAddr());
       orders.setMobile(request.getParameter("mobile"));
@@ -150,12 +160,13 @@ public class OrderSendAction extends Action {
       } else {
         orders.setOrderSt("80");
       }
-      if (request.getParameter("payTp").startsWith("貨到付款")) {
+      if (request.getParameter("payTp").startsWith("貨到付款") || request.getParameter("payTp").startsWith("7-11繳款") ||
+          request.getParameter("payTp").startsWith("萊爾富繳款") || request.getParameter("payTp").startsWith("全家繳款")) {
         orders.setProcess(Integer.parseInt(StringUtils.defaultString(request.getParameter("process"),"0")));
       }
       orders.setFreightfar(Integer.parseInt(StringUtils.defaultString(request.getParameter("freight"),"0")));
       orders.setPayTp(StringUtils.substring(request.getParameter("payTp"),0,20));
-      orders.setDescTxt(StringUtils.substring(StringUtils.defaultString(request.getParameter("desc")),0,1500));
+      
       orders.setExportAccount(StringUtils.substring(StringUtils.defaultString(request.getParameter("exportId")),0,5));
       orders.setMemberNo(StringUtils.defaultString(request.getParameter("memberNo")));
       String[] itemNo =  request.getParameterValues("itemNo") ;
@@ -209,7 +220,11 @@ public class OrderSendAction extends Action {
         sb.append("   <br>\n");
         sb.append("   郵遞區號︰").append(request.getParameter("zip")).append("\n");
         sb.append("   <br>\n");
-        sb.append("   地址︰").append(request.getParameter("address")).append("\n");
+        sb.append("   地址︰").append(request.getParameter("address"));
+        if (StringUtils.isNotBlank(request.getParameter("addressList"))) {
+          sb.append("-").append(request.getParameter("addressList"));
+        }
+        sb.append("\n");
         sb.append("   <br>\n");
         sb.append("   E-mail︰").append(request.getParameter("email")).append("\n");
         sb.append("   <br>\n");
@@ -221,6 +236,9 @@ public class OrderSendAction extends Action {
         sb.append("   <br>\n");
         sb.append("   轉出帳號後5碼︰").append(request.getParameter("exportId")).append("\n");
         sb.append("   <br>\n");
+        if (StringUtils.isNotBlank(request.getParameter("deTime"))) {
+          sb.append("   希望送達時段︰").append(request.getParameter("deTime"));
+        }
         sb.append("   備註︰\n");
         sb.append("   <br>\n");
         sb.append("   ").append(request.getParameter("desc")).append("\n");
@@ -266,7 +284,8 @@ public class OrderSendAction extends Action {
         session.removeAttribute("itemSeq");
         session.removeAttribute(sellsNo);
         request.setAttribute("name", request.getParameter("name"));
-        request.setAttribute("name", request.getParameter("name"));
+        request.setAttribute("deTime", StringUtils.defaultString(request.getParameter("deTime")));
+        request.setAttribute("addressList", StringUtils.defaultString(request.getParameter("addressList")));
         request.setAttribute("zip", request.getParameter("zip"));
         request.setAttribute("address", request.getParameter("address"));
         request.setAttribute("email", request.getParameter("email"));
@@ -280,7 +299,11 @@ public class OrderSendAction extends Action {
         request.setAttribute("orderItem", request.getParameter("orderItem"));
         
         request.setAttribute("sells", sells);
-        return mapping.findForward("success");
+        if (sellsNo.equals("S0000000135")) {
+          return mapping.findForward("successMagicshop");
+        } else {
+          return mapping.findForward("success");
+        }
       } else {
         String checksum = DigestUtils.md5Hex(sells.getStoreId()+
             String.valueOf(Integer.parseInt(orders.getOrderNo()))+
