@@ -17,14 +17,14 @@
   <StrutsActivity path="/help1.do" location="2358,2444" dimension="270,88" />
   <StrutsActivity path="/carCode2.do" location="2326,2162" dimension="298,88" />
   <StrutsActivity path="/carCode3.do" location="0,2444" dimension="298,88" />
-  <StrutsActivity path="/shopcar.do" location="321,1034" dimension="286,88" />
-  <StrutsActivity path="/order.do" location="2139,1034" dimension="270,88" />
+  <StrutsActivity path="/shopcar.do" location="1798,752" dimension="286,88" />
+  <StrutsActivity path="/order.do" location="2344,1034" dimension="270,88" />
   <StrutsActivity path="/orderSend.do" location="889,1316" dimension="302,88" />
   <StrutsActivity path="/carCode5.do" location="343,2444" dimension="298,88" />
-  <StrutsActivity path="/loginMember.do" location="924,1034" dimension="373,88" />
+  <StrutsActivity path="/loginMember.do" location="1129,1034" dimension="373,88" />
   <StrutsActivity path="/saveMember.do" location="252,0" dimension="368,88" />
   <StrutsActivity path="/qrpwdMember.do" location="1284,1880" dimension="380,88" />
-  <StrutsActivity path="/funcMember.do" location="1749,752" dimension="365,88" />
+  <StrutsActivity path="/funcMember.do" location="399,1034" dimension="365,88" />
   <StrutsActivity path="/memSessionEx.do" location="0,1316" dimension="383,88" />
   <StrutsActivity path="/infoMember.do" location="1948,1316" dimension="362,88" />
   <StrutsActivity path="/joinMemberOk.do" location="0,188" dimension="382,88" />
@@ -48,7 +48,7 @@
   <StrutsActivity path="/contactSellsInput.do" location="1819,1598" dimension="400,88" />
   <StrutsActivity path="/contactSellsSend.do" location="2264,1598" dimension="400,88" />
   <StrutsActivity path="/logoutMember.do" location="856,1880" dimension="383,88" />
-  <StrutsActivity path="/loginMemberSess.do" location="1397,1034" dimension="403,88" />
+  <StrutsActivity path="/loginMemberSess.do" location="1602,1034" dimension="403,88" />
   <StrutsActivity path="/carCode6.do" location="686,2444" dimension="298,88" />
   <StrutsActivity path="/paymentFeedback.do" location="1239,2162" dimension="348,88" />
   <StrutsActivity path="/paymentReceive.do" location="157,752" dimension="336,88" />
@@ -76,23 +76,23 @@
   <StrutsActivity path="/helpOk1.jsp" location="2435,2632" dimension="115,49" />
   <StrutsActivity path="/carCode2.jsp" location="2412,2350" dimension="125,49" />
   <StrutsActivity path="/carCode3.jsp" location="86,2632" dimension="125,49" />
-  <StrutsActivity path="/shopCarTofu.jsp" location="0,1222" dimension="147,49" />
-  <StrutsActivity path="/shopCarMagicshop.jsp" location="247,1222" dimension="182,49" />
-  <StrutsActivity path="/shopCar2.jsp" location="529,1222" dimension="125,49" />
-  <StrutsActivity path="/shopCar1.jsp" location="754,1222" dimension="125,49" />
-  <StrutsActivity path="/orderTofu.jsp" location="1845,1222" dimension="128,49" />
-  <StrutsActivity path="/orderMagicshop.jsp" location="2073,1222" dimension="163,49" />
-  <StrutsActivity path="/orderErr.jsp" location="2336,1222" dimension="116,49" />
-  <StrutsActivity path="/order.jsp" location="2552,1222" dimension="98,49" />
+  <StrutsActivity path="/shopCarTofu.jsp" location="1350,940" dimension="147,49" />
+  <StrutsActivity path="/shopCarMagicshop.jsp" location="1597,940" dimension="182,49" />
+  <StrutsActivity path="/shopCar2.jsp" location="1879,940" dimension="125,49" />
+  <StrutsActivity path="/shopCar1.jsp" location="2104,940" dimension="125,49" />
+  <StrutsActivity path="/orderTofu.jsp" location="2050,1222" dimension="128,49" />
+  <StrutsActivity path="/orderMagicshop.jsp" location="2278,1222" dimension="163,49" />
+  <StrutsActivity path="/orderErr.jsp" location="2541,1222" dimension="116,49" />
+  <StrutsActivity path="/order.jsp" location="2757,1222" dimension="98,49" />
   <StrutsActivity path="/orderSend.jsp" location="735,1504" dimension="130,49" />
   <StrutsActivity path="/paymentSend.jsp" location="965,1504" dimension="150,49" />
   <StrutsActivity path="/carCode5.jsp" location="429,2632" dimension="125,49" />
-  <StrutsActivity path="/member/funcMember.jsp" location="1256,1222" dimension="197,49" />
+  <StrutsActivity path="/member/funcMember.jsp" location="1461,1222" dimension="197,49" />
   <StrutsActivity path="/member/pwdMemberResult.jsp" location="1356,2068" dimension="235,49" />
-  <StrutsActivity path="/member/loginMember.jsp" location="1350,940" dimension="198,49" />
-  <StrutsActivity path="/member/loginMemberSession.jsp" location="1648,940" dimension="247,49" />
-  <StrutsActivity path="/member/pwdMember.jsp" location="1995,940" dimension="196,49" />
-  <StrutsActivity path="/member/join.jsp" location="2291,940" dimension="143,49" />
+  <StrutsActivity path="/member/loginMember.jsp" location="0,1222" dimension="198,49" />
+  <StrutsActivity path="/member/loginMemberSession.jsp" location="298,1222" dimension="247,49" />
+  <StrutsActivity path="/member/pwdMember.jsp" location="645,1222" dimension="196,49" />
+  <StrutsActivity path="/member/join.jsp" location="941,1222" dimension="143,49" />
   <StrutsActivity path="/member/sessionLost.jsp" location="291,1504" dimension="196,49" />
   <StrutsActivity path="/member/infoC.jsp" location="1918,1504" dimension="154,49" />
   <StrutsActivity path="/member/infoPassC.jsp" location="2172,1504" dimension="184,49" />
@@ -131,6 +131,7 @@
   <StrutsActivity path="/globalFailc.jsp" location="1132,2901" dimension="129,49" />
   <StrutsActivity path="/sessionLosta.jsp" location="545,2901" dimension="148,49" />
   <StrutsActivity path="/orderSendMagic.jsp" location="1215,1504" dimension="165,49" />
+  <StrutsActivity path="/shopCarLulusling.jsp" location="2329,940" dimension="173,49" />
   <StrutsTransition id="/sellOrderMessageInput.do,success,/orderMessInput.jsp,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="207,1686" />
@@ -139,10 +140,10 @@
   </StrutsTransition>
   <StrutsTransition id="/order.do,successTofu,/orderTofu.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="2173,1122" />
-      <AbsolutePoint location="2173,1157" />
-      <AbsolutePoint location="1909,1157" />
-      <AbsolutePoint location="1909,1222" />
+      <AbsolutePoint location="2378,1122" />
+      <AbsolutePoint location="2378,1157" />
+      <AbsolutePoint location="2114,1157" />
+      <AbsolutePoint location="2114,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="error1;6,null,/globalFailb.jsp,1" routingType="0">
@@ -159,10 +160,10 @@
   </StrutsTransition>
   <StrutsTransition id="/loginMember.do,success,/member/funcMember.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1110,1122" />
-      <AbsolutePoint location="1110,1172" />
-      <AbsolutePoint location="1305,1172" />
-      <AbsolutePoint location="1305,1222" />
+      <AbsolutePoint location="1315,1122" />
+      <AbsolutePoint location="1315,1172" />
+      <AbsolutePoint location="1510,1172" />
+      <AbsolutePoint location="1510,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/qrpwdMember.do,success,/member/pwdMemberResult.jsp,1" routingType="0">
@@ -244,10 +245,10 @@
   </StrutsTransition>
   <StrutsTransition id="/funcMember.do,successLoginSession,/member/loginMemberSession.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1886,840" />
-      <AbsolutePoint location="1886,905" />
-      <AbsolutePoint location="1771,905" />
-      <AbsolutePoint location="1771,940" />
+      <AbsolutePoint location="536,1122" />
+      <AbsolutePoint location="536,1187" />
+      <AbsolutePoint location="421,1187" />
+      <AbsolutePoint location="421,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="error3;6,null,/globalFailc.jsp,1" routingType="0">
@@ -380,10 +381,10 @@
   </StrutsTransition>
   <StrutsTransition id="/shopcar.do,successTofu,/shopCarTofu.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="357,1122" />
-      <AbsolutePoint location="357,1157" />
-      <AbsolutePoint location="73,1157" />
-      <AbsolutePoint location="73,1222" />
+      <AbsolutePoint location="1827,840" />
+      <AbsolutePoint location="1827,875" />
+      <AbsolutePoint location="1423,875" />
+      <AbsolutePoint location="1423,940" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/sellModi.do,success,/update.jsp,1" routingType="0">
@@ -396,10 +397,10 @@
   </StrutsTransition>
   <StrutsTransition id="/loginMemberSess.do,success,/member/funcMember.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1598,1122" />
-      <AbsolutePoint location="1598,1172" />
-      <AbsolutePoint location="1403,1172" />
-      <AbsolutePoint location="1403,1222" />
+      <AbsolutePoint location="1803,1122" />
+      <AbsolutePoint location="1803,1172" />
+      <AbsolutePoint location="1608,1172" />
+      <AbsolutePoint location="1608,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/logoutMember.do,success,/member/logout.jsp,1" routingType="0">
@@ -410,10 +411,8 @@
   </StrutsTransition>
   <StrutsTransition id="/shopcar.do,success2,/shopCar2.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="500,1122" />
-      <AbsolutePoint location="500,1187" />
-      <AbsolutePoint location="591,1187" />
-      <AbsolutePoint location="591,1222" />
+      <AbsolutePoint location="1941,840" />
+      <AbsolutePoint location="1941,940" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/sellList.do,success,/sellList.jsp,1" routingType="0">
@@ -512,10 +511,10 @@
   </StrutsTransition>
   <StrutsTransition id="/shopcar.do,success,/shopCar1.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="572,1122" />
-      <AbsolutePoint location="572,1157" />
-      <AbsolutePoint location="816,1157" />
-      <AbsolutePoint location="816,1222" />
+      <AbsolutePoint location="1998,840" />
+      <AbsolutePoint location="1998,905" />
+      <AbsolutePoint location="2166,905" />
+      <AbsolutePoint location="2166,940" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/saveMember.do,successJoin,/joinMemberOk.do,1" routingType="0">
@@ -536,10 +535,10 @@
   </StrutsTransition>
   <StrutsTransition id="/funcMember.do,successQrpwd,/member/pwdMember.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1977,840" />
-      <AbsolutePoint location="1977,905" />
-      <AbsolutePoint location="2093,905" />
-      <AbsolutePoint location="2093,940" />
+      <AbsolutePoint location="627,1122" />
+      <AbsolutePoint location="627,1187" />
+      <AbsolutePoint location="743,1187" />
+      <AbsolutePoint location="743,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/orderSend.do,payment,/paymentSend.jsp,1" routingType="0">
@@ -568,18 +567,18 @@
   </StrutsTransition>
   <StrutsTransition id="/order.do,error,/orderErr.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="2308,1122" />
-      <AbsolutePoint location="2308,1187" />
-      <AbsolutePoint location="2394,1187" />
-      <AbsolutePoint location="2394,1222" />
+      <AbsolutePoint location="2513,1122" />
+      <AbsolutePoint location="2513,1187" />
+      <AbsolutePoint location="2599,1187" />
+      <AbsolutePoint location="2599,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/funcMember.do,successLogin,/member/loginMember.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1795,840" />
-      <AbsolutePoint location="1795,875" />
-      <AbsolutePoint location="1449,875" />
-      <AbsolutePoint location="1449,940" />
+      <AbsolutePoint location="445,1122" />
+      <AbsolutePoint location="445,1157" />
+      <AbsolutePoint location="99,1157" />
+      <AbsolutePoint location="99,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/carCode1.do,success,/carCode1.jsp,1" routingType="0">
@@ -600,20 +599,28 @@
       <AbsolutePoint location="191,376" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="/shopcar.do,successLulusling,/shopCarLulusling.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2055,840" />
+      <AbsolutePoint location="2055,875" />
+      <AbsolutePoint location="2415,875" />
+      <AbsolutePoint location="2415,940" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="/order.do,successMagicshop,/orderMagicshop.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="2240,1122" />
-      <AbsolutePoint location="2240,1187" />
-      <AbsolutePoint location="2154,1187" />
-      <AbsolutePoint location="2154,1222" />
+      <AbsolutePoint location="2445,1122" />
+      <AbsolutePoint location="2445,1187" />
+      <AbsolutePoint location="2359,1187" />
+      <AbsolutePoint location="2359,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/order.do,success,/order.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="2375,1122" />
-      <AbsolutePoint location="2375,1157" />
-      <AbsolutePoint location="2601,1157" />
-      <AbsolutePoint location="2601,1222" />
+      <AbsolutePoint location="2580,1122" />
+      <AbsolutePoint location="2580,1157" />
+      <AbsolutePoint location="2806,1157" />
+      <AbsolutePoint location="2806,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/help1.do,success,/helpOk1.jsp,1" routingType="0">
@@ -624,10 +631,10 @@
   </StrutsTransition>
   <StrutsTransition id="/shopcar.do,successMagicshop,/shopCarMagicshop.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="429,1122" />
-      <AbsolutePoint location="429,1187" />
-      <AbsolutePoint location="338,1187" />
-      <AbsolutePoint location="338,1222" />
+      <AbsolutePoint location="1884,840" />
+      <AbsolutePoint location="1884,905" />
+      <AbsolutePoint location="1688,905" />
+      <AbsolutePoint location="1688,940" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/carCode2.do,success,/carCode2.jsp,1" routingType="0">
@@ -650,10 +657,10 @@
   </StrutsTransition>
   <StrutsTransition id="/funcMember.do,success,/member/join.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="2069,840" />
-      <AbsolutePoint location="2069,875" />
-      <AbsolutePoint location="2362,875" />
-      <AbsolutePoint location="2362,940" />
+      <AbsolutePoint location="719,1122" />
+      <AbsolutePoint location="719,1157" />
+      <AbsolutePoint location="1012,1157" />
+      <AbsolutePoint location="1012,1222" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/memberQuery3.do,success,/memberQ3.jsp,1" routingType="0">

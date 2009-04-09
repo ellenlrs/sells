@@ -84,6 +84,7 @@
       <forward name="success2" path="/shopCar2.jsp" />
       <forward name="success" path="/shopCar1.jsp" />
       <forward name="successMagicshop" path="/shopCarMagicshop.jsp" />
+      <forward name="successLulusling" path="/shopCarLulusling.jsp" />
     </action>
     <action path="/order" type="com.sells.struts.action.OrderAction">
       <forward name="success" path="/order.jsp" />
