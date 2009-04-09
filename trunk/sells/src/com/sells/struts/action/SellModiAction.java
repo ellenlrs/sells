@@ -111,12 +111,10 @@ public class SellModiAction extends Action {
         sells.setPayTypeHilife(StringUtils.defaultString(request.getParameter("payTypeHilife"),"0"));
         sells.setPayTypeNobook(StringUtils.defaultString(request.getParameter("payTypeNobook"),"0"));
         
-        sells.setStoreId(StringUtils.defaultString(request.getParameter("storeId")));
-        sells.setFeedbackCode(StringUtils.defaultString(request.getParameter("feedbackCode")));
-        sells.setSendCode(StringUtils.defaultString(request.getParameter("sendCode")));
         sells.setFeedbackCode(StringUtils.defaultString(request.getParameter("feedbackCode"),""));
         sells.setSendCode(StringUtils.defaultString(request.getParameter("sendCode"),""));
         sells.setStoreId(StringUtils.defaultString(request.getParameter("storeId"),""));
+        
         sellsService.updateSells(sells);
         session.setAttribute("sells", sells) ;
         session.setAttribute("loginvo", loginvo) ;
