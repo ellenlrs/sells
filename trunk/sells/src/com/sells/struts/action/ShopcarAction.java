@@ -275,6 +275,8 @@ public class ShopcarAction extends Action {
         } else {
           if (sellsNo.equals("S0000000135")) {
             return mapping.findForward("successMagicshop");
+          } else if (sellsNo.equals("S0000000136")) {
+            return mapping.findForward("successLulusling");
           } else {
             return mapping.findForward("success");
           }
@@ -290,6 +292,8 @@ public class ShopcarAction extends Action {
         } else {
           if (sellsNo.equals("S0000000135")) {
             return mapping.findForward("successMagicshop");
+          } else if (sellsNo.equals("S0000000136")) {
+            return mapping.findForward("successLulusling");
           } else {
             return mapping.findForward("success");
           }
