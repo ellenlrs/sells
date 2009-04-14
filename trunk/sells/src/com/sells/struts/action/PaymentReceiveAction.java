@@ -153,7 +153,7 @@ public class PaymentReceiveAction extends Action {
           }
           items.append("<BR>運費金額:").append(vo.getFreightfar()).append("元<BR>");
 //          items.append("<BR>貨到付款金額:").append(vo.getProcess()).append("元<BR>");
-          items.append("<BR>商品金額:").append(vo.getFreightfar()).append("元<BR>");
+          items.append("<BR>商品金額:").append(vo.getAmt()).append("元<BR>");
           items.append("<BR>購物總金額:").append(vo.getFreightfar()+vo.getAmt()+vo.getProcess()).append("元<BR>");
           //發Mail
           sb.setLength(0);
