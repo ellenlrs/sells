@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
@@ -21,6 +22,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.sells.common.util.EcServer;
 import com.sells.dao.LoginData;
 import com.sells.dao.Sells;
@@ -125,10 +127,12 @@ public class CarCode3Action extends Action {
                   saveErrors(request, errors);
                   return mapping.findForward("error1");
                 }
-                if ( NumberUtils.createInteger(item[4]) <= 0) {
-                  errors.add("errMsg", new ActionError("alert.Error", "商品價格 需要大於 0 !"));
-                  saveErrors(request, errors);
-                  return mapping.findForward("error1");
+                if (!sells.getSellsNo().equals("S0000000136")) {
+                  if ( NumberUtils.createInteger(item[4]) <= 0) {
+                    errors.add("errMsg", new ActionError("alert.Error", "商品價格 需要大於 0 !"));
+                    saveErrors(request, errors);
+                    return mapping.findForward("error1");
+                  }
                 }
                 sb.append("&qty=1&sells=").append(sells.getSellsNo()).append("' ");
                 if (StringUtils.defaultString(request.getParameter("target")).equals("_blank") ) {
@@ -170,10 +174,12 @@ public class CarCode3Action extends Action {
                   saveErrors(request, errors);
                   return mapping.findForward("error1");
                 }
-                if ( NumberUtils.createInteger(item[4]) <= 0) {
-                  errors.add("errMsg", new ActionError("alert.Error", "商品價格 需要大於 0 !"));
-                  saveErrors(request, errors);
-                  return mapping.findForward("error1");
+                if (!sells.getSellsNo().equals("S0000000136")) {
+                  if ( NumberUtils.createInteger(item[4]) <= 0) {
+                    errors.add("errMsg", new ActionError("alert.Error", "商品價格 需要大於 0 !"));
+                    saveErrors(request, errors);
+                    return mapping.findForward("error1");
+                  }
                 }
               }
               if ( StringUtils.defaultString(request.getParameter("carImg")).equals("text")) {
