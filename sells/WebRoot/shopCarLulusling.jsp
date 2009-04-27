@@ -155,7 +155,7 @@ body {
           <td height="28" colspan=6 align="center" bgcolor=#ffffff>
             <input name="b121" type=button onClick="gotoPage('order')" value="直接結帳" class="button">
             <input name="b122" onClick="history.go(-1)" value="繼續購物" type="button" class="button">
-            <input name="b123" onClick="goHome();'" value="返回首頁" type="button" class="button">
+            <input name="b123" onClick="goHome();" value="返回首頁" type="button" class="button">
             <INPUT name="b1" type=button onClick="gotoPage('REMOVEALL')" value="清空購物車" class="button">
 <input type="hidden" name="member" value="0"></td>
         </tr>
