@@ -157,7 +157,7 @@ function checkForm(formObj){
           <td height="28" colspan=6 bgcolor=#ffffff> 若您結帳時選擇<span class="style1">貨到付款</span>將加收物流處理費︰${requestScope.sells.process}元 </td>
         </tr>
 		</c:if>
-		<c:if test="${requestScope.sells.freightTp == '0'}">
+		<c:if test="${requestScope.sells.freightTp == '0'}"><!--一律收運費-->
         <tr>
           <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元<input type=hidden name=freight value='${requestScope.sells.freightFare}'> </td>
         </tr>
@@ -165,7 +165,7 @@ function checkForm(formObj){
           <td height="28" colspan=6 class="tb2">購物總金額為︰${total + requestScope.sells.freightFare}元 (含運費)</td>
         </tr>
 		</c:if>
-		<c:if test="${requestScope.sells.freightTp == '1'}"><!--價格-->
+		<c:if test="${requestScope.sells.freightTp == '1'}"><!--價格&貨到付款-->
         <tr>
           <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元 <span class="style1"><br>
             （當消費金額超過 ${requestScope.sells.nofreightFare}元，享有免運費服務
@@ -174,11 +174,11 @@ function checkForm(formObj){
         <tr>
           <td height="28" colspan=6 class="tb2">
 		  購物總金額為︰
-		  <c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (已含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
-		  <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
+		  <c:if test="${total < requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (已含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
+		  <c:if test="${total >= requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
         </tr>
 		</c:if>
-		<c:if test="${requestScope.sells.freightTp == '2'}"><!--數量-->
+		<c:if test="${requestScope.sells.freightTp == '2'}"><!--數量&貨到付款-->
         <tr>
           <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元<span class="style1"><br>
             （當數量超過 ${requestScope.sells.nofreightQty}件，享有免運費服務
@@ -187,8 +187,8 @@ function checkForm(formObj){
         <tr>
           <td height="28" colspan=6 class="tb2">
 		  購物總金額為
-		  <c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (內含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
-		  <c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
+		  <c:if test="${totQty < requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (內含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
+		  <c:if test="${totQty >= requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
 		  </td>
         </tr>
 		</c:if>
@@ -200,8 +200,8 @@ function checkForm(formObj){
         <tr>
           <td height="28" colspan=6 class="tb2">
       購物總金額為︰
-      <c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (已含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
-      <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
+      <c:if test="${total < requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (已含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
+      <c:if test="${total >= requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
         </tr>
     </c:if>
 		<c:if test="${requestScope.sells.freightTp == '4'}"><!--數量，貨到付款一律收取-->
@@ -212,9 +212,9 @@ function checkForm(formObj){
         <tr>
           <td height="28" colspan=6 class="tb2">
       購物總金額為
-      <c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (內含運費)
+      <c:if test="${totQty < requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (內含運費)
       <input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
-      <c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
+      <c:if test="${totQty >= requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
       </td>
         </tr>
     </c:if>
@@ -229,19 +229,19 @@ ${item.itemNo}  ${item.itemNm}<c:if test="${item.spec1 != '' || item.spec2 != ''
 <c:if test="${requestScope.sells.freightTp == '0'}">
 ${total+requestScope.sells.freightFare}元 (含運費) <BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if>
 </c:if><c:if test="${requestScope.sells.freightTp == '1'}">
-<c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (含運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<BR></c:if>
+<c:if test="${total < requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (含運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
+<c:if test="${total >= requestScope.sells.nofreightFare}">${total}元 (免運費)<BR></c:if>
 </c:if><c:if test="${requestScope.sells.freightTp == '2'}">
-<c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (含運費)<BR>
+<c:if test="${totQty < requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (含運費)<BR>
 <c:if test="${requestScope.sells.process > '0'}">若您選擇的付款方式：貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<BR></c:if></c:if>
+<c:if test="${totQty >=requestScope.sells.nofreightQty}">${total}元 (免運費)<BR></c:if></c:if>
 <c:if test="${requestScope.sells.freightTp == '3'}">
-<c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (含運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.process}元 (含貨到付款物流處理費) <BR></c:if></c:if>
+<c:if test="${total < requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (含運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
+<c:if test="${total >= requestScope.sells.nofreightFare}">${total}元 (免運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.process}元 (含貨到付款物流處理費) <BR></c:if></c:if>
 </c:if><c:if test="${requestScope.sells.freightTp == '4'}">
-<c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (含運費)<BR>
+<c:if test="${totQty < requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (含運費)<BR>
 <c:if test="${requestScope.sells.process > '0'}">若您選擇的付款方式：貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.process}元 (含貨到付款物流處理費) <BR></c:if></c:if></c:if>
+<c:if test="${totQty >=requestScope.sells.nofreightQty}">${total}元 (免運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.process}元 (含貨到付款物流處理費) <BR></c:if></c:if></c:if>
 </textarea>
   </td>
     </tr>
@@ -319,17 +319,17 @@ ${total+requestScope.sells.freightFare}元 (含運費) <BR><c:if test="${request
 	  <option value='貨到付款-需加收處理費：${requestScope.sells.process}元'>貨到付款-需加收處理費:${requestScope.sells.process}元</option>
 	  			</c:when>
 		   		<c:when test="${requestScope.sells.freightTp == '1'}">
-				  <c:if test="${total <= requestScope.sells.nofreightFare}">
+				  <c:if test="${total < requestScope.sells.nofreightFare}">
 	  <option value='貨到付款-需加收處理費：${requestScope.sells.process}元'>貨到付款-需加收處理費:${requestScope.sells.process}元</option>
 				  </c:if>
-				  <c:if test="${total > requestScope.sells.nofreightFare}">
+				  <c:if test="${total >= requestScope.sells.nofreightFare}">
 				  <option value='貨到付款'>貨到付款</option>
 				  </c:if>
 				</c:when>
 		   		<c:when test="${requestScope.sells.freightTp == '2'}">
-				  <c:if test="${totQty <= requestScope.sells.nofreightQty}">
+				  <c:if test="${totQty < requestScope.sells.nofreightQty}">
 	  <option value='貨到付款-需加收處理費：${requestScope.sells.process}元'>貨到付款-需加收處理費:${requestScope.sells.process}元</option>				  </c:if>
-				  <c:if test="${totQty > requestScope.sells.nofreightQty}">
+				  <c:if test="${totQty >= requestScope.sells.nofreightQty}">
 				  <option value='貨到付款'>貨到付款</option>
 				  </c:if>
 				</c:when>
@@ -356,18 +356,17 @@ ${total+requestScope.sells.freightFare}元 (含運費) <BR><c:if test="${request
     <input type=hidden name=process value='${requestScope.sells.process}'>
           </c:when>
           <c:when test="${requestScope.sells.freightTp == '1'}">
-          <c:if test="${total <= requestScope.sells.nofreightFare}">
+          <c:if test="${total < requestScope.sells.nofreightFare}">
     <input type=hidden name=process value='${requestScope.sells.process}'>
           </c:if>
-          <c:if test="${total > requestScope.sells.nofreightFare}">
+          <c:if test="${total >= requestScope.sells.nofreightFare}">
           <input type=hidden name=process value='0'>
-          <option value='貨到付款'>貨到付款</option>
           </c:if>
         </c:when>
           <c:when test="${requestScope.sells.freightTp == '2'}">
-          <c:if test="${totQty <= requestScope.sells.nofreightQty}">
+          <c:if test="${totQty < requestScope.sells.nofreightQty}">
     <input type=hidden name=process value='${requestScope.sells.process}'></c:if>
-          <c:if test="${totQty > requestScope.sells.nofreightQty}">
+          <c:if test="${totQty >= requestScope.sells.nofreightQty}">
           <input type=hidden name=process value='0'>
           </c:if>
         </c:when>
