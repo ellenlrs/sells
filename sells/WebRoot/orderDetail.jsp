@@ -35,6 +35,7 @@
           <select name="orderSt">
             <option ${orders.orderSt == '00'?'selected':'' } value="00" >未處理</option>
             <option ${orders.orderSt == '10'?'selected':'' } value="10">出貨</option>
+            <option ${orders.orderSt == '20'?'selected':'' } value="20">匯款已收到</option>
             <option ${orders.orderSt == '99'?'selected':'' } value="99">取消</option>
             <option ${orders.orderSt == '80'?'selected':'' } value="80">線上付款未完成</option>
             <option ${orders.orderSt == '85'?'selected':'' } value="85">線上付款成功</option>
