@@ -68,8 +68,9 @@ function customRange(input) {
               <td align="left" class="style5">狀態</td>
               <td align="left" class="style5"><select name="orderSt">
 			    <option ${sessionScope._SEARCH.orderSt == ''?'selected':'' } value="" >全部</option>
-                <option ${sessionScope._SEARCH.orderSt == '00'?'selected':'' } value="00" >未處理</option>
+                <option ${sessionScope._SEARCH.orderSt == '00'?'selected':'' } value="00" >處理中</option>
                 <option ${sessionScope._SEARCH.orderSt == '10'?'selected':'' } value="10">出貨</option>
+                <option ${sessionScope._SEARCH.orderSt == '20'?'selected':'' } value="20">匯款已收到</option>
                 <option ${sessionScope._SEARCH.orderSt == '99'?'selected':'' } value="99">取消</option>
             <option ${sessionScope._SEARCH.orderSt == '80'?'selected':'' } value="80">線上付款未完成</option>
             <option ${sessionScope._SEARCH.orderSt == '85'?'selected':'' } value="85">線上付款成功</option>
