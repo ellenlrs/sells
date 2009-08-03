@@ -33,7 +33,7 @@
           <td width="25%" valign="middle" bgcolor="#FFFFFF" class="style1">目前訂購狀態：<img src="images/st${orders.orderSt}.gif" border="0" align="absmiddle"></td>
           <td width="51%" valign="middle" bgcolor="#FFFFFF" class="style1">新訂單狀態：<span class="style5">
           <select name="orderSt">
-            <option ${orders.orderSt == '00'?'selected':'' } value="00" >未處理</option>
+            <option ${orders.orderSt == '00'?'selected':'' } value="00" >處理中</option>
             <option ${orders.orderSt == '10'?'selected':'' } value="10">出貨</option>
             <option ${orders.orderSt == '20'?'selected':'' } value="20">匯款已收到</option>
             <option ${orders.orderSt == '99'?'selected':'' } value="99">取消</option>
