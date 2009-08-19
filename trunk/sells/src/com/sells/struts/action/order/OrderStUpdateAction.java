@@ -79,7 +79,7 @@ public class OrderStUpdateAction extends Action {
       vo.setOrderSt(StringUtils.defaultString(request.getParameter("orderSt")));
       vo.setLogisticDesc(StringUtils.substring(request.getParameter("logisticDesc"),0,150));
       if ( sellsService.updateOrders(vo)) {
-        if (vo.getOrderSt().equals("10")) { //代表出貨
+        if (vo.getOrderSt().equals("10") || vo.getOrderSt().equals("20")) { //代表出貨 或 匯款已收到
           StringBuffer sb = new StringBuffer();
           sb.append("<html>\n");
           sb.append("<head>\n");
@@ -89,7 +89,12 @@ public class OrderStUpdateAction extends Action {
           sb.append("<body >\n");
           sb.append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
           sb.append("  <tr>\n");
-          sb.append("    <td colspan=\"2\" align=\"center\" bgcolor=\"#F5F5F5\" ><font size=\"2\">").append(sells.getStoreNm()).append("訂單出貨通知</font></td>\n");
+          sb.append("    <td colspan=\"2\" align=\"center\" bgcolor=\"#F5F5F5\" ><font size=\"2\">").append(sells.getStoreNm());
+          if (vo.getOrderSt().equals("10")) {
+            sb.append("訂單出貨通知</font></td>\n");
+          } else {
+            sb.append("匯款已收到</font></td>\n");
+          }
           sb.append("  </tr>\n");
           sb.append("  <tr>\n");
           sb.append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">訂單編號：</font></td>\n");
