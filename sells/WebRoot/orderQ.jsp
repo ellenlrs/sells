@@ -114,6 +114,7 @@ function customRange(input) {
             <td align="center" bgcolor="#FFFFFF" class="style5" >付款方式</td>
             <td align="center" bgcolor="#FFFFFF" class="style5" >狀態 </td>
             <td align="center" bgcolor="#FFFFFF" class="style5" >留言</td>
+            <td align="center" bgcolor="#FFFFFF" class="style5" >留言</td>
           </tr>
           <logic:iterate id="item" name="mainlist">
             <tr >
@@ -124,6 +125,7 @@ function customRange(input) {
               <td align="center" bgcolor="#FFFFFF" class="style5"> ${item.payTp} </td>
               <td align="center" bgcolor="#FFFFFF" class="style5"> <img src="images/st${item.orderSt}.gif" border="0"> </td>
               <td align="center" bgcolor="#FFFFFF" class="style5"><a href="javascript:msg('${item.orderNo}');" ><img src="images/msg.jpg" width="36" height="35" title='留言管理' border="0"></a></td>
+              <td align="center" bgcolor="#FFFFFF" class="style5"><a href="javascript:orderPP('${item.orderNo}');"><img src="images/print.png" title='列印' border="0"></a></td>              
             </tr>
           </logic:iterate>
 		  <tr >
@@ -147,6 +149,12 @@ function orderDetial(orderNo){
   var winName = "update" ;
   var features = "width=800, height=600,resizable=no,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no,left=50,top=50";
   var theURL = "sellOrderDetail.do?orderNo="+orderNo;
+  window.open(theURL,winName,features);
+}
+function orderPP(orderNo){
+  var winName = "update" ;
+  var features = "width=800, height=600,resizable=no,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no,left=50,top=50";
+  var theURL = "sellOrderPrint.do?orderNo="+orderNo;
   window.open(theURL,winName,features);
 }
 </script>

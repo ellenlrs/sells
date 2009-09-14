@@ -144,6 +144,17 @@ V. 其他回應可能為所帶參數不正確，請查照交易狀態回覆碼�
         <tr>
           <td height="28" colspan=6 bgcolor=#FFFFFF class="style3">商品金額︰${total}元</td>
         </tr>
+	      <tr>
+          <td height="28" colspan=6 bgcolor="#FFFFFF" class="style3" >運費：${orders.freightfar} </td>
+          <c:set var="total" scope="request" value="${total + orders.freightfar}"/>
+          <c:set var="total" scope="request" value="${total + orders.process}"/>
+        </tr>
+	      <tr>
+          <td height="28" colspan=6 bgcolor="#FFFFFF" class="style3" >貨到付款：${orders.process} </td>
+        </tr>
+        <tr>
+          <td height="28" colspan=6 bgcolor="#FFFFFF" class="style3" >購物總金額：${total} </td>
+        </tr>
 		</table>
 	  <span class="style5"><br>
 	  訂購人資料</span>
