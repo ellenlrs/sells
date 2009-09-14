@@ -237,6 +237,10 @@
       <forward name="success" path="/paymentOk.jsp" />
       <forward name="fail-check" path="/paymentErrCheck.jsp" />
     </action>
+    <action path="/sellOrderPrint" type="com.sells.struts.action.order.SellOrderPrintAction" >
+      <forward name="success" path="/orderPrint.jsp" />
+    </action>
+
 
 
 
