@@ -122,6 +122,7 @@ public class OrderStUpdateAction extends Action {
           mailBean.setSubject(sells.getStoreNm()+ " - "+vo.getOrderNo()+" 出貨通知");
           mailBean.setBody(sb.toString());
           mailBean.setCharset("UTF-8");
+          
           try {
             Mail mail = new Mail(mailBean);
           } catch (Exception e) {
