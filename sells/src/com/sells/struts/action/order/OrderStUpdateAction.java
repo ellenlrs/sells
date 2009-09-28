@@ -4,11 +4,11 @@
  */
 package com.sells.struts.action.order;
 
-import java.util.Collection;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.sells.common.mail.Mail;
 import com.sells.common.mail.MailBean;
 import com.sells.common.util.EcServer;
@@ -119,7 +120,11 @@ public class OrderStUpdateAction extends Action {
           }
           mailBean.setBcc("jinwei.lin@gmail.com");
           mailBean.setMailServer(EcServer.getMailServer());
-          mailBean.setSubject(sells.getStoreNm()+ " - "+vo.getOrderNo()+" 出貨通知");
+          if (vo.getOrderSt().equals("10")) {
+            mailBean.setSubject(sells.getStoreNm()+ " - "+vo.getOrderNo()+" 出貨通知");
+          } else {
+            mailBean.setSubject(sells.getStoreNm()+ " - "+vo.getOrderNo()+" 收到匯款通知");
+          }
           mailBean.setBody(sb.toString());
           mailBean.setCharset("UTF-8");
           
