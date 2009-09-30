@@ -260,7 +260,7 @@ public class OrderSendAction extends Action {
         mailBean.setToName(sells.getStoreNm());
         mailBean.setBcc(admin.getEmail());
         mailBean.setMailServer(EcServer.getMailServer());
-        mailBean.setSubject(sells.getStoreNm()+ " - 訂購通知");
+        mailBean.setSubject(sells.getStoreNm()+ " - 訂購通知:"+orders.getOrderNo());
         mailBean.setBody(sb.toString());
         mailBean.setCharset("UTF-8");
   
@@ -269,7 +269,7 @@ public class OrderSendAction extends Action {
         mailBean2.setFromName(sells.getStoreNm());
         mailBean2.setTo(request.getParameter("email"));
         mailBean2.setMailServer(EcServer.getMailServer());
-        mailBean2.setSubject(sells.getStoreNm()+ " - 訂購通知");
+        mailBean2.setSubject(sells.getStoreNm()+ " - 訂購通知:"+orders.getOrderNo());
         mailBean2.setBody(sb.toString());
         mailBean2.setCharset("UTF-8");
         try {
@@ -309,10 +309,10 @@ public class OrderSendAction extends Action {
             String.valueOf(Integer.parseInt(orders.getOrderNo()))+
             sells.getSendCode()+
             String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
-        log.info("getStoreId:"+sells.getStoreId());
-        log.info("getOrderNo:"+String.valueOf(Integer.parseInt(orders.getOrderNo())));
-        log.info("getSendCode:"+sells.getSendCode());
-        log.info("amt:"+String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
+        //log.info("getStoreId:"+sells.getStoreId());
+        //log.info("getOrderNo:"+String.valueOf(Integer.parseInt(orders.getOrderNo())));
+        //log.info("getSendCode:"+sells.getSendCode());
+        //log.info("amt:"+String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
         request.setAttribute("sslNo", Integer.parseInt(orders.getOrderNo()));
         request.setAttribute("checksum", checksum);
         request.setAttribute("sells", sells);
