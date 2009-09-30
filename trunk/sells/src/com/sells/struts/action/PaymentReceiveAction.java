@@ -216,7 +216,7 @@ public class PaymentReceiveAction extends Action {
           mailBean.setToName(sells.getStoreNm());
           mailBean.setBcc(admin.getEmail());
           mailBean.setMailServer(EcServer.getMailServer());
-          mailBean.setSubject(sells.getStoreNm()+ " - 線上交易完成通知");
+          mailBean.setSubject(sells.getStoreNm()+ " - 線上交易完成通知:"+vo.getOrderNo());
           mailBean.setBody(sb.toString());
           mailBean.setCharset("UTF-8");
     
@@ -225,7 +225,7 @@ public class PaymentReceiveAction extends Action {
           mailBean2.setFromName(sells.getStoreNm());
           mailBean2.setTo(vo.getEmail());
           mailBean2.setMailServer(EcServer.getMailServer());
-          mailBean2.setSubject(sells.getStoreNm()+ " - 線上交易完成通知");
+          mailBean2.setSubject(sells.getStoreNm()+ " - 線上交易完成通知:"+vo.getOrderNo());
           mailBean2.setBody(sb.toString());
           mailBean2.setCharset("UTF-8");
           try {
