@@ -58,7 +58,9 @@ body {
 <table width="670" border="0" align="center" cellspacing="1" class="tb1">
         <tr class="tb2">
           <td width=109 height="28" align="center" bgcolor="#FFFFFF" class="style12">* 帳號(Email)</td>
-          <td width="284" align="left" bgcolor="#FFFFFF" ><input name="email" type="text" id="email" size="30" maxlength="150"></td>
+          <td width="284" align="left" bgcolor="#FFFFFF" ><input name="email" type="text" id="email" size="30" maxlength="150">
+          <BR>
+      <span class="style1">為避免收信阻擋，建議不要使用免費信箱，例如：Yahoo／Hotmail信箱</span></td>
           <td width=119 align="center" bgcolor="#FFFFFF" class="style55">訂閱電子報</td>
           <td width=263 align="left" bgcolor="#FFFFFF" class="style55"><input name="epYn" type="radio" value="Y" checked>
             是
