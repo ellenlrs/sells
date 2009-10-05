@@ -262,12 +262,15 @@ ${total+ requestScope._toIcfare+requestScope._toOtfare}元 (含運費) <BR><c:if
       <td width="83%" bgcolor="#ffffff" ><span class="login-box">郵遞區號</span>
         <input name="zip" type="text" value="${member.zip}" size="7" maxlength="10" >
         <br>
-        <input name="address" type="text" value="${member.address}" size="59" maxlength="100" ></td>
+        <input name="address" type="text" value="${member.address}" size="59" maxlength="100" >
+        </td>
     </tr>
     <tr>
       <td width="17%" height="28" align="center" bgcolor="#ffffff" >
         <b class="style8">*E-mail</b></td>
-      <td width="83%" bgcolor="#ffffff" ><input name="email" type="text" value="${member.email}" size="28" maxlength="130" ></td>
+      <td width="83%" bgcolor="#ffffff" ><input name="email" type="text" value="${member.email}" size="28" maxlength="130" >
+      <BR>
+      <span class="style1">為避免收信阻擋，建議不要使用免費信箱，例如：Yahoo／Hotmail信箱</span></td>
     </tr>
     <tr>
       <td width="17%" height="28" align="center" bgcolor="#ffffff" >

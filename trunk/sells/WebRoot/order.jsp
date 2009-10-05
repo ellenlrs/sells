@@ -271,7 +271,9 @@ ${total+requestScope.sells.freightFare}元 (含運費) <BR><c:if test="${request
     <tr>
       <td width="17%" height="28" align="center" bgcolor="#ffffff" >
         <b class="style8">*E-mail</b></td>
-      <td width="83%" bgcolor="#ffffff" ><input name="email" type="text" value="${member.email}" size="28" maxlength="130" ></td>
+      <td width="83%" bgcolor="#ffffff" ><input name="email" type="text" value="${member.email}" size="28" maxlength="130" >
+      <BR>
+      <span class="style1">為避免收信阻擋，建議不要使用免費信箱，例如：Yahoo／Hotmail信箱</span></td>
     </tr>
     <tr>
       <td width="17%" height="28" align="center" bgcolor="#ffffff" >
