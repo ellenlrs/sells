@@ -173,7 +173,8 @@ function checkForm(formObj){
     </tr>
     <tr>
       <td width="106" align="center" bgcolor="#FFFFFF" class="style5"><b>*E-mail</b></td>
-      <td bgcolor="#FFFFFF" width="397"><html:text property="email"/></td>
+      <td bgcolor="#FFFFFF" width="397"><html:text property="email"/><BR>
+      <span class="style5">為避免收信阻擋，建議不要使用免費信箱，例如：Yahoo／Hotmail信箱</span></td>
     </tr>
     <tr class="style5">
       <td bgcolor="#FFFFFF" align="center" colspan="2"></td>
