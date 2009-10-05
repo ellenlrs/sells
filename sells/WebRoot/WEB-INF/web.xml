@@ -18,7 +18,7 @@
   </context-param>
   <context-param>
     <param-name>mailServer</param-name>
-    <param-value>msa.hinet.net</param-value>
+    <param-value>localhost</param-value>
   </context-param>
   <servlet>
     <servlet-name>action</servlet-name>
