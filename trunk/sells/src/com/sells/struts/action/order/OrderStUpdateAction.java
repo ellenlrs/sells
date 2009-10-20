@@ -85,7 +85,11 @@ public class OrderStUpdateAction extends Action {
           sb.append("<html>\n");
           sb.append("<head>\n");
           sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
-          sb.append("<title>").append(sells.getStoreNm()).append("出貨通知</title>\n");
+          if (vo.getOrderSt().equals("10")) {
+            sb.append("<title>").append(sells.getStoreNm()).append("出貨通知</title>\n");
+          } else {
+            sb.append("<title>").append(sells.getStoreNm()).append("收到匯款通知</title>\n");
+          }
           sb.append("</head>\n");
           sb.append("<body >\n");
           sb.append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
