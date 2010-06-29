@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd"> 
+
+<log4j:configuration debug="true" xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+<appender name="general" class="org.apache.log4j.DailyRollingFileAppender">
+  <param name="File" value="/var/log/tomcat/sells.log"/>
+  <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+  <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{DATE} [%-5p] %c {%F:%L} - %m%n"/>
+  </layout>
+  <filter class="org.apache.log4j.varia.LevelRangeFilter">
+    <param name="LevelMin" value="debug" />
+  </filter>
+</appender>
+<root>
+    <priority value="debug"/>
+    <appender-ref ref="general"/>
+</root>
+</log4j:configuration> 
