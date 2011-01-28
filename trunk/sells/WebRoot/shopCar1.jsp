@@ -171,7 +171,12 @@ body {
             <input name="b122" value="我是 ${sessionScope.icMemNm}；直接登入" type="button" onclick="gotoPageSess('ordermembersess')" class="button">
             </c:if>
             <input name="b1212" type=button onClick="gotoPage('ordermember')" value="登入會員後結帳" class="button">
+            <c:if test="${requestScope.sells.sellsNo == 'S0000000296'}">
+            <input name="b122" onClick="goHome();" value="繼續購物" type="button" class="button">
+            </c:if>
+            <c:if test="${requestScope.sells.sellsNo != 'S0000000296'}">
             <input name="b122" onClick="history.go(-1)" value="繼續購物" type="button" class="button">
+            </c:if>
             <input name="b123" onClick="goHome();" value="返回首頁" type="button" class="button">
             <INPUT name="b1" type=button onClick="gotoPage('REMOVEALL')" value="清空購物車" class="button">
 <input type="hidden" name="member" value="0"></td>
