@@ -29,120 +29,143 @@ import com.sells.dao.LoginData;
 import com.sells.dao.Sells;
 import com.sells.service.imp.SellsService;
 
-/** 
- * MyEclipse Struts
- * Creation date: 02-09-2007
+/**
+ * MyEclipse Struts Creation date: 02-09-2007
  * 
  * XDoclet definition:
+ * 
  * @struts.action validate="true"
  * @struts.action-forward name="success" path="/update.jsp"
  */
 public class SellUpdateAction extends Action {
-  private SellsService sellsService ;
-  private Log log = LogFactory.getLog(SellUpdateAction.class);
+  private SellsService sellsService;
+  private final Log log = LogFactory.getLog(SellUpdateAction.class);
   private ServletContext servletContext;
-  
-  /* (non-Javadoc)
-   * @see org.apache.struts.action.Action#setServlet(org.apache.struts.action.ActionServlet)
-   */
-  public void setServlet(ActionServlet actionServlet) {
-      super.setServlet(actionServlet);
-      servletContext = actionServlet.getServletContext();
-      WebApplicationContext wac = WebApplicationContextUtils
-              .getRequiredWebApplicationContext(servletContext);
-      this.sellsService =  (SellsService) wac.getBean("sellsService");
-  } 
 
-	/** 
-	 * Method execute
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
+  /*
+   * (non-Javadoc)
+   * 
+   * @seeorg.apache.struts.action.Action#setServlet(org.apache.struts.action.
+   * ActionServlet)
+   */
+  @Override
+  public void setServlet(ActionServlet actionServlet) {
+    super.setServlet(actionServlet);
+    servletContext = actionServlet.getServletContext();
+    WebApplicationContext wac = WebApplicationContextUtils
+        .getRequiredWebApplicationContext(servletContext);
+    this.sellsService = (SellsService) wac.getBean("sellsService");
+  }
+
+  /**
+   * Method execute
+   * 
+   * @param mapping
+   * @param form
+   * @param request
+   * @param response
+   * @return ActionForward
+   */
+  @Override
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+      HttpServletRequest request, HttpServletResponse response) {
     ActionErrors errors = new ActionErrors();
-    HttpSession session = request.getSession ();
+    HttpSession session = request.getSession();
     try {
-      Sells sells= (Sells) session.getAttribute("sells") ;
-      LoginData loginvo= (LoginData) session.getAttribute("loginvo") ;
-      if (sells == null ) {
+      Sells sells = (Sells) session.getAttribute("sells");
+      LoginData loginvo = (LoginData) session.getAttribute("loginvo");
+      if (sells == null) {
         return mapping.findForward("sessionLost");
-      } else if (!loginvo.getLoginTp().equals("A")){
-        errors.add("errMsg", new ActionError("alert.Error","權限不足"));
+      } else if (!loginvo.getLoginTp().equals("A")) {
+        errors.add("errMsg", new ActionError("alert.Error", "權限不足"));
         saveErrors(request, errors);
-        return mapping.findForward("globalFail");  
+        return mapping.findForward("globalFail");
       } else {
-        Sells sellsvo = sellsService.findSellsById(StringUtils.defaultString(request.getParameter("sellsNo"))) ;
-        if (StringUtils.defaultString(request.getParameter("email")).equals("") ) {
-          errors.add("errMsg", new ActionError("alert.Error","Email 未輸入"));
+        Sells sellsvo = sellsService.findSellsById(StringUtils
+            .defaultString(request.getParameter("sellsNo")));
+        if (StringUtils.defaultString(request.getParameter("email")).equals("")) {
+          errors.add("errMsg", new ActionError("alert.Error", "Email 未輸入"));
           saveErrors(request, errors);
           return mapping.findForward("error1");
         }
-        if (StringUtils.defaultString(request.getParameter("homepage")).equals("") ) {
-          errors.add("errMsg", new ActionError("alert.Error","店家網頁 未輸入"));
+        if (StringUtils.defaultString(request.getParameter("homepage")).equals(
+            "")) {
+          errors.add("errMsg", new ActionError("alert.Error", "店家網頁 未輸入"));
           saveErrors(request, errors);
           return mapping.findForward("error1");
         }
-        if (StringUtils.defaultString(request.getParameter("sellsNm")).equals("") ) {
-          errors.add("errMsg", new ActionError("alert.Error","姓名 未輸入"));
+        if (StringUtils.defaultString(request.getParameter("sellsNm")).equals(
+            "")) {
+          errors.add("errMsg", new ActionError("alert.Error", "姓名 未輸入"));
           saveErrors(request, errors);
           return mapping.findForward("error1");
         }
-        if (StringUtils.defaultString(request.getParameter("storeNm")).equals("") ) {
-          errors.add("errMsg", new ActionError("alert.Error","店名  未輸入"));
+        if (StringUtils.defaultString(request.getParameter("storeNm")).equals(
+            "")) {
+          errors.add("errMsg", new ActionError("alert.Error", "店名  未輸入"));
           saveErrors(request, errors);
           return mapping.findForward("error1");
         }
-        if (sellsvo == null ) {
-          errors.add("errMsg", new ActionError("alert.Error","讀取資料異常!"));
+        if (sellsvo == null) {
+          errors.add("errMsg", new ActionError("alert.Error", "讀取資料異常!"));
           saveErrors(request, errors);
           return mapping.findForward("globalFail");
         } else {
-          if (StringUtils.defaultString(request.getParameter("color")).equals("0") || StringUtils.isBlank(request.getParameter("color")) ) {
+          if (StringUtils.defaultString(request.getParameter("color")).equals(
+              "0")
+              || StringUtils.isBlank(request.getParameter("color"))) {
             sellsvo.setColorTp("1");
             sellsvo.setColor1("#006699");
             sellsvo.setColor2("#99CCFF");
           } else {
             sellsvo.setColorTp(request.getParameter("color").split(",")[0]);
             sellsvo.setColor1(request.getParameter("color").split(",")[1]);
-            sellsvo.setColor2(request.getParameter("color").split(",")[2]);        
+            sellsvo.setColor2(request.getParameter("color").split(",")[2]);
           }
-          
           sellsvo.setEmail(request.getParameter("email"));
           sellsvo.setHomepage(request.getParameter("homepage"));
           sellsvo.setSellsNm(request.getParameter("sellsNm"));
           sellsvo.setStoreNm(request.getParameter("storeNm"));
-          sellsvo.setLogo(StringUtils.defaultString(request.getParameter("logo")));
-          sellsvo.setPayType1(StringUtils.defaultString(request.getParameter("payType1"),"0"));
-          sellsvo.setPayType2(StringUtils.defaultString(request.getParameter("payType2"),"0"));
-          sellsvo.setPayType3(StringUtils.defaultString(request.getParameter("payType3"),"0"));
-          sellsvo.setPayType4(StringUtils.defaultString(request.getParameter("payType4"),"0"));
-          sellsvo.setPayType5(StringUtils.defaultString(request.getParameter("payType5"),"0"));
-          
-          sellsvo.setPayType711(StringUtils.defaultString(request.getParameter("payType711"),"0"));
-          sellsvo.setPayTypeFamily(StringUtils.defaultString(request.getParameter("payTypeFamily"),"0"));
-          sellsvo.setPayTypeHilife(StringUtils.defaultString(request.getParameter("payTypeHilife"),"0"));
-          sellsvo.setPayTypeNobook(StringUtils.defaultString(request.getParameter("payTypeNobook"),"0"));
-          
-          sellsvo.setFeedbackCode(StringUtils.defaultString(request.getParameter("feedbackCode"),""));
-          sellsvo.setSendCode(StringUtils.defaultString(request.getParameter("sendCode"),""));
-          sellsvo.setStoreId(StringUtils.defaultString(request.getParameter("storeId"),""));
+          sellsvo.setLogo(StringUtils.defaultString(request
+              .getParameter("logo")));
+          sellsvo.setPayType1(StringUtils.defaultString(request
+              .getParameter("payType1"), "0"));
+          sellsvo.setPayType2(StringUtils.defaultString(request
+              .getParameter("payType2"), "0"));
+          sellsvo.setPayType3(StringUtils.defaultString(request
+              .getParameter("payType3"), "0"));
+          sellsvo.setPayType4(StringUtils.defaultString(request
+              .getParameter("payType4"), "0"));
+          sellsvo.setPayType5(StringUtils.defaultString(request
+              .getParameter("payType5"), "0"));
+          sellsvo.setPayType711(StringUtils.defaultString(request
+              .getParameter("payType711"), "0"));
+          sellsvo.setPayTypeFamily(StringUtils.defaultString(request
+              .getParameter("payTypeFamily"), "0"));
+          sellsvo.setPayTypeHilife(StringUtils.defaultString(request
+              .getParameter("payTypeHilife"), "0"));
+          sellsvo.setPayTypeNobook(StringUtils.defaultString(request
+              .getParameter("payTypeNobook"), "0"));
+          sellsvo.setFeedbackCode(StringUtils.defaultString(request
+              .getParameter("feedbackCode"), ""));
+          sellsvo.setSendCode(StringUtils.defaultString(request
+              .getParameter("sendCode"), ""));
+          sellsvo.setStoreId(StringUtils.defaultString(request
+              .getParameter("storeId"), ""));
           sellsvo.setExpiredDt(request.getParameter("expiredDt"));
           sellsvo.setSellsLv(request.getParameter("sellsLv"));
           sellsService.updateSells(sellsvo);
-          
-          
           Sells admin = sellsService.findSellsById(EcServer.getAdminNo());
           StringBuffer sb = new StringBuffer();
           sb.append("");
-          sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+          sb
+              .append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
           sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
           sb.append("<head>");
-          sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-          sb.append("<title> ").append(sellsvo.getSellsNm()).append(" 異動通知</title>");
+          sb
+              .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+          sb.append("<title> ").append(sellsvo.getSellsNm()).append(
+              " 異動通知</title>");
           sb.append("</head>");
           sb.append("");
           sb.append("<body>");
@@ -164,10 +187,12 @@ public class SellUpdateAction extends Action {
           sb.append(sellsvo.getSellsLv()).append(" <br />");
           sb.append("<p>感謝您使用本服務。<br />");
           sb.append("  <br />");
-          sb.append("若有任何問題請到<a href=\"").append(admin.getHomepage()).append("/Sells/help.jsp\">問題反應區</a>與站長聯絡。<br />");
+          sb.append("若有任何問題請到<a href=\"").append(admin.getHomepage()).append(
+              "/Sells/help.jsp\">問題反應區</a>與站長聯絡。<br />");
           sb.append("<br />");
           sb.append("站長敬上。</p>");
-          sb.append("<p><a href=\"").append(admin.getHomepage()).append("\">").append(admin.getStoreNm()).append("</a></p>");
+          sb.append("<p><a href=\"").append(admin.getHomepage()).append("\">")
+              .append(admin.getStoreNm()).append("</a></p>");
           sb.append("</body>");
           sb.append("</html>");
           MailBean mailBean = new MailBean();
@@ -176,8 +201,12 @@ public class SellUpdateAction extends Action {
           mailBean.setTo(sellsvo.getEmail());
           mailBean.setToName(sellsvo.getSellsNm());
           mailBean.setBcc(admin.getEmail());
-          mailBean.setMailServer(EcServer.getMailServer());
-          mailBean.setSubject(admin.getStoreNm()+ " - 異動通知");
+          if ("S0000000136".equals(sellsvo.getSellsNo())) {
+            mailBean.setMailServer("msa.hinet.net");
+          } else {
+            mailBean.setMailServer(EcServer.getMailServer());
+          }
+          mailBean.setSubject(admin.getStoreNm() + " - 異動通知");
           mailBean.setBody(sb.toString());
           mailBean.setCharset("UTF-8");
           try {
@@ -185,19 +214,19 @@ public class SellUpdateAction extends Action {
           } catch (Exception e) {
             log.info("GetPasswdAction mail e:" + e.getMessage());
           }
-          sb = null ;
-          admin = null ;
-          
-          session.setAttribute("sells", sells) ;
-          session.setAttribute("loginvo", loginvo) ;
+          sb = null;
+          admin = null;
+          session.setAttribute("sells", sells);
+          session.setAttribute("loginvo", loginvo);
           return mapping.findForward("success");
         }
       }
-    } catch (Exception e ) {
+    } catch (Exception e) {
       log.info("SellUpdate e:" + e.toString());
-      errors.add("errMsg", new ActionError("alert.Error","異動失敗!"+e.getMessage()));
+      errors.add("errMsg", new ActionError("alert.Error", "異動失敗!"
+          + e.getMessage()));
       saveErrors(request, errors);
       return mapping.findForward("error1");
     }
-	}
+  }
 }

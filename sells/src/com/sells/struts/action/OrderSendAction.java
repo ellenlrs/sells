@@ -32,57 +32,64 @@ import com.sells.dao.OrdersItem;
 import com.sells.dao.Sells;
 import com.sells.service.imp.SellsService;
 
-/** 
- * MyEclipse Struts
- * Creation date: 02-15-2007
+/**
+ * MyEclipse Struts Creation date: 02-15-2007
  * 
  * XDoclet definition:
+ * 
  * @struts.action validate="true"
  */
 public class OrderSendAction extends Action {
-  private SellsService sellsService ;
-  private Log log = LogFactory.getLog(OrderSendAction.class);
+  private SellsService sellsService;
+  private final Log log = LogFactory.getLog(OrderSendAction.class);
   private ServletContext servletContext;
-  
-  /* (non-Javadoc)
-   * @see org.apache.struts.action.Action#setServlet(org.apache.struts.action.ActionServlet)
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @seeorg.apache.struts.action.Action#setServlet(org.apache.struts.action.
+   * ActionServlet)
    */
+  @Override
   public void setServlet(ActionServlet actionServlet) {
-      super.setServlet(actionServlet);
-      servletContext = actionServlet.getServletContext();
-      WebApplicationContext wac = WebApplicationContextUtils
-              .getRequiredWebApplicationContext(servletContext);
-      this.sellsService =  (SellsService) wac.getBean("sellsService");
+    super.setServlet(actionServlet);
+    servletContext = actionServlet.getServletContext();
+    WebApplicationContext wac = WebApplicationContextUtils
+        .getRequiredWebApplicationContext(servletContext);
+    this.sellsService = (SellsService) wac.getBean("sellsService");
   }
 
-	/** 
-	 * Method execute
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-    HttpSession session = request.getSession ();
+  /**
+   * Method execute
+   * 
+   * @param mapping
+   * @param form
+   * @param request
+   * @param response
+   * @return ActionForward
+   */
+  @Override
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+      HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession();
     ActionErrors errors = new ActionErrors();
     try {
       String sellsNo = StringUtils.defaultString(request.getParameter("sells"));
-      int amt = 0 ;
+      int amt = 0;
       if (sellsNo.equals("")) {
         errors.add("errMsg", new ActionError("alert.Error", "商家代號錯誤!"));
         saveErrors(request, errors);
         return mapping.findForward("error2");
       }
-      Sells sells= (Sells) sellsService.findSellsById(sellsNo);
-      if (sells == null ) {
+      Sells sells = sellsService.findSellsById(sellsNo);
+      if (sells == null) {
         errors.add("errMsg", new ActionError("alert.Error", "商家代號錯誤!"));
         saveErrors(request, errors);
         return mapping.findForward("error2");
-      } 
-      if (sells.getExpiredDt().compareTo(DateUtils.getToday("yyyy/MM/dd")) < 0 ) {
-        errors.add("errMsg", new ActionError("alert.Error", "商家使用期限至："+sells.getExpiredDt()));
+      }
+      if (sells.getExpiredDt().compareTo(DateUtils.getToday("yyyy/MM/dd")) < 0) {
+        errors.add("errMsg", new ActionError("alert.Error", "商家使用期限至："
+            + sells.getExpiredDt()));
         saveErrors(request, errors);
         return mapping.findForward("error2");
       }
@@ -121,12 +128,18 @@ public class OrderSendAction extends Action {
         saveErrors(request, errors);
         return mapping.findForward("error2");
       }
-      if (StringUtils.defaultString(request.getParameter("payTp")).indexOf("貨到付款")== -1 && 
-          StringUtils.defaultString(request.getParameter("payTp")).indexOf("線上刷卡")== -1 && 
-          StringUtils.defaultString(request.getParameter("payTp")).indexOf("7-11繳款")== -1 && 
-          StringUtils.defaultString(request.getParameter("payTp")).indexOf("萊爾富繳款")== -1 && 
-          StringUtils.defaultString(request.getParameter("payTp")).indexOf("全家繳款")== -1 && 
-          StringUtils.defaultString(request.getParameter("payTp")).indexOf("無摺存款")== -1) {
+      if (StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+          "貨到付款") == -1
+          && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+              "線上刷卡") == -1
+          && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+              "7-11繳款") == -1
+          && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+              "萊爾富繳款") == -1
+          && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+              "全家繳款") == -1
+          && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+              "無摺存款") == -1) {
         if (StringUtils.isBlank(request.getParameter("exportId"))) {
           errors.add("errMsg", new ActionError("alert.Error", "請輸入匯出帳號"));
           saveErrors(request, errors);
@@ -134,16 +147,23 @@ public class OrderSendAction extends Action {
         }
       }
       Orders orders = new Orders();
-      
       if (StringUtils.isNotBlank(request.getParameter("addressList"))) {
-        orders.setAddress(request.getParameter("address")+"-"+request.getParameter("addressList"));
-      }else {
+        orders.setAddress(request.getParameter("address") + "-"
+            + request.getParameter("addressList"));
+      } else {
         orders.setAddress(request.getParameter("address"));
       }
       if (StringUtils.isNotBlank(request.getParameter("deTime"))) {
-        orders.setDescTxt(StringUtils.substring("希望送達時間："+StringUtils.defaultString(request.getParameter("deTime"))+","+StringUtils.defaultString(request.getParameter("desc")),0,1500));
-      }else {
-        orders.setDescTxt(StringUtils.substring(StringUtils.defaultString(request.getParameter("desc")),0,1500));
+        orders
+            .setDescTxt(StringUtils.substring(
+                "希望送達時間："
+                    + StringUtils.defaultString(request.getParameter("deTime"))
+                    + ","
+                    + StringUtils.defaultString(request.getParameter("desc")),
+                0, 1500));
+      } else {
+        orders.setDescTxt(StringUtils.substring(StringUtils
+            .defaultString(request.getParameter("desc")), 0, 1500));
       }
       orders.setEmail(request.getParameter("email"));
       orders.setIp(request.getRemoteAddr());
@@ -160,59 +180,79 @@ public class OrderSendAction extends Action {
       } else {
         orders.setOrderSt("80");
       }
-      if (request.getParameter("payTp").startsWith("貨到付款") || request.getParameter("payTp").startsWith("7-11繳款") ||
-          request.getParameter("payTp").startsWith("萊爾富繳款") || request.getParameter("payTp").startsWith("全家繳款")) {
-        orders.setProcess(Integer.parseInt(StringUtils.defaultString(request.getParameter("process"),"0")));
+      if (request.getParameter("payTp").startsWith("貨到付款")
+          || request.getParameter("payTp").startsWith("7-11繳款")
+          || request.getParameter("payTp").startsWith("萊爾富繳款")
+          || request.getParameter("payTp").startsWith("全家繳款")) {
+        orders.setProcess(Integer.parseInt(StringUtils.defaultString(request
+            .getParameter("process"), "0")));
       }
-      orders.setFreightfar(Integer.parseInt(StringUtils.defaultString(request.getParameter("freight"),"0")));
-      orders.setPayTp(StringUtils.substring(request.getParameter("payTp"),0,20));
-      
-      orders.setExportAccount(StringUtils.substring(StringUtils.defaultString(request.getParameter("exportId")),0,5));
-      orders.setMemberNo(StringUtils.defaultString(request.getParameter("memberNo")));
-      String[] itemNo =  request.getParameterValues("itemNo") ;
-      String[] itemNm =  request.getParameterValues("itemNm") ;
-      String[] spec1 =  request.getParameterValues("spec1") ;
-      String[] spec2 =  request.getParameterValues("spec2") ;
-      String[] qty =  request.getParameterValues("qty") ;
-      String[] price =  request.getParameterValues("price") ;
+      orders.setFreightfar(Integer.parseInt(StringUtils.defaultString(request
+          .getParameter("freight"), "0")));
+      orders.setPayTp(StringUtils.substring(request.getParameter("payTp"), 0,
+          20));
+      orders.setExportAccount(StringUtils.substring(StringUtils
+          .defaultString(request.getParameter("exportId")), 0, 5));
+      orders.setMemberNo(StringUtils.defaultString(request
+          .getParameter("memberNo")));
+      String[] itemNo = request.getParameterValues("itemNo");
+      String[] itemNm = request.getParameterValues("itemNm");
+      String[] spec1 = request.getParameterValues("spec1");
+      String[] spec2 = request.getParameterValues("spec2");
+      String[] qty = request.getParameterValues("qty");
+      String[] price = request.getParameterValues("price");
       OrdersItem[] item = new OrdersItem[itemNo.length];
-      for (int i=0 ; i< itemNo.length ; i++) {
+      for (int i = 0; i < itemNo.length; i++) {
         item[i] = new OrdersItem();
-        item[i].setItemNm(StringUtils.substring(StringUtils.defaultString(itemNm[i]),0,100));
-        item[i].setItemNo(StringUtils.substring(StringUtils.defaultString(itemNo[i]),0,20));
-        item[i].setItemSpec1(StringUtils.substring(StringUtils.defaultString(spec1[i]),0,300));
-        item[i].setItemSpec2(StringUtils.substring(StringUtils.defaultString(spec2[i]),0,300));
+        item[i].setItemNm(StringUtils.substring(StringUtils
+            .defaultString(itemNm[i]), 0, 100));
+        item[i].setItemNo(StringUtils.substring(StringUtils
+            .defaultString(itemNo[i]), 0, 20));
+        item[i].setItemSpec1(StringUtils.substring(StringUtils
+            .defaultString(spec1[i]), 0, 300));
+        item[i].setItemSpec2(StringUtils.substring(StringUtils
+            .defaultString(spec2[i]), 0, 300));
         item[i].setQty(new Integer(qty[i]));
         item[i].setPrice(new Integer(price[i]));
-        amt = amt + item[i].getQty() * item[i].getPrice() ;
+        amt = amt + item[i].getQty() * item[i].getPrice();
       }
       orders.setAmt(amt);
       // 再加上寫入訂單明細
-      orders = sellsService.saveOrders(orders,item);
-      //GetOrderNo
-      //發送Email:
+      orders = sellsService.saveOrders(orders, item);
+      // GetOrderNo
+      // 發送Email:
       Sells admin = sellsService.findSellsById(EcServer.getAdminNo());
       if (orders.getOrderSt().equals("00")) {
         StringBuffer sb = new StringBuffer();
         sb.append("<html>\n");
         sb.append("<head>\n");
-        sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
-        sb.append("<title>").append(sells.getStoreNm()).append(" 訂購信函</title>\n");
+        sb
+            .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+        sb.append("<title>").append(sells.getStoreNm()).append(
+            " 訂購信函</title>\n");
         sb.append("</head>\n");
         sb.append("<body >\n");
-        sb.append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"3\" bgcolor=\"#006699\">\n");
+        sb
+            .append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"3\" bgcolor=\"#006699\">\n");
         sb.append("  <tr>\n");
-        sb.append("    <td bgcolor=\"#99CCFF\" class=\"content3\">訂購單送出，非常謝謝您的購買!<br>\n");
+        sb
+            .append("    <td bgcolor=\"#99CCFF\" class=\"content3\">訂購單送出，非常謝謝您的購買!<br>\n");
         sb.append("      我們同時會將您的訂單寄到您的mail，敬請查收~!</td>\n");
         sb.append("  </tr>\n");
         sb.append("</table>\n");
         sb.append("<br>\n");
-        sb.append("  <table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
+        sb
+            .append("  <table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
         sb.append("    <tr>\n");
-        sb.append("      <td bgcolor=\"#F5F5F5\" class=\"en\">此信件為自動回覆信函，來自 ").append(sells.getStoreNm()).append(" 請勿直接回信<br>\n");
-        sb.append("   ").append(sells.getStoreNm()).append(" 網址：<a href='").append(sells.getHomepage()).append("'>").append(sells.getHomepage()).append("</a>\n");
-        sb.append("   <hr noshade size=1>訂單編號︰").append(orders.getOrderNo()).append("<hr noshade size=1>\n");
-        sb.append("   ").append(request.getParameter("name")).append(" 您好您訂購的商品清單如下：<br>\n");
+        sb.append("      <td bgcolor=\"#F5F5F5\" class=\"en\">此信件為自動回覆信函，來自 ")
+            .append(sells.getStoreNm()).append(" 請勿直接回信<br>\n");
+        sb.append("   ").append(sells.getStoreNm()).append(" 網址：<a href='")
+            .append(sells.getHomepage()).append("'>").append(
+                sells.getHomepage()).append("</a>\n");
+        sb.append("   <hr noshade size=1>訂單編號︰").append(orders.getOrderNo())
+            .append("<hr noshade size=1>\n");
+        sb.append("   ").append(request.getParameter("name")).append(
+            " 您好您訂購的商品清單如下：<br>\n");
         sb.append("   ").append(request.getParameter("orderItem")).append("\n");
         sb.append("   <hr noshade size=1>\n");
         sb.append("   訂購人資料<br>   \n");
@@ -226,15 +266,18 @@ public class OrderSendAction extends Action {
         }
         sb.append("\n");
         sb.append("   <br>\n");
-        sb.append("   E-mail︰").append(request.getParameter("email")).append("\n");
+        sb.append("   E-mail︰").append(request.getParameter("email")).append(
+            "\n");
         sb.append("   <br>\n");
         sb.append("   電話︰").append(request.getParameter("tel")).append("\n");
         sb.append("   <br>\n");
         sb.append("   手機︰").append(request.getParameter("mobile")).append("\n");
         sb.append("   <br>\n");
-        sb.append("   付款方式︰").append(request.getParameter("payTp")).append("\n");
+        sb.append("   付款方式︰").append(request.getParameter("payTp"))
+            .append("\n");
         sb.append("   <br>\n");
-        sb.append("   轉出帳號後5碼︰").append(request.getParameter("exportId")).append("\n");
+        sb.append("   轉出帳號後5碼︰").append(request.getParameter("exportId"))
+            .append("\n");
         sb.append("   <br>\n");
         if (StringUtils.isNotBlank(request.getParameter("deTime"))) {
           sb.append("   希望送達時段︰").append(request.getParameter("deTime"));
@@ -244,48 +287,65 @@ public class OrderSendAction extends Action {
         sb.append("   ").append(request.getParameter("desc")).append("\n");
         sb.append("   <hr noshade size=1>\n");
         sb.append("   付款資料︰<br>\n");
-        sb.append("   ").append(StringUtils.defaultString(sells.getPayDesc()).replace("\n", "<BR>")).append("\n");
+        sb.append("   ")
+            .append(
+                StringUtils.defaultString(sells.getPayDesc()).replace("\n",
+                    "<BR>")).append("\n");
         sb.append("   <hr noshade size=1>\n");
-        sb.append("   ").append(sells.getStoreNm()).append(" 網址：<a href='").append(sells.getHomepage()).append("'>").append(sells.getHomepage()).append("</a>\n");
+        sb.append("   ").append(sells.getStoreNm()).append(" 網址：<a href='")
+            .append(sells.getHomepage()).append("'>").append(
+                sells.getHomepage()).append("</a>\n");
         sb.append("   </td>\n");
         sb.append("    </tr>\n");
         sb.append("</table>\n");
         sb.append("</body>\n");
         sb.append("</html>\n");
-  
         MailBean mailBean = new MailBean();
         mailBean.setFrom(sells.getEmail());
         mailBean.setFromName(sells.getStoreNm());
         mailBean.setTo(sells.getEmail());
         mailBean.setToName(sells.getStoreNm());
         mailBean.setBcc(admin.getEmail());
-        mailBean.setMailServer(EcServer.getMailServer());
-        mailBean.setSubject(sells.getStoreNm()+ " - 訂購通知:"+orders.getOrderNo());
+        log.info("SELLS:" + sells.getSellsNo());
+        if ("S0000000136".equals(sells.getSellsNo())) {
+          mailBean.setMailServer("msa.hinet.net");
+        } else {
+          mailBean.setMailServer(EcServer.getMailServer());
+        }
+        log.info("mailBean.getMailServer:" + mailBean.getMailServer());
+        mailBean.setSubject(sells.getStoreNm() + " - 訂購通知:"
+            + orders.getOrderNo());
         mailBean.setBody(sb.toString());
         mailBean.setCharset("UTF-8");
-  
         MailBean mailBean2 = new MailBean();
         mailBean2.setFrom(sells.getEmail());
         mailBean2.setFromName(sells.getStoreNm());
         mailBean2.setTo(request.getParameter("email"));
-        mailBean2.setMailServer(EcServer.getMailServer());
-        mailBean2.setSubject(sells.getStoreNm()+ " - 訂購通知:"+orders.getOrderNo());
+        if ("S0000000136".equals(sells.getSellsNo())) {
+          mailBean2.setMailServer("msa.hinet.net");
+        } else {
+          mailBean2.setMailServer(EcServer.getMailServer());
+        }
+        log.info("mailBean.getMailServer:" + mailBean.getMailServer());
+        mailBean2.setSubject(sells.getStoreNm() + " - 訂購通知:"
+            + orders.getOrderNo());
         mailBean2.setBody(sb.toString());
         mailBean2.setCharset("UTF-8");
         try {
           Mail mail = new Mail(mailBean);
           Mail mail2 = new Mail(mailBean2);
         } catch (Exception e) {
-          log.info( e.getMessage());
+          log.info(e.getMessage());
         }
-        sb = null ;
-        admin = null ;
-        
+        sb = null;
+        admin = null;
         session.removeAttribute("itemSeq");
         session.removeAttribute(sellsNo);
         request.setAttribute("name", request.getParameter("name"));
-        request.setAttribute("deTime", StringUtils.defaultString(request.getParameter("deTime")));
-        request.setAttribute("addressList", StringUtils.defaultString(request.getParameter("addressList")));
+        request.setAttribute("deTime", StringUtils.defaultString(request
+            .getParameter("deTime")));
+        request.setAttribute("addressList", StringUtils.defaultString(request
+            .getParameter("addressList")));
         request.setAttribute("zip", request.getParameter("zip"));
         request.setAttribute("address", request.getParameter("address"));
         request.setAttribute("email", request.getParameter("email"));
@@ -297,7 +357,6 @@ public class OrderSendAction extends Action {
         request.setAttribute("exportId", request.getParameter("exportId"));
         request.setAttribute("payDesc", request.getParameter("payDesc"));
         request.setAttribute("orderItem", request.getParameter("orderItem"));
-        
         request.setAttribute("sells", sells);
         if (sellsNo.equals("S0000000135")) {
           return mapping.findForward("successMagicshop");
@@ -305,25 +364,26 @@ public class OrderSendAction extends Action {
           return mapping.findForward("success");
         }
       } else {
-        String checksum = DigestUtils.md5Hex(sells.getStoreId()+
-            String.valueOf(Integer.parseInt(orders.getOrderNo()))+
-            sells.getSendCode()+
-            String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
-        //log.info("getStoreId:"+sells.getStoreId());
-        //log.info("getOrderNo:"+String.valueOf(Integer.parseInt(orders.getOrderNo())));
-        //log.info("getSendCode:"+sells.getSendCode());
-        //log.info("amt:"+String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
+        String checksum = DigestUtils.md5Hex(sells.getStoreId()
+            + String.valueOf(Integer.parseInt(orders.getOrderNo()))
+            + sells.getSendCode()
+            + String.valueOf(orders.getAmt() + orders.getProcess()
+                + orders.getFreightfar()) + ".00");
+        // log.info("getStoreId:"+sells.getStoreId());
+        // log.info("getOrderNo:"+String.valueOf(Integer.parseInt(orders.getOrderNo())));
+        // log.info("getSendCode:"+sells.getSendCode());
+        // log.info("amt:"+String.valueOf(orders.getAmt()+orders.getProcess()+orders.getFreightfar())+".00");
         request.setAttribute("sslNo", Integer.parseInt(orders.getOrderNo()));
         request.setAttribute("checksum", checksum);
         request.setAttribute("sells", sells);
         request.setAttribute("order", orders);
         return mapping.findForward("payment");
       }
-    } catch (Exception e ) {
+    } catch (Exception e) {
       log.info(e.getMessage());
       request.setAttribute("alertMsg", e.getMessage());
       return mapping.findForward("alert");
-      //return mapping.findForward("sessionLost");
+      // return mapping.findForward("sessionLost");
     }
-	}
+  }
 }

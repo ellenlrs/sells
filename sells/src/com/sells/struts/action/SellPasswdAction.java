@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.sells.common.mail.Mail;
 import com.sells.common.mail.MailBean;
 import com.sells.common.util.EcServer;
@@ -27,53 +29,63 @@ import com.sells.dao.LoginData;
 import com.sells.dao.Sells;
 import com.sells.service.imp.SellsService;
 
-/** 
- * MyEclipse Struts
- * Creation date: 02-03-2007
+/**
+ * MyEclipse Struts Creation date: 02-03-2007
  * 
  * XDoclet definition:
+ * 
  * @struts.action validate="true"
  * @struts.action-forward name="success" path="/update.jsp"
  */
 public class SellPasswdAction extends Action {
-  private SellsService sellsService ;
-  private Log log = LogFactory.getLog(SellPasswdAction.class);
+  private SellsService sellsService;
+  private final Log log = LogFactory.getLog(SellPasswdAction.class);
   private ServletContext servletContext;
-  
-  /* (non-Javadoc)
-   * @see org.apache.struts.action.Action#setServlet(org.apache.struts.action.ActionServlet)
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @seeorg.apache.struts.action.Action#setServlet(org.apache.struts.action.
+   * ActionServlet)
    */
+  @Override
   public void setServlet(ActionServlet actionServlet) {
-      super.setServlet(actionServlet);
-      servletContext = actionServlet.getServletContext();
-      WebApplicationContext wac = WebApplicationContextUtils
-              .getRequiredWebApplicationContext(servletContext);
-      this.sellsService =  (SellsService) wac.getBean("sellsService");
+    super.setServlet(actionServlet);
+    servletContext = actionServlet.getServletContext();
+    WebApplicationContext wac = WebApplicationContextUtils
+        .getRequiredWebApplicationContext(servletContext);
+    this.sellsService = (SellsService) wac.getBean("sellsService");
   }
-	/** 
-	 * Method execute
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-    HttpSession session = request.getSession ();
+
+  /**
+   * Method execute
+   * 
+   * @param mapping
+   * @param form
+   * @param request
+   * @param response
+   * @return ActionForward
+   */
+  @Override
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+      HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession();
     ActionErrors errors = new ActionErrors();
     try {
-      Sells sells= (Sells) session.getAttribute("sells") ;
-      LoginData loginvo= (LoginData) session.getAttribute("loginvo") ;
-      if (sells == null ) {
+      Sells sells = (Sells) session.getAttribute("sells");
+      LoginData loginvo = (LoginData) session.getAttribute("loginvo");
+      if (sells == null) {
         return mapping.findForward("sessionLost");
       } else {
-        if (StringUtils.defaultString(request.getParameter("passwd")).equals("")) {
-            errors.add("errMsg", new ActionError("alert.Error","密碼  未輸入"));
-            saveErrors(request, errors);
-            return mapping.findForward("error1");
-        } else if (StringUtils.defaultString(request.getParameter("oldPasswd")).equals(loginvo.getPasswd())) {
-          loginvo.setPasswd(StringUtils.defaultString(request.getParameter("passwd"))) ;
+        if (StringUtils.defaultString(request.getParameter("passwd"))
+            .equals("")) {
+          errors.add("errMsg", new ActionError("alert.Error", "密碼  未輸入"));
+          saveErrors(request, errors);
+          return mapping.findForward("error1");
+        } else if (StringUtils.defaultString(request.getParameter("oldPasswd"))
+            .equals(loginvo.getPasswd())) {
+          loginvo.setPasswd(StringUtils.defaultString(request
+              .getParameter("passwd")));
           sellsService.updateLoginData(loginvo);
           Sells admin = sellsService.findSellsById(EcServer.getAdminNo());
           StringBuffer sb = new StringBuffer();
@@ -90,23 +102,27 @@ public class SellPasswdAction extends Action {
           sb.append("  親愛的 ").append(sells.getSellsNm()).append(" 您好：");
           sb.append("</p>");
           sb.append("<p>這是系統自動發出的訊息。<br />");
-          sb.append("  您已成功修改密碼。<br />");
-          sb.append("  您的新密碼：").append(request.getParameter("passwd")).append("</p>");
+          sb.append("您已成功修改密碼。<br />");
+          sb.append("下次登入請使用新密碼。<br />");
           sb.append("<p>為了保障您的權益，請您牢記且妥善保管您的帳號及密碼。<br />");
           sb.append("  <br />");
-          sb.append("若有任何問題請到<a href=\"").append(admin.getHomepage()).append("/Sells/help.jsp\">問題反應區</a>與站長聯絡。</p>");
+          sb.append("若有任何問題請到<a href=\"").append(admin.getHomepage())
+              .append("/Sells/help.jsp\">問題反應區</a>與站長聯絡。</p>");
           sb.append("<p>站長敬上。</p>");
-          sb.append("<p><a href=\"").append(admin.getHomepage()).append("\">").append(admin.getStoreNm()).append("</a></p>");
+          sb.append("<p><a href=\"").append(admin.getHomepage()).append("\">")
+              .append(admin.getStoreNm()).append("</a></p>");
           sb.append("</body>");
           sb.append("</html>");
-
           MailBean mailBean = new MailBean();
           mailBean.setFrom(admin.getEmail());
           mailBean.setFromName(admin.getSellsNm());
           mailBean.setTo(sells.getEmail());
-          mailBean.setToName(sells.getSellsNm());
-          mailBean.setMailServer(EcServer.getMailServer());
-          mailBean.setSubject(admin.getStoreNm()+ " - 密碼修改通知信");
+          if ("S0000000136".equals(sells.getSellsNo())) {
+            mailBean.setMailServer("msa.hinet.net");
+          } else {
+            mailBean.setMailServer(EcServer.getMailServer());
+          }
+          mailBean.setSubject(admin.getStoreNm() + " - 密碼修改通知信");
           mailBean.setBody(sb.toString());
           mailBean.setCharset("UTF-8");
           try {
@@ -114,22 +130,24 @@ public class SellPasswdAction extends Action {
           } catch (Exception e) {
             log.info("GetPasswdAction mail e:" + e.getMessage());
           }
-          sb = null ;
-          admin = null ;
-          session.setAttribute("sells", sells) ;
-          session.setAttribute("loginvo", loginvo) ;
+          sb = null;
+          admin = null;
+          session.setAttribute("sells", sells);
+          session.setAttribute("loginvo", loginvo);
           return mapping.findForward("success");
         } else {
-          errors.add("errMsg", new ActionError("alert.Error","舊密碼驗證失敗，請重新輸入!"));
+          errors
+              .add("errMsg", new ActionError("alert.Error", "舊密碼驗證失敗，請重新輸入!"));
           saveErrors(request, errors);
           return mapping.findForward("globalFail");
         }
       }
-    } catch (Exception e ) {
+    } catch (Exception e) {
       log.info("SellPasswd e:" + e.getMessage());
-      errors.add("errMsg", new ActionError("alert.Error","查詢失敗!"+e.getMessage()));
+      errors.add("errMsg",
+          new ActionError("alert.Error", "查詢失敗!" + e.getMessage()));
       saveErrors(request, errors);
       return mapping.findForward("error1");
     }
-	}
+  }
 }
