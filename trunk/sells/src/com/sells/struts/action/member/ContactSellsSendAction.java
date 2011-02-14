@@ -7,6 +7,7 @@ package com.sells.struts.action.member;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +20,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.sells.common.mail.Mail;
 import com.sells.common.mail.MailBean;
 import com.sells.common.util.DateUtils;
@@ -26,103 +28,112 @@ import com.sells.common.util.EcServer;
 import com.sells.dao.Sells;
 import com.sells.service.imp.SellsService;
 
-/** 
- * MyEclipse Struts
- * Creation date: 09-11-2007
+/**
+ * MyEclipse Struts Creation date: 09-11-2007
  * 
  * XDoclet definition:
+ * 
  * @struts.action validate="true"
  */
 public class ContactSellsSendAction extends Action {
-  private SellsService sellsService ;
-  private Log log = LogFactory.getLog(ContactSellsSendAction.class);
+  private SellsService sellsService;
+  private final Log log = LogFactory.getLog(ContactSellsSendAction.class);
   private ServletContext servletContext;
-  
-  /* (non-Javadoc)
-   * @see org.apache.struts.action.Action#setServlet(org.apache.struts.action.ActionServlet)
-   */
-  public void setServlet(ActionServlet actionServlet) {
-      super.setServlet(actionServlet);
-      servletContext = actionServlet.getServletContext();
-      WebApplicationContext wac = WebApplicationContextUtils
-              .getRequiredWebApplicationContext(servletContext);
-      this.sellsService = (SellsService) wac.getBean("sellsService");
-  } 
 
-	/** 
-	 * Method execute
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
+  /*
+   * (non-Javadoc)
+   * 
+   * @seeorg.apache.struts.action.Action#setServlet(org.apache.struts.action.
+   * ActionServlet)
+   */
+  @Override
+  public void setServlet(ActionServlet actionServlet) {
+    super.setServlet(actionServlet);
+    servletContext = actionServlet.getServletContext();
+    WebApplicationContext wac = WebApplicationContextUtils
+        .getRequiredWebApplicationContext(servletContext);
+    this.sellsService = (SellsService) wac.getBean("sellsService");
+  }
+
+  /**
+   * Method execute
+   * 
+   * @param mapping
+   * @param form
+   * @param request
+   * @param response
+   * @return ActionForward
+   */
+  @Override
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+      HttpServletRequest request, HttpServletResponse response) {
     ActionErrors errors = new ActionErrors();
-    //1.確認Sells 是否到期
+    // 1.確認Sells 是否到期
     try {
-      if (StringUtils.defaultString(request.getParameter("email")).equals("") ) {
-        errors.add("errMsg", new ActionError("alert.Error","Email 未輸入"));
+      if (StringUtils.defaultString(request.getParameter("email")).equals("")) {
+        errors.add("errMsg", new ActionError("alert.Error", "Email 未輸入"));
         saveErrors(request, errors);
         return mapping.findForward("memError");
       }
-      if (StringUtils.defaultString(request.getParameter("name")).equals("") ) {
-        errors.add("errMsg", new ActionError("alert.Error","姓名  未輸入"));
+      if (StringUtils.defaultString(request.getParameter("name")).equals("")) {
+        errors.add("errMsg", new ActionError("alert.Error", "姓名  未輸入"));
         saveErrors(request, errors);
         return mapping.findForward("memError");
       }
-      if (StringUtils.defaultString(request.getParameter("subject")).equals("") ) {
-        errors.add("errMsg", new ActionError("alert.Error","主旨 未輸入"));
+      if (StringUtils.defaultString(request.getParameter("subject")).equals("")) {
+        errors.add("errMsg", new ActionError("alert.Error", "主旨 未輸入"));
         saveErrors(request, errors);
         return mapping.findForward("memError");
       }
-      if (StringUtils.defaultString(request.getParameter("contact")).equals("") ) {
-        errors.add("errMsg", new ActionError("alert.Error","內容 未輸入"));
+      if (StringUtils.defaultString(request.getParameter("contact")).equals("")) {
+        errors.add("errMsg", new ActionError("alert.Error", "內容 未輸入"));
         saveErrors(request, errors);
         return mapping.findForward("memError");
       }
-      
       String sellsNo = StringUtils.defaultString(request.getParameter("sells"));
       if (sellsNo.equals("")) {
         errors.add("errMsg", new ActionError("alert.Error", "商家代號錯誤!"));
         saveErrors(request, errors);
         return mapping.findForward("memError");
       }
-      Sells sells= (Sells) sellsService.findSellsById(sellsNo);
-      if (sells == null ) {
+      Sells sells = sellsService.findSellsById(sellsNo);
+      if (sells == null) {
         errors.add("errMsg", new ActionError("alert.Error", "商家代號錯誤!"));
         saveErrors(request, errors);
         return mapping.findForward("memError");
-      } 
-      if (sells.getExpiredDt().compareTo(DateUtils.getToday("yyyy/MM/dd")) < 0 ) {
-        errors.add("errMsg", new ActionError("alert.Error", "商家使用期限至："+sells.getExpiredDt()));
+      }
+      if (sells.getExpiredDt().compareTo(DateUtils.getToday("yyyy/MM/dd")) < 0) {
+        errors.add("errMsg", new ActionError("alert.Error", "商家使用期限至："
+            + sells.getExpiredDt()));
         saveErrors(request, errors);
         return mapping.findForward("memError");
       }
-      
       MailBean mailBean = new MailBean();
       mailBean.setFrom(request.getParameter("email"));
       mailBean.setFromName(request.getParameter("name"));
       mailBean.setTo(sells.getEmail());
       mailBean.setCc(request.getParameter("email"));
-      //mailBean.setBcc("jinwei.lin@gmail.com");
-      mailBean.setMailServer(EcServer.getMailServer());
+      if ("S0000000136".equals(sells.getSellsNo())) {
+        mailBean.setMailServer("msa.hinet.net");
+      } else {
+        mailBean.setMailServer(EcServer.getMailServer());
+      }
       mailBean.setSubject(request.getParameter("subject"));
       mailBean.setBody(request.getParameter("contact"));
       mailBean.setCharset("UTF-8");
       try {
         Mail mail = new Mail(mailBean);
       } catch (Exception e) {
-        log.info( e.getMessage());
+        log.info(e.getMessage());
       }
       request.setAttribute("sells", sells);
       return mapping.findForward("success");
-    } catch (Exception e ) {
-      log.info( e.toString());
-      errors.add("errMsg", new ActionError("alert.Error","異動失敗!"+e.getMessage()));
+    } catch (Exception e) {
+      log.info(e.toString());
+      errors.add("errMsg", new ActionError("alert.Error", "異動失敗!"
+          + e.getMessage()));
       saveErrors(request, errors);
       return mapping.findForward("memError");
     }
-	}
+  }
 }

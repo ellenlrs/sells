@@ -305,7 +305,7 @@ public class SaveMemberAction extends Action {
           sb.append("  <br />");
           sb.append("</p>");
           sb.append("<p>這是系統自動發出的訊息。<br />");
-          sb.append("您已成功修改密碼。<br /><br />");
+          sb.append("您已成功修改密碼。<br />");
           sb.append("下次登入請使用新密碼。<br />");
           sb.append("<p>為了保障您的權益，請您牢記且妥善保管您的帳號及密碼。<br />");
           sb.append("  <br />");
