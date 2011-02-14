@@ -29,23 +29,25 @@ import com.sells.dao.Orders;
 import com.sells.dao.Sells;
 import com.sells.service.imp.SellsService;
 
-/** 
- * MyEclipse Struts
- * Creation date: 09-07-2007
+/**
+ * MyEclipse Struts Creation date: 09-07-2007
  * 
  * XDoclet definition:
+ * 
  * @struts.action validate="true"
  */
 public class OrderStUpdateAction extends Action {
   private SellsService sellsService;
-  private Log log = LogFactory.getLog(OrderStUpdateAction.class);
+  private final Log log = LogFactory.getLog(OrderStUpdateAction.class);
   private ServletContext servletContext;
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.apache.struts.action.Action#setServlet(org.apache.struts.action.ActionServlet)
+   * @seeorg.apache.struts.action.Action#setServlet(org.apache.struts.action.
+   * ActionServlet)
    */
+  @Override
   public void setServlet(ActionServlet actionServlet) {
     super.setServlet(actionServlet);
     servletContext = actionServlet.getServletContext();
@@ -54,47 +56,60 @@ public class OrderStUpdateAction extends Action {
     this.sellsService = (SellsService) wac.getBean("sellsService");
   }
 
-	/** 
-	 * Method execute
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-    HttpSession session = request.getSession ();
+  /**
+   * Method execute
+   * 
+   * @param mapping
+   * @param form
+   * @param request
+   * @param response
+   * @return ActionForward
+   */
+  @Override
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+      HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession();
     ActionErrors errors = new ActionErrors();
     try {
-      Sells sells = (Sells) session.getAttribute("sells") ;
-      if (sells == null ) {
+      Sells sells = (Sells) session.getAttribute("sells");
+      if (sells == null) {
         return mapping.findForward("sessionLost1");
       }
-      if (StringUtils.isBlank(request.getParameter("orderNo"))){
-        errors.add("errMsg", new ActionError("alert.Error","訂單編號異常"));
+      if (StringUtils.isBlank(request.getParameter("orderNo"))) {
+        errors.add("errMsg", new ActionError("alert.Error", "訂單編號異常"));
         saveErrors(request, errors);
         return mapping.findForward("error3");
       }
-      Orders vo = sellsService.getOrdersById(StringUtils.defaultString(request.getParameter("orderNo")), sells.getSellsNo(), null);
+      Orders vo = sellsService.getOrdersById(StringUtils.defaultString(request
+          .getParameter("orderNo")), sells.getSellsNo(), null);
       vo.setOrderSt(StringUtils.defaultString(request.getParameter("orderSt")));
-      vo.setLogisticDesc(StringUtils.substring(request.getParameter("logisticDesc"),0,150));
-      if ( sellsService.updateOrders(vo)) {
-        if (vo.getOrderSt().equals("10") || vo.getOrderSt().equals("20")) { //代表出貨 或 匯款已收到
+      vo.setLogisticDesc(StringUtils.substring(request
+          .getParameter("logisticDesc"), 0, 150));
+      if (sellsService.updateOrders(vo)) {
+        if (vo.getOrderSt().equals("10") || vo.getOrderSt().equals("20")) { // 代表出貨
+                                                                            // 或
+                                                                            // 匯款已收到
           StringBuffer sb = new StringBuffer();
           sb.append("<html>\n");
           sb.append("<head>\n");
-          sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+          sb
+              .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
           if (vo.getOrderSt().equals("10")) {
-            sb.append("<title>").append(sells.getStoreNm()).append("出貨通知</title>\n");
+            sb.append("<title>").append(sells.getStoreNm()).append(
+                "出貨通知</title>\n");
           } else {
-            sb.append("<title>").append(sells.getStoreNm()).append("收到匯款通知</title>\n");
+            sb.append("<title>").append(sells.getStoreNm()).append(
+                "收到匯款通知</title>\n");
           }
           sb.append("</head>\n");
           sb.append("<body >\n");
-          sb.append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
+          sb
+              .append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
           sb.append("  <tr>\n");
-          sb.append("    <td colspan=\"2\" align=\"center\" bgcolor=\"#F5F5F5\" ><font size=\"2\">").append(sells.getStoreNm());
+          sb
+              .append(
+                  "    <td colspan=\"2\" align=\"center\" bgcolor=\"#F5F5F5\" ><font size=\"2\">")
+              .append(sells.getStoreNm());
           if (vo.getOrderSt().equals("10")) {
             sb.append("訂單出貨通知</font></td>\n");
           } else {
@@ -102,17 +117,22 @@ public class OrderStUpdateAction extends Action {
           }
           sb.append("  </tr>\n");
           sb.append("  <tr>\n");
-          sb.append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">訂單編號：</font></td>\n");
-          sb.append("    <td width=\"640\" bgcolor=\"#F5F5F5\" ><font size=\"2\">").append(vo.getOrderNo()).append("</font></td>\n");
+          sb
+              .append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">訂單編號：</font></td>\n");
+          sb.append(
+              "    <td width=\"640\" bgcolor=\"#F5F5F5\" ><font size=\"2\">")
+              .append(vo.getOrderNo()).append("</font></td>\n");
           sb.append("  </tr>\n");
           sb.append("  <tr>\n");
-          sb.append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">物流說明：</font></td>\n");
-          sb.append("    <td width=\"640\" bgcolor=\"#F5F5F5\" ><font size=\"2\">").append(vo.getLogisticDesc()).append("</font></td>\n");
+          sb
+              .append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">物流說明：</font></td>\n");
+          sb.append(
+              "    <td width=\"640\" bgcolor=\"#F5F5F5\" ><font size=\"2\">")
+              .append(vo.getLogisticDesc()).append("</font></td>\n");
           sb.append("  </tr>\n");
           sb.append("</table>\n");
           sb.append("</body>\n");
           sb.append("</html>\n");
-          
           MailBean mailBean = new MailBean();
           mailBean.setFrom(sells.getEmail());
           mailBean.setFromName(sells.getStoreNm());
@@ -122,35 +142,39 @@ public class OrderStUpdateAction extends Action {
           } else {
             mailBean.setTo(sells.getEmail());
           }
-          mailBean.setBcc("jinwei.lin@gmail.com");
-          mailBean.setMailServer(EcServer.getMailServer());
-          if (vo.getOrderSt().equals("10")) {
-            mailBean.setSubject(sells.getStoreNm()+ " - "+vo.getOrderNo()+" 出貨通知");
+          if ("S0000000136".equals(sells.getSellsNo())) {
+            mailBean.setMailServer("msa.hinet.net");
           } else {
-            mailBean.setSubject(sells.getStoreNm()+ " - "+vo.getOrderNo()+" 收到匯款通知");
+            mailBean.setMailServer(EcServer.getMailServer());
+          }
+          if (vo.getOrderSt().equals("10")) {
+            mailBean.setSubject(sells.getStoreNm() + " - " + vo.getOrderNo()
+                + " 出貨通知");
+          } else {
+            mailBean.setSubject(sells.getStoreNm() + " - " + vo.getOrderNo()
+                + " 收到匯款通知");
           }
           mailBean.setBody(sb.toString());
           mailBean.setCharset("UTF-8");
-          
           try {
             Mail mail = new Mail(mailBean);
           } catch (Exception e) {
-            log.info( e.getMessage());
+            log.info(e.getMessage());
           }
-          sb = null ;
-          
+          sb = null;
         }
-//        Collection items = sellsService.findOrdersItemById(StringUtils.defaultString(request.getParameter("orderNo"))) ;
-//        request.setAttribute("orders",vo);
-//        request.setAttribute("items",items);
-        
-        //發送Email 
-        
-        response.sendRedirect("sellOrderDetail.do?orderNo="+vo.getOrderNo()+"&msg=ok") ;
-//        return mapping.findForward("success");
+        // Collection items =
+        // sellsService.findOrdersItemById(StringUtils.defaultString(request.getParameter("orderNo")))
+        // ;
+        // request.setAttribute("orders",vo);
+        // request.setAttribute("items",items);
+        // 發送Email
+        response.sendRedirect("sellOrderDetail.do?orderNo=" + vo.getOrderNo()
+            + "&msg=ok");
+        // return mapping.findForward("success");
         return null;
       } else {
-        errors.add("errMsg", new ActionError("alert.Error","訂單修改失敗"));
+        errors.add("errMsg", new ActionError("alert.Error", "訂單修改失敗"));
         saveErrors(request, errors);
         return mapping.findForward("error3");
       }
@@ -160,5 +184,5 @@ public class OrderStUpdateAction extends Action {
       saveErrors(request, errors);
       return mapping.findForward("error3");
     }
-	}
+  }
 }
