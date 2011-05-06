@@ -19,38 +19,7 @@
 <META NAME="Revisit-after" content="1">
 <title>${requestScope.sells.storeNm} 專屬購物車</title>
 <link href="car.css" rel="stylesheet" type="text/css">
-<style type="text/css"><!--
-body {
-	font-size: 12px;
-	background-color: #FFFFFF;
-	margin-top: 0px;
-	margin-left: 0px;
-}
-pre {
-white-space: pre-wrap;       /* css-3 */
-white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-white-space: -pre-wrap;      /* Opera 4-6 */
-white-space: -o-pre-wrap;    /* Opera 7 */
-word-wrap: break-word;       /* Internet Explorer 5.5+ */
-} 
-.button {
-	color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-	font-size: 12px;
-	padding-top: 3px;
-	background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-}
-.tb2 {
-    background-color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-	font-size: 12px;
-}
-.tb1 {
-    background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-	font-size: 12px;
-}
-.tb3 {
-	font-size: 12px;
-}-->
-</style>
+<%@ include file="cartcss.jsp" %>
 <script>
 function checkForm(formObj){
   if ( formObj.name.value == '') {
@@ -112,19 +81,22 @@ function checkForm(formObj){
 <center>
 <form name="shopcar" action="orderSend.do" method="Post" onSubmit="return checkForm(this);">
   <table width="800" border="0" align="center" cellspacing="1" class="tb1">
+  <tr>
+    <td height="28" align=center class="tb2"><a href="${requestScope.sells.homepage}"><c:if test="${ ! empty requestScope.sells.logo}"><img src="http://${requestScope.sells.logo}" width="18" height="18" border="0"></c:if>${requestScope.sells.storeNm}</a></td>
+  </tr>
     <tr>
-      <td width="100%" height="28" colspan="2"  class="tb2">
-      <b>．購買商品內容</b></td>
+      <th width="100%" height="28" colspan="2"  class="tb2">
+      <b>．購買商品內容</b></th>
     </tr>
     <tr>
       <td width="100%" bgcolor="#ffffff" >
 <table border=0 width=100% cellspacing="1" class="tb1" cellpadding="2">
         <tr>
-          <td width=62 height="28" align="center" class="tb2">編號</td>
-          <td width="415" align="center" class="tb2">品名(規格)</td>
-          <td align="center" width=122 class="tb2">數量</td>
-          <td align="center" width=55 class="tb2">單價</td>
-          <td align="center" width=55 class="tb2">小計</td>
+          <th width=62 height="28" align="center" class="tb2">編號</th>
+          <th width="415" align="center" class="tb2">品名(規格)</th>
+          <th align="center" width=122 class="tb2">數量</th>
+          <th align="center" width=55 class="tb2">單價</th>
+          <th align="center" width=55 class="tb2">小計</th>
         </tr>
 		 <c:set var="total" scope="request" value="${0}"/>
 		 <c:set var="totQty" scope="request" value="${0}"/>
@@ -147,7 +119,7 @@ function checkForm(formObj){
         </tr>
 		</c:forEach>
         <tr>
-          <td height="28" colspan=6 class="tb2">您共買了 ${totQty} 個商品 </td>
+          <th height="28" colspan=6 class="tb2">您共買了 ${totQty} 個商品 </th>
         </tr>
         <tr>
           <td height="28" colspan=6 bgcolor=#ffffff>商品金額︰${total}元</td>
@@ -162,7 +134,7 @@ function checkForm(formObj){
           <td height="28" colspan=6 bgcolor=#ffffff> 運費金額為︰${requestScope.sells.freightFare}元<input type=hidden name=freight value='${requestScope.sells.freightFare}'> </td>
         </tr>
         <tr>
-          <td height="28" colspan=6 class="tb2">購物總金額為︰${total + requestScope.sells.freightFare}元 (含運費)</td>
+          <th height="28" colspan=6 class="tb2">購物總金額為︰${total + requestScope.sells.freightFare}元 (含運費)</th>
         </tr>
 		</c:if>
 		<c:if test="${requestScope.sells.freightTp == '1'}"><!--價格-->
@@ -172,10 +144,10 @@ function checkForm(formObj){
                 <c:if test="${requestScope.sells.process > '0'}">及貨到付款物流處理費</c:if>）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=6 class="tb2">
+          <th height="28" colspan=6 class="tb2">
 		  購物總金額為︰
 		  <c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (已含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
-		  <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
+		  <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></th>
         </tr>
 		</c:if>
 		<c:if test="${requestScope.sells.freightTp == '2'}"><!--數量-->
@@ -185,11 +157,11 @@ function checkForm(formObj){
                 <c:if test="${requestScope.sells.process > '0'}">及貨到付款物,超商繳費[7-11,萊爾富,全家]流處理費</c:if>）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=6 class="tb2">
+          <th height="28" colspan=6 class="tb2">
 		  購物總金額為
 		  <c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (內含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
 		  <c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
-		  </td>
+		  </th>
         </tr>
 		</c:if>
     <c:if test="${requestScope.sells.freightTp == '3'}"><!--價格，貨到付款一律收取-->
@@ -198,10 +170,10 @@ function checkForm(formObj){
             （當消費金額超過 ${requestScope.sells.nofreightFare}元，享有免運費服務）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=6 class="tb2">
+          <th height="28" colspan=6 class="tb2">
       購物總金額為︰
       <c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (已含運費)<input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
-      <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
+      <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></th>
         </tr>
     </c:if>
 		<c:if test="${requestScope.sells.freightTp == '4'}"><!--數量，貨到付款一律收取-->
@@ -210,12 +182,12 @@ function checkForm(formObj){
             （當數量超過 ${requestScope.sells.nofreightQty}件，享有免運費服務）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=6 class="tb2">
+          <th height="28" colspan=6 class="tb2">
       購物總金額為
       <c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (內含運費)
       <input type=hidden name=freight value='${requestScope.sells.freightFare}'></c:if>
       <c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
-      </td>
+      </th>
         </tr>
     </c:if>
 		</table>  

@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=Utf-8"%>
+<%@ page contentType="text/html; charset=Utf-8"%>
 <jsp:directive.page import="com.sells.dao.Sells"/>
 <jsp:directive.page import="com.sells.dao.LoginData"/>
 <%@ include file="taglibs.jsp"%>
@@ -181,6 +181,7 @@ function checkForm(formObj){
   <option style="color:#f8adcd; background-color: #e96aa0;" ${sessionScope.sells.colorTp == '2' ?'selected' :''} value="2,#e96aa0,#f8adcd">粉紅色系</option>
   <option style="color:#e8f7ae; background-color: #a5c621;" ${sessionScope.sells.colorTp == '3' ?'selected' :''} value="3,#a5c621,#e8f7ae">哇沙米系列</option>
   <option style="color:#a76cc0; background-color: #e6bff6;" ${sessionScope.sells.colorTp == '4' ?'selected' :''} value="4,#e6bff6,#a76cc0">夢幻紫色</option>
+  <option style="color:#D10000; background-color: #730000;" ${sessionScope.sells.colorTp == '5' ?'selected' :''} value="5,#730000,#D10000">紅色</option>
 </select></td>
     </tr>
     <tr >

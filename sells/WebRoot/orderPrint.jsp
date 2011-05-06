@@ -19,32 +19,7 @@
 <META NAME="Revisit-after" content="1">
 <title><bean:message key="app.title"/></title>
 <link href="car.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-<!--
-body {
-  font-size: 12px;
-  background-color: #FFFFFF;
-  margin-top: 0px;
-  margin-left: 0px;
-}
-.button {
-  color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-  font-size: 12px;
-  padding-top: 3px;
-  background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-}
-.tb2 {
-    background-color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-  font-size: 12px;
-}
-.tb1 {
-    background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-  font-size: 12px;
-}
-.tb3 {
-  font-size: 12px;
-}-->
-</style>
+<%@ include file="cartcss.jsp" %>
 </head>
 <body topmargin="0"><script src="urchin.js" type="text/javascript">
 </script>

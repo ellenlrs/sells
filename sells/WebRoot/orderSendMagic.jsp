@@ -16,54 +16,25 @@
 <META NAME="Revisit-after" content="1">
 <title>${requestScope.sells.storeNm} 專屬購物車</title>
 <link href="car.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-<!--
-body {
-	font-size: 12px;
-	background-color: #FFFFFF;
-	margin-top: 0px;
-	margin-left: 0px;
-}
-pre {
-white-space: pre-wrap;       /* css-3 */
-white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-white-space: -pre-wrap;      /* Opera 4-6 */
-white-space: -o-pre-wrap;    /* Opera 7 */
-word-wrap: break-word;       /* Internet Explorer 5.5+ */
-} 
-.button {
-	color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-	font-size: 12px;
-	padding-top: 3px;
-	background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-}
-.tb2 {
-    background-color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-	font-size: 12px;
-}
-.tb1 {
-    background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-	font-size: 12px;
-}
-.tb3 {
-	font-size: 12px;
-}-->
-</style>
+<%@ include file="cartcss.jsp" %>
 </head>
 <body>
 <center>
 <table width="800" border="0" align="center" cellpadding="4" cellspacing="2" class="tb1">
   <tr>
-    <td width="364" class="tb2"><span class="style8" >訂單確定送出，<br>
+    <td height="28" align=center class="tb2"><a href="${requestScope.sells.homepage}"><c:if test="${ ! empty requestScope.sells.logo}"><img src="http://${requestScope.sells.logo}" width="18" height="18" border="0"></c:if>${requestScope.sells.storeNm}</a></td>
+  </tr> 
+  <tr>
+    <th width="364" class="tb2">訂單確定送出，<br>
       非常感謝您的購買!<br>
-    我們同時會將您的訂單寄到您的mail，敬請查收~!</span><BR>
+    我們同時會將您的訂單寄到您的mail，敬請查收~!<BR>
 <span style="background-color: rgb(255, 255, 0);">
 <a href="http://www.magicshop.url.tw/buy/pay.htm" target="_blank">如您選擇超商繳費[7-11,萊爾富,全家]，請按此即可獲得繳費代碼</a><br/>
 </span>
 <span style="text-decoration: none;">如您選擇貨到付款，請將金額準備好在家等待產品送達即可</span>
 <br/>
-<span style="text-decoration: none;">如您選擇ATM或銀行轉帳，請儘速撥空將金額匯款給${requestScope.sells.storeNm}唷</span>
-    </td>
+<span style="text-decoration: none;">如您選擇ATM或銀行轉帳，請儘速撥空將金額匯款給${requestScope.sells.storeNm}</span>
+    </th>
   </tr>
 </table>
 <table width="800" border="0" align="center" cellpadding="5" cellspacing="1" class="tb1">
