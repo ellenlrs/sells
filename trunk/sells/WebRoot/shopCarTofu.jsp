@@ -16,38 +16,7 @@
 <META NAME="Revisit-after" content="1">
 <title>${requestScope.sells.storeNm} 專屬購物車</title>
 <link href="car.css" rel="stylesheet" type="text/css">
-<style type="text/css"><!--
-body {
-  font-size: 12px;
-  background-color: #FFFFFF;
-  margin-top: 0px;
-  margin-left: 0px;
-}
-pre {
-white-space: pre-wrap;       /* css-3 */
-white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-white-space: -pre-wrap;      /* Opera 4-6 */
-white-space: -o-pre-wrap;    /* Opera 7 */
-word-wrap: break-word;       /* Internet Explorer 5.5+ */
-} 
-.button {
-  color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-  font-size: 12px;
-  padding-top: 3px;
-  background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-}
-.tb2 {
-    background-color: ${requestScope.sells.color2 == null || requestScope.sells.color2 == '' ?'#99CCFF':requestScope.sells.color2};
-  font-size: 12px;
-}
-.tb1 {
-    background-color: ${requestScope.sells.color1 == null || requestScope.sells.color1 == '' ?'#006699':requestScope.sells.color1};
-  font-size: 12px;
-}
-.tb3 {
-  font-size: 12px;
-}-->
-</style>
+<%@ include file="cartcss.jsp" %>
 </head>
 <body><center><form name="shopcar" action="shopcar.do" method="Post">
 <table width="800" border="0" align="center" cellspacing="1" class="tb1">
@@ -57,11 +26,11 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
   <tr>
     <td width="100%" bgcolor="#FFFFFF"><table border=0 width=100% cellspacing="1" class="tb1" cellpadding="2">
         <tr class="tb2">
-          <td width=62 height="28" align="center">編號</td>
-          <td width="415" align="center" >品名(規格)</td>
-          <td align="center" width=122 >數量</td>
-          <td align="center" width=55 >單價</td>
-          <td align="center" width=55 >小計</td>
+          <th width=62 height="28" align="center">編號</th>
+          <th width="415" align="center" >品名(規格)</th>
+          <th align="center" width=122 >數量</th>
+          <th align="center" width=55 >單價</th>
+          <th align="center" width=55 >小計</th>
         </tr>
      <c:set var="total" scope="request" value="${0}"/>
      <c:set var="totQty" scope="request" value="${0}"/>
@@ -98,7 +67,7 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
           <td height="28" colspan=5 class="tb2" align="center"><input type="button" onClick="gotoPage('UPDATE')" class="button" value="小結"></td>
         </tr>
         <tr>
-          <td height="28" colspan=5 class="tb2">您選購了 ${totQty} 個商品 </td>
+          <th height="28" colspan=5 class="tb2">您選購了 ${totQty} 個商品 </th>
         </tr>
         <tr>
           <td height="28" colspan=5 bgcolor=#ffffff>最低結帳金額︰${requestScope.sells.lowAccount}元<span class="style1"> <br>
@@ -117,7 +86,7 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
           <td height="28" colspan=5 bgcolor=#ffffff> 運費金額為︰冰品:${requestScope._toIcfare}元,非冰品:${requestScope._toOtfare}元<input type=hidden name=freight value='${requestScope._toIcfare+requestScope._toOtfare}'></td>
         </tr>
         <tr>
-          <td height="28" colspan=5 class="tb2">購物總金額為︰${total + requestScope._toIcfare+requestScope._toOtfare}元 (含運費)</td>
+          <th height="28" colspan=5 class="tb2">購物總金額為︰${total + requestScope._toIcfare+requestScope._toOtfare}元 (含運費)</th>
         </tr>
     </c:if>
 <c:if test="${requestScope.sells.freightTp == '1'}"><!--價格-->
@@ -127,10 +96,10 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
                 <c:if test="${requestScope.sells.process > '0'}">及貨到付款物流處理費</c:if>）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=5 class="tb2">
+          <th height="28" colspan=5 class="tb2">
       購物總金額為︰
       <c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope._toIcfare+requestScope._toOtfare}元 (已含運費)<input type=hidden name=freight value='${requestScope._toIcfare+requestScope._toOtfare}'></c:if>
-      <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
+      <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></th>
         </tr>
     </c:if>
     <c:if test="${requestScope.sells.freightTp == '2'}"><!--數量-->
@@ -140,11 +109,11 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
                 <c:if test="${requestScope.sells.process > '0'}">及貨到付款物流處理費</c:if>）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=5 class="tb2">
+          <th height="28" colspan=5 class="tb2">
       購物總金額為
       <c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope._toIcfare+requestScope._toOtfare}元 (內含運費)<input type=hidden name=freight value='${requestScope._toIcfare+requestScope._toOtfare}'></c:if>
       <c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
-      </td>
+      </th>
         </tr>
     </c:if>
     <c:if test="${requestScope.sells.freightTp == '3'}"><!--價格，貨到付款一律收取-->
@@ -153,10 +122,10 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
             （當消費金額超過 ${requestScope.sells.nofreightFare}元，享有免運費服務）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=5 class="tb2">
+          <th height="28" colspan=5 class="tb2">
       購物總金額為︰
       <c:if test="${total <= requestScope.sells.nofreightFare}">${total + requestScope._toIcfare+requestScope._toOtfare}元 (已含運費)<input type=hidden name=freight value='${requestScope._toIcfare+requestScope._toOtfare}'></c:if>
-      <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></td>
+      <c:if test="${total > requestScope.sells.nofreightFare}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if></th>
         </tr>
     </c:if>
     <c:if test="${requestScope.sells.freightTp == '4'}"><!--數量，貨到付款一律收取-->
@@ -165,12 +134,12 @@ word-wrap: break-word;       /* Internet Explorer 5.5+ */
             （當數量超過 ${requestScope.sells.nofreightQty}件，享有免運費服務）</span></td>
         </tr>
         <tr>
-          <td height="28" colspan=5 class="tb2">
+          <th height="28" colspan=5 class="tb2">
       購物總金額為
       <c:if test="${totQty <= requestScope.sells.nofreightQty}">${total + requestScope._toIcfare+requestScope._toOtfare}元 (內含運費)
       <input type=hidden name=freight value='${requestScope._toIcfare+requestScope._toOtfare}'></c:if>
       <c:if test="${totQty >requestScope.sells.nofreightQty}">${total}元 (免運費)<input type=hidden name=freight value='0'></c:if>
-      </td>
+      </th>
         </tr>
     </c:if>
     <tr>
