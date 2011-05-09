@@ -1,10 +1,13 @@
 package com.sells.service.imp;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.sells.common.util.PageControl;
 import com.sells.common.util.SellsSearch;
 import com.sells.dao.LoginData;
@@ -25,7 +28,7 @@ import com.sells.dao.SellsRecDAO;
 import com.sells.search.OrdersSearch;
 
 public class SellsServiceImp implements SellsService {
-  private Log log = LogFactory.getLog(SellsServiceImp.class);
+  private final Log log = LogFactory.getLog(SellsServiceImp.class);
   private LoginDataDAO loginDataDAO;
   private LoginRecDAO loginRecDAO;
   private SellsDAO sellsDAO;
@@ -87,17 +90,18 @@ public class SellsServiceImp implements SellsService {
     return vo;
   }
 
-  public Orders saveOrders(Orders vo, OrdersItem[] items) throws Exception {
+  public Orders saveOrders(Orders vo, ArrayList<OrdersItem> items)
+      throws Exception {
     try {
       vo = ordersDAO.save(vo);
-      for (int i = 0; i < items.length; i++) {
+      int i = 0;
+      for (OrdersItem obj : items) {
+        i++;
         OrdersItemId id = new OrdersItemId();
         id.setOrderNo(vo.getOrderNo());
-        id.setSeqno(i + 1);
-        items[i].setId(id);
-        //log.info("orderNo:"+id.getOrderNo());
-        //log.info("seqNo:"+id.getSeqno());
-        ordersItemDAO.save(items[i]);
+        id.setSeqno(i);
+        obj.setId(id);
+        ordersItemDAO.save(obj);
       }
       return vo;
     } catch (Exception e) {
@@ -176,8 +180,8 @@ public class SellsServiceImp implements SellsService {
         || StringUtils.defaultString(search.getSort()).equals("sells_no")) {
       search.setSort("Sells.sells_no");
     } else if (StringUtils.defaultString(search.getSort()).equals("expiredDt")
-        || StringUtils.defaultString(search.getSort()).toLowerCase().equals(
-            "expired_dt")) {
+        || StringUtils.defaultString(search.getSort()).toLowerCase()
+            .equals("expired_dt")) {
       search.setSort("Sells.expired_dt");
     } else {
       search.setSort("Sells.sells_no");
@@ -255,19 +259,21 @@ public class SellsServiceImp implements SellsService {
   public void setOrdersMsgDAO(OrdersMsgDAO ordersMsgDAO) {
     this.ordersMsgDAO = ordersMsgDAO;
   }
+
   /**
    * 修改訂單
+   * 
    * @param vo
    */
   public boolean updateOrders(Orders vo) throws Exception {
     try {
-
       ordersDAO.update(vo);
-      return true ;
+      return true;
     } catch (Exception e) {
       throw new Exception("訂單寫入失敗:" + e.getMessage());
     }
   }
+
   /**
    * 新增
    * 
@@ -290,7 +296,8 @@ public class SellsServiceImp implements SellsService {
    * 
    * @param vo
    */
-  public void saveOrdersMsg(OrdersMsg vo, String orderNo,Orders ovo) throws Exception {
+  public void saveOrdersMsg(OrdersMsg vo, String orderNo, Orders ovo)
+      throws Exception {
     try {
       OrdersMsgId id = new OrdersMsgId();
       id.setOrderNo(orderNo);
@@ -302,6 +309,7 @@ public class SellsServiceImp implements SellsService {
       throw new Exception("留言失敗:" + e.getMessage());
     }
   }
+
   /**
    * 修改留言狀態
    * 
@@ -319,15 +327,16 @@ public class SellsServiceImp implements SellsService {
       throw new Exception("修改失敗:" + e.getMessage());
     }
   }
-  
+
   /**
-   * 查詢留言內容 
+   * 查詢留言內容
+   * 
    * @param orderNo
    * @param st
    * @return
    */
-  public Collection findOrdersMsg(String orderNo,String st) {
-    return ordersMsgDAO.findBySt(orderNo,st);
+  public Collection findOrdersMsg(String orderNo, String st) {
+    return ordersMsgDAO.findBySt(orderNo, st);
   }
 
   public Orders getOrdersById(String ordersNo) {
