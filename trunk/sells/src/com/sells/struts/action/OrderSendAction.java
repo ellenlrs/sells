@@ -4,6 +4,8 @@
  */
 package com.sells.struts.action;
 
+import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,8 +90,8 @@ public class OrderSendAction extends Action {
         return mapping.findForward("error2");
       }
       if (sells.getExpiredDt().compareTo(DateUtils.getToday("yyyy/MM/dd")) < 0) {
-        errors.add("errMsg", new ActionError("alert.Error", "商家使用期限至："
-            + sells.getExpiredDt()));
+        errors.add("errMsg",
+            new ActionError("alert.Error", "商家使用期限至：" + sells.getExpiredDt()));
         saveErrors(request, errors);
         return mapping.findForward("error2");
       }
@@ -162,8 +164,8 @@ public class OrderSendAction extends Action {
                     + StringUtils.defaultString(request.getParameter("desc")),
                 0, 1500));
       } else {
-        orders.setDescTxt(StringUtils.substring(StringUtils
-            .defaultString(request.getParameter("desc")), 0, 1500));
+        orders.setDescTxt(StringUtils.substring(
+            StringUtils.defaultString(request.getParameter("desc")), 0, 1500));
       }
       orders.setEmail(request.getParameter("email"));
       orders.setIp(request.getRemoteAddr());
@@ -184,15 +186,15 @@ public class OrderSendAction extends Action {
           || request.getParameter("payTp").startsWith("7-11繳款")
           || request.getParameter("payTp").startsWith("萊爾富繳款")
           || request.getParameter("payTp").startsWith("全家繳款")) {
-        orders.setProcess(Integer.parseInt(StringUtils.defaultString(request
-            .getParameter("process"), "0")));
+        orders.setProcess(Integer.parseInt(StringUtils.defaultString(
+            request.getParameter("process"), "0")));
       }
-      orders.setFreightfar(Integer.parseInt(StringUtils.defaultString(request
-          .getParameter("freight"), "0")));
+      orders.setFreightfar(Integer.parseInt(StringUtils.defaultString(
+          request.getParameter("freight"), "0")));
       orders.setPayTp(StringUtils.substring(request.getParameter("payTp"), 0,
           20));
-      orders.setExportAccount(StringUtils.substring(StringUtils
-          .defaultString(request.getParameter("exportId")), 0, 5));
+      orders.setExportAccount(StringUtils.substring(
+          StringUtils.defaultString(request.getParameter("exportId")), 0, 5));
       orders.setMemberNo(StringUtils.defaultString(request
           .getParameter("memberNo")));
       String[] itemNo = request.getParameterValues("itemNo");
@@ -201,22 +203,58 @@ public class OrderSendAction extends Action {
       String[] spec2 = request.getParameterValues("spec2");
       String[] qty = request.getParameterValues("qty");
       String[] price = request.getParameterValues("price");
-      OrdersItem[] item = new OrdersItem[itemNo.length];
+      String orderItemText = request.getParameter("orderItem");
+      String specItem1 = StringUtils.defaultString(request
+          .getParameter("specItem1"));
+      String specItem2 = StringUtils.defaultString(request
+          .getParameter("specItem2"));
+      ArrayList item = new ArrayList();
       for (int i = 0; i < itemNo.length; i++) {
-        item[i] = new OrdersItem();
-        item[i].setItemNm(StringUtils.substring(StringUtils
-            .defaultString(itemNm[i]), 0, 100));
-        item[i].setItemNo(StringUtils.substring(StringUtils
-            .defaultString(itemNo[i]), 0, 20));
-        item[i].setItemSpec1(StringUtils.substring(StringUtils
-            .defaultString(spec1[i]), 0, 300));
-        item[i].setItemSpec2(StringUtils.substring(StringUtils
-            .defaultString(spec2[i]), 0, 300));
-        item[i].setQty(new Integer(qty[i]));
-        item[i].setPrice(new Integer(price[i]));
-        amt = amt + item[i].getQty() * item[i].getPrice();
+        OrdersItem obj = new OrdersItem();
+        obj.setItemNm(StringUtils.substring(
+            StringUtils.defaultString(itemNm[i]), 0, 100));
+        obj.setItemNo(StringUtils.substring(
+            StringUtils.defaultString(itemNo[i]), 0, 20));
+        obj.setItemSpec1(StringUtils.substring(
+            StringUtils.defaultString(spec1[i]), 0, 300));
+        obj.setItemSpec2(StringUtils.substring(
+            StringUtils.defaultString(spec2[i]), 0, 300));
+        obj.setQty(new Integer(qty[i]));
+        obj.setPrice(new Integer(price[i]));
+        amt = amt + obj.getQty() * obj.getPrice();
+        item.add(obj);
       }
       orders.setAmt(amt);
+      System.out.println("specItem1:" + specItem1);
+      System.out.println("specItem2:" + specItem2);
+      System.out.println("datacompare:"
+          + "20110601".compareTo(DateUtils.getToday("yyyyMMdd")));
+      if ("S0000000136".equals(sells.getSellsNo())
+          && "20110601".compareTo(DateUtils.getToday("yyyyMMdd")) >= 0) { // lulu才有&
+                                                                          // 在20110601以前才有
+        if (!"".equals(specItem1)) {
+          OrdersItem obj = new OrdersItem();
+          obj.setItemNm("璐璐寶寶小背巾一件");
+          obj.setItemNo("MD0101");
+          obj.setItemSpec1("");
+          obj.setItemSpec2("");
+          obj.setQty(1);
+          obj.setPrice(0);
+          item.add(obj);
+          orderItemText = "MD0101  璐璐寶寶小背巾一件 數量:1 單價:0 小計0<BR>" + orderItemText;
+        } else if (!"".equals(specItem2)) {
+          OrdersItem obj = new OrdersItem();
+          obj.setItemNm("孩子就是要這樣玩-2266親子聚會指南一本");
+          obj.setItemNo("MD0202");
+          obj.setItemSpec1("");
+          obj.setItemSpec2("");
+          obj.setQty(1);
+          obj.setPrice(0);
+          item.add(obj);
+          orderItemText = "MD0202  孩子就是要這樣玩-2266親子聚會指南一本 數量:1 單價:0 小計0<BR>"
+              + orderItemText;
+        }
+      }
       // 再加上寫入訂單明細
       orders = sellsService.saveOrders(orders, item);
       // GetOrderNo
@@ -226,34 +264,30 @@ public class OrderSendAction extends Action {
         StringBuffer sb = new StringBuffer();
         sb.append("<html>\n");
         sb.append("<head>\n");
-        sb
-            .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
-        sb.append("<title>").append(sells.getStoreNm()).append(
-            " 訂購信函</title>\n");
+        sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+        sb.append("<title>").append(sells.getStoreNm())
+            .append(" 訂購信函</title>\n");
         sb.append("</head>\n");
         sb.append("<body >\n");
-        sb
-            .append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"3\" bgcolor=\"#006699\">\n");
+        sb.append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"3\" bgcolor=\"#006699\">\n");
         sb.append("  <tr>\n");
-        sb
-            .append("    <td bgcolor=\"#99CCFF\" class=\"content3\">訂購單送出，非常謝謝您的購買!<br>\n");
+        sb.append("    <td bgcolor=\"#99CCFF\" class=\"content3\">訂購單送出，非常謝謝您的購買!<br>\n");
         sb.append("      我們同時會將您的訂單寄到您的mail，敬請查收~!</td>\n");
         sb.append("  </tr>\n");
         sb.append("</table>\n");
         sb.append("<br>\n");
-        sb
-            .append("  <table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
+        sb.append("  <table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
         sb.append("    <tr>\n");
         sb.append("      <td bgcolor=\"#F5F5F5\" class=\"en\">此信件為自動回覆信函，來自 ")
             .append(sells.getStoreNm()).append(" 請勿直接回信<br>\n");
         sb.append("   ").append(sells.getStoreNm()).append(" 網址：<a href='")
-            .append(sells.getHomepage()).append("'>").append(
-                sells.getHomepage()).append("</a>\n");
+            .append(sells.getHomepage()).append("'>")
+            .append(sells.getHomepage()).append("</a>\n");
         sb.append("   <hr noshade size=1>訂單編號︰").append(orders.getOrderNo())
             .append("<hr noshade size=1>\n");
-        sb.append("   ").append(request.getParameter("name")).append(
-            " 您好您訂購的商品清單如下：<br>\n");
-        sb.append("   ").append(request.getParameter("orderItem")).append("\n");
+        sb.append("   ").append(request.getParameter("name"))
+            .append(" 您好您訂購的商品清單如下：<br>\n");
+        sb.append("   ").append(orderItemText).append("\n");
         sb.append("   <hr noshade size=1>\n");
         sb.append("   訂購人資料<br>   \n");
         sb.append("   姓名︰").append(request.getParameter("name")).append("\n");
@@ -266,8 +300,8 @@ public class OrderSendAction extends Action {
         }
         sb.append("\n");
         sb.append("   <br>\n");
-        sb.append("   E-mail︰").append(request.getParameter("email")).append(
-            "\n");
+        sb.append("   E-mail︰").append(request.getParameter("email"))
+            .append("\n");
         sb.append("   <br>\n");
         sb.append("   電話︰").append(request.getParameter("tel")).append("\n");
         sb.append("   <br>\n");
@@ -293,8 +327,8 @@ public class OrderSendAction extends Action {
                     "<BR>")).append("\n");
         sb.append("   <hr noshade size=1>\n");
         sb.append("   ").append(sells.getStoreNm()).append(" 網址：<a href='")
-            .append(sells.getHomepage()).append("'>").append(
-                sells.getHomepage()).append("</a>\n");
+            .append(sells.getHomepage()).append("'>")
+            .append(sells.getHomepage()).append("</a>\n");
         sb.append("   </td>\n");
         sb.append("    </tr>\n");
         sb.append("</table>\n");
@@ -342,10 +376,10 @@ public class OrderSendAction extends Action {
         session.removeAttribute("itemSeq");
         session.removeAttribute(sellsNo);
         request.setAttribute("name", request.getParameter("name"));
-        request.setAttribute("deTime", StringUtils.defaultString(request
-            .getParameter("deTime")));
-        request.setAttribute("addressList", StringUtils.defaultString(request
-            .getParameter("addressList")));
+        request.setAttribute("deTime",
+            StringUtils.defaultString(request.getParameter("deTime")));
+        request.setAttribute("addressList",
+            StringUtils.defaultString(request.getParameter("addressList")));
         request.setAttribute("zip", request.getParameter("zip"));
         request.setAttribute("address", request.getParameter("address"));
         request.setAttribute("email", request.getParameter("email"));
@@ -356,7 +390,7 @@ public class OrderSendAction extends Action {
         request.setAttribute("payType", request.getParameter("payTp"));
         request.setAttribute("exportId", request.getParameter("exportId"));
         request.setAttribute("payDesc", request.getParameter("payDesc"));
-        request.setAttribute("orderItem", request.getParameter("orderItem"));
+        request.setAttribute("orderItem", orderItemText);
         request.setAttribute("sells", sells);
         if (sellsNo.equals("S0000000135")) {
           return mapping.findForward("successMagicshop");
