@@ -20,7 +20,13 @@
 <title>${requestScope.sells.storeNm} 專屬購物車</title>
 <link href="car.css" rel="stylesheet" type="text/css">
 <%@ include file="cartcss.jsp" %>
+<% 
+String todaystring = com.sells.common.util.DateUtils.getToday("yyyyMMdd") ;
+pageContext.setAttribute("date", com.sells.common.util.DateUtils.getToday("yyyyMMdd"));
+%>
+<c:set var="today" value="${date}" />
 <script>
+//${today},<%=todaystring%>
 function checkForm(formObj){
   if ( formObj.name.value == '') {
      alert("請輸入姓名!");
@@ -99,6 +105,7 @@ function checkForm(formObj){
           <th align="center" width=55 class="tb2">小計</th>
         </tr>
 		 <c:set var="total" scope="request" value="${0}"/>
+		 <c:set var="lulutotal" scope="request" value="${0}"/>
 		 <c:set var="totQty" scope="request" value="${0}"/>
 		 <c:forEach items="${requestScope.car}" var="item" varStatus="s">
         <tr>
@@ -112,12 +119,41 @@ function checkForm(formObj){
           <td align="center" width=122 bgcolor="#FFFFFF">
 		   ${item.qty}
 		   <c:set var="total" scope="request" value="${total + item.qty * item.price}"/>
+		   <c:if test="${item.price > 200 && requestScope.sells.sellsNo =='S0000000136'}">
+		   <c:set var="lulutotal" scope="request" value="${lulutotal + item.qty}"/>
+		   </c:if>
 		   <c:set var="totQty" scope="request" value="${totQty + item.qty}"/>
 		  </td>
           <td align="center" width=55 bgcolor="#FFFFFF">${item.price}</td>
           <td align="center" width=55 bgcolor="#FFFFFF">${item.qty * item.price}</td>
         </tr>
 		</c:forEach>
+		<c:if test="${today <'20110601'}">
+		<c:if test="${lulutotal == 1}">
+		<tr>
+		  <td height="30" colspan=6 bgcolor="#FFFFFF"><label><input type=checkbox value="1" name="specItem1">我要索取好禮「璐璐寶寶小背巾一件」(活動至2011/05/31截止)</label></td>
+		</tr>
+		</c:if>
+		<c:if test="${lulutotal > 1}">
+    <tr>
+      <td height="78" colspan=6 bgcolor="#FFFFFF">
+      <script>
+      function specCheck(obj,se){
+      	if (se == '1') {
+      		obj.specItem2.checked = false ;
+      	} 
+      	if (se == '2') {
+      		obj.specItem1.checked = false ;
+      	}
+      }
+      </script>
+      好禮二選一(活動至2011/05/31截止)<br>
+      <label id=spec1><input type=checkbox value="1" name="specItem1" id=spec1 onClick="specCheck(this.form,'1')">「璐璐寶寶小背巾一件」</label><br>
+      <label id=spec1><input type=checkbox value="2" name="specItem2" id=spec2 onClick="specCheck(this.form,'2')">「孩子就是要這樣玩-2266親子聚會指南一本」</label><br>
+      </td>
+    </tr>
+    </c:if>
+		</c:if>
         <tr>
           <th height="28" colspan=6 class="tb2">您共買了 ${totQty} 個商品 </th>
         </tr>
