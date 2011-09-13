@@ -40,6 +40,8 @@ public interface SellsService {
   public Orders saveOrders(Orders vo, ArrayList<OrdersItem> items)
       throws Exception;
 
+  public void expiryNotice() throws Exception;
+
   // public void findLoginDataSearch(String loginId) throws Exception ;
   /**
    * 新增賣場
