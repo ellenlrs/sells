@@ -8,6 +8,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sells.common.mail.Mail;
+import com.sells.common.mail.MailBean;
+import com.sells.common.util.DateUtils;
+import com.sells.common.util.EcServer;
 import com.sells.common.util.PageControl;
 import com.sells.common.util.SellsSearch;
 import com.sells.dao.LoginData;
@@ -213,6 +217,70 @@ public class SellsServiceImp implements SellsService {
       search.setLoginDataList(loginData);
     }
     return search;
+  }
+
+  public void expiryNotice() throws Exception {
+    SellsSearch seSearch = new SellsSearch();
+    seSearch.setExpiredDt(DateUtils.getTodayAddDays(5, "yyyy/MM") + "/%");
+    List list = sellsDAO.findSellsSearch(seSearch);
+    Sells admin = findSellsById(EcServer.getAdminNo());
+    for (int i = 0; i < list.size(); i++) {
+      Object[] obj = (Object[]) list.get(i);
+      Sells sellsvo = (Sells) obj[1];
+      StringBuffer sb = new StringBuffer();
+      sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+      sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+      sb.append("<head>");
+      sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+      sb.append("<title> ").append(sellsvo.getSellsNm())
+          .append(" 即將到期通知信</title>");
+      sb.append("</head>");
+      sb.append("");
+      sb.append("<body>");
+      sb.append("<p><br />");
+      sb.append("  親愛的 ").append(sellsvo.getSellsNm()).append(" 您好：");
+      sb.append("  <br />");
+      sb.append("</p>");
+      sb.append("您的帳號將於：").append(sellsvo.getExpiredDt()).append("到期，");
+      sb.append("您的帳號等級：<font color='#FF3300'>");
+      if (sellsvo.getSellsLv().equals("T")) {
+        sb.append("試用會員");
+      } else if (sellsvo.getSellsLv().equals("R")) {
+        sb.append("正式會員");
+      }
+      // sb.append(sellsvo.getSellsLv()).append(" <br />");
+      sb.append("</font>，若您確定繼續使用，請登入系統後，點選<font color='#FF3300'>購買延長</font>服務。<br />");
+      sb.append("</p><p>感謝您使用本服務。<br />");
+      sb.append("  <br />");
+      sb.append("若有任何問題請到<a href=\"").append(admin.getHomepage())
+          .append("/Sells/help.jsp\">問題反應區</a>與站長聯絡。<br />");
+      sb.append("<br />");
+      sb.append("站長敬上。</p>");
+      sb.append("<p><a href=\"").append(admin.getHomepage()).append("\">")
+          .append(admin.getStoreNm()).append("</a></p>");
+      sb.append("</body>");
+      sb.append("</html>");
+      MailBean mailBean = new MailBean();
+      mailBean.setFrom(admin.getEmail());
+      mailBean.setFromName(admin.getSellsNm());
+      mailBean.setTo(sellsvo.getEmail());
+      // mailBean.setTo("jinwei.lin@gmail.com");
+      mailBean.setToName(sellsvo.getSellsNm());
+      mailBean.setBcc(admin.getEmail());
+      if ("S0000000136".equals(sellsvo.getSellsNo())) {
+        mailBean.setMailServer("msa.hinet.net");
+      } else {
+        mailBean.setMailServer(EcServer.getMailServer());
+      }
+      mailBean.setSubject(admin.getStoreNm() + " - 即將到期通知信");
+      mailBean.setBody(sb.toString());
+      mailBean.setCharset("UTF-8");
+      try {
+        Mail mail = new Mail(mailBean);
+      } catch (Exception e) {
+        log.info("GetPasswdAction mail e:" + e.getMessage());
+      }
+    }
   }
 
   // 查詢訂單基本資料
