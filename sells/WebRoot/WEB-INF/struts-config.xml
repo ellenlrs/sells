@@ -116,7 +116,9 @@
         redirect="true" />
     </action>
 
-    
+    <action path="/batchExpiryNotice" type="com.sells.struts.action.batch.BatchExpiryNoticeAction">
+      <forward name="success" path="/batch/expiryNotice.jsp" />
+    </action>
     <action path="/qrpwdMember" type="com.sells.struts.action.member.QrpwdMemberAction">
       <forward name="success" path="/member/pwdMemberResult.jsp" />
     </action>
