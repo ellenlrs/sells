@@ -248,14 +248,11 @@ public class SellsServiceImp implements SellsService {
       } else if (sellsvo.getSellsLv().equals("R")) {
         sb.append("正式會員");
       }
-      // sb.append(sellsvo.getSellsLv()).append(" <br />");
-      sb.append("</font>，若您確定繼續使用，請登入系統後，點選<font color='#FF3300'>購買延長</font>服務。<br />");
-      sb.append("</p><p>感謝您使用本服務。<br />");
-      sb.append("  <br />");
-      sb.append("若有任何問題請到<a href=\"").append(admin.getHomepage())
-          .append("/Sells/help.jsp\">問題反應區</a>與站長聯絡。<br />");
-      sb.append("<br />");
-      sb.append("站長敬上。</p>");
+      sb.append("</font>，若您確定繼續使用及收費說明，請登入<a href=\"")
+          .append(admin.getHomepage()).append("\">").append(admin.getStoreNm())
+          .append("後，點選<font color='#FF3300'>購買延長</font>服務。<br />");
+      sb.append("</p>");
+      sb.append("<p>站長敬上。</p>");
       sb.append("<p><a href=\"").append(admin.getHomepage()).append("\">")
           .append(admin.getStoreNm()).append("</a></p>");
       sb.append("</body>");
