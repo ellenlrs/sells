@@ -45,9 +45,9 @@ function checkForm(formObj){
   || formObj.freightTp[3].checked || formObj.freightTp[4].checked )){
      alert("請設定免運費方式!");
 	 formObj.freightTp[0].focus();
-	 return false 
+	 return false ;
   }
-  if( formObj.freightTp[1].checked  ) {
+  if( formObj.freightTp[1].checked || formObj.freightTp[3].checked ) {
 	  if(formObj.nofreightFare.value == "" ) {
 		 alert("請輸入免運費金額!");
 		 formObj.nofreightFare.focus();
@@ -60,7 +60,7 @@ function checkForm(formObj){
 	  }
 	  formObj.nofreightQty.value = 0 ;
   }
-  if (formObj.freightTp[2].checked){
+  if (formObj.freightTp[2].checked || formObj.freightTp[4].checked){
 	  if(formObj.nofreightQty.value == "" ) {
 		 alert("請輸入免運費數量!");
 		 formObj.nofreightQty.focus();
@@ -72,6 +72,14 @@ function checkForm(formObj){
 		 return false ;
 	  }
 	  formObj.nofreightFare.value = 0 ;
+  }
+  if (formObj.freightTp[0].checked ) {
+	  if(isNaN(formObj.nofreightFare.value)) {
+		  formObj.nofreightFare.value = 0;
+	  }
+	  if(isNaN(formObj.nofreightQty.value)) {
+		  formObj.nofreightQty.value = 0;
+	  }
   }
   if(formObj.lowAccount.value == "" ) {
      alert("請輸入最低購買金額!");
@@ -87,7 +95,7 @@ function checkForm(formObj){
 </script>
 <body topmargin="0">
 <%@ include file="chkSession.jsp"%><%@ include file="top1.jsp"%>
-<form name="form1" method="post" action="sellFare.do" onSubmit="return checkForm(this.form);" >
+<form name="form1" method="post" action="sellFare.do" onSubmit="return checkForm(this);" >
   <table width="90%" border="0" align="center" cellpadding="8" cellspacing="0">
     <tr>
       <td align="center" bgcolor="#0066CC" class="style6" colspan="2" ><b>購物車店家運費設定</b></td>
