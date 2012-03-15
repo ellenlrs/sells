@@ -22,7 +22,7 @@
 <center>
 <table width="800" border="0" align="center" cellpadding="4" cellspacing="2" class="tb1">
   <tr>
-    <td height="28" align=center class="tb2"><a href="${requestScope.sells.homepage}"><c:if test="${ ! empty requestScope.sells.logo}"><img src="http://${requestScope.sells.logo}" width="18" height="18" border="0"></c:if>${requestScope.sells.storeNm}</a></td>
+    <td height="28" align=center class="tb2"><a href="${requestScope.sells.homepage}"><c:if test="${ ! empty requestScope.sells.logo}"><img src="${requestScope.sells.logo}" width="18" height="18" border="0"></c:if>${requestScope.sells.storeNm}</a></td>
   </tr> 
   <tr>
     <th width="364" class="tb2">訂單確定送出，<br>

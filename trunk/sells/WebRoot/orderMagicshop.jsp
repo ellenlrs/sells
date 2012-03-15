@@ -82,7 +82,7 @@ function checkForm(formObj){
 <form name="shopcar" action="orderSend.do" method="Post" onSubmit="return checkForm(this);">
   <table width="800" border="0" align="center" cellspacing="1" class="tb1">
   <tr>
-    <td height="28" align=center class="tb2"><a href="${requestScope.sells.homepage}"><c:if test="${ ! empty requestScope.sells.logo}"><img src="http://${requestScope.sells.logo}" width="18" height="18" border="0"></c:if>${requestScope.sells.storeNm}</a></td>
+    <td height="28" align=center class="tb2"><a href="${requestScope.sells.homepage}"><c:if test="${ ! empty requestScope.sells.logo}"><img src="${requestScope.sells.logo}" width="18" height="18" border="0"></c:if>${requestScope.sells.storeNm}</a></td>
   </tr>
     <tr>
       <th width="100%" height="28" colspan="2"  class="tb2">
