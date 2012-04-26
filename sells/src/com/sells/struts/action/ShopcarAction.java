@@ -31,193 +31,222 @@ import com.sells.dao.CarItem;
 import com.sells.dao.Sells;
 import com.sells.service.imp.SellsService;
 
-/** 
- * MyEclipse Struts
- * Creation date: 02-15-2007
+/**
+ * MyEclipse Struts Creation date: 02-15-2007
  * 
  * XDoclet definition:
+ * 
  * @struts.action validate="true"
  * @struts.action-forward name="success" path="/shopCar1.jsp"
  */
 public class ShopcarAction extends Action {
-  private SellsService sellsService ;
+  private SellsService sellsService;
   private Log log = LogFactory.getLog(ShopcarAction.class);
   private ServletContext servletContext;
-  
-  /* (non-Javadoc)
-   * @see org.apache.struts.action.Action#setServlet(org.apache.struts.action.ActionServlet)
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.apache.struts.action.Action#setServlet(org.apache.struts.action.
+   * ActionServlet)
    */
   public void setServlet(ActionServlet actionServlet) {
-      super.setServlet(actionServlet);
-      servletContext = actionServlet.getServletContext();
-      WebApplicationContext wac = WebApplicationContextUtils
-              .getRequiredWebApplicationContext(servletContext);
-      this.sellsService =  (SellsService) wac.getBean("sellsService");
+    super.setServlet(actionServlet);
+    servletContext = actionServlet.getServletContext();
+    WebApplicationContext wac = WebApplicationContextUtils
+        .getRequiredWebApplicationContext(servletContext);
+    this.sellsService = (SellsService) wac.getBean("sellsService");
   }
 
-	/** 
-	 * Method execute
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) {
-    HttpSession session = request.getSession ();
+  /**
+   * Method execute
+   * 
+   * @param mapping
+   * @param form
+   * @param request
+   * @param response
+   * @return ActionForward
+   */
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+      HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession();
     ActionErrors errors = new ActionErrors();
     String sellsNo = StringUtils.defaultString(request.getParameter("sells"));
-    int _toIcfare = 0 ;
-    int _toOtfare = 0 ;
-    int _iceQ = 0 ;
-    int _iotQ = 0 ;
+    int _toIcfare = 0;
+    int _toOtfare = 0;
+    int _iceQ = 0;
+    int _iotQ = 0;
     try {
       if (sellsNo.equals("")) {
         errors.add("errMsg", new ActionError("alert.Error", "商家代號錯誤!"));
         saveErrors(request, errors);
         return mapping.findForward("globalFail");
       }
-      Sells sells= (Sells) sellsService.findSellsById(sellsNo);
-      if (sells == null ) {
+      Sells sells = (Sells) sellsService.findSellsById(sellsNo);
+      if (sells == null) {
         errors.add("errMsg", new ActionError("alert.Error", "商家代號錯誤!"));
         saveErrors(request, errors);
         return mapping.findForward("globalFail");
-      } 
-      if (sells.getExpiredDt().compareTo(DateUtils.getToday("yyyy/MM/dd")) < 0 ) {
-        errors.add("errMsg", new ActionError("alert.Error", "商家使用期限至："+sells.getExpiredDt()));
+      }
+      if (sells.getExpiredDt().compareTo(DateUtils.getToday("yyyy/MM/dd")) < 0) {
+        errors.add("errMsg",
+            new ActionError("alert.Error", "商家使用期限至：" + sells.getExpiredDt()));
         saveErrors(request, errors);
         return mapping.findForward("globalFail");
       }
-      
-      if ( StringUtils.defaultString(request.getParameter("func")).equals("REMOVEALL") ) {//全部清除
-        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo) ;
-        if ( carItemList != null ) {
-          carItemList.removeAll(carItemList) ;
+      if (StringUtils.defaultString(request.getParameter("func")).equals(
+          "REMOVEALL")) {// 全部清除
+        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo);
+        if (carItemList != null) {
+          carItemList.removeAll(carItemList);
         }
         session.removeAttribute("itemSeq");
         session.removeAttribute(sellsNo);
-      } else if ( StringUtils.defaultString(request.getParameter("func")).equals("REMOVE") ) {//刪除購物車
-        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo) ;
-        if ( carItemList != null ) {
-          for ( int i =0 ;i < carItemList.size() ;i++ ) {
+      } else if (StringUtils.defaultString(request.getParameter("func"))
+          .equals("REMOVE")) {// 刪除購物車
+        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo);
+        if (carItemList != null) {
+          for (int i = 0; i < carItemList.size(); i++) {
             CarItem item = (CarItem) carItemList.get(i);
-            if (item.getSeqno() == Integer.parseInt(request.getParameter("removeSeqno"))) {
+            if (item.getSeqno() == Integer.parseInt(request
+                .getParameter("removeSeqno"))) {
               carItemList.remove(i);
-              break ;
+              break;
             }
           }
         }
         session.setAttribute("itemSeq", session.getAttribute("itemSeq"));
         session.setAttribute(sellsNo, carItemList);
         request.setAttribute("car", carItemList);
-      } else if ( StringUtils.defaultString(request.getParameter("func")).equals("UPDATE") ) {//修改購物車
+      } else if (StringUtils.defaultString(request.getParameter("func"))
+          .equals("UPDATE")) {// 修改購物車
         ArrayList carItemList = new ArrayList();
-        String[] itemNm = request.getParameterValues("itemNm") ;
-        String[] itemNo = request.getParameterValues("itemNo") ;
-        String[] price = request.getParameterValues("price") ;
-        String[] qty = request.getParameterValues("qty") ;
-        String[] spec1 = request.getParameterValues("spec1") ;
-        String[] spec2 = request.getParameterValues("spec2") ;
-        String[] seqno = request.getParameterValues("seqno") ;
-
-        for(int i=0 ; i< itemNo.length ; i++ ){
+        String[] itemNm = request.getParameterValues("itemNm");
+        String[] itemNo = request.getParameterValues("itemNo");
+        String[] price = request.getParameterValues("price");
+        String[] qty = request.getParameterValues("qty");
+        String[] spec1 = request.getParameterValues("spec1");
+        String[] spec2 = request.getParameterValues("spec2");
+        String[] seqno = request.getParameterValues("seqno");
+        for (int i = 0; i < itemNo.length; i++) {
           CarItem carItem = new CarItem();
           carItem.setItemNm(itemNm[i]);
           carItem.setItemNo(itemNo[i]);
-          carItem.setPrice(price[i]);
-          carItem.setQty(qty[i]);
+          carItem.setPrice(StringUtils.trim(price[i]));
+          carItem.setQty(StringUtils.trim(qty[i]));
           carItem.setSpec1(spec1[i]);
           carItem.setSpec2(spec2[i]);
           carItem.setSeqno(Integer.parseInt(seqno[i]));
-          if (carItemList == null ){
+          if (carItemList == null) {
             carItemList = new ArrayList();
           }
           if (StringUtils.isNotBlank(itemNo[i])) {
             if (itemNo[i].startsWith("I")) {
-              _iceQ = _iceQ +Integer.parseInt(StringUtils.defaultIfEmpty(qty[i], "0")) ;
+              _iceQ = _iceQ
+                  + Integer.parseInt(StringUtils.defaultIfEmpty(qty[i], "0"));
             } else {
-              _iotQ = _iotQ +Integer.parseInt(StringUtils.defaultIfEmpty(qty[i], "0")) ;
+              _iotQ = _iotQ
+                  + Integer.parseInt(StringUtils.defaultIfEmpty(qty[i], "0"));
             }
           } else {
-            _iotQ = _iotQ +Integer.parseInt(StringUtils.defaultIfEmpty(qty[i], "0")) ;
+            _iotQ = _iotQ
+                + Integer.parseInt(StringUtils.defaultIfEmpty(qty[i], "0"));
           }
           carItemList.add(carItem);
         }
         session.setAttribute("itemSeq", session.getAttribute("itemSeq"));
         session.setAttribute(sellsNo, carItemList);
         request.setAttribute("car", carItemList);
-      } else if ( StringUtils.defaultString(request.getParameter("func")).equals("VIEW") ) { //檢視我的購物車
-        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo) ;
+      } else if (StringUtils.defaultString(request.getParameter("func"))
+          .equals("VIEW")) { // 檢視我的購物車
+        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo);
         session.setAttribute(sellsNo, carItemList);
         request.setAttribute("car", carItemList);
-      } else if ( StringUtils.defaultString(request.getParameter("func")).equals("ADDTOFU") ) { //檢視我的購物車
-        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo) ;
-        String[] carts = request.getParameterValues("cart") ;
-        log.info("cart size="+carts.length);
-        
-        int seqno = 1 ;
-        //if (carItemList == null ) { //新增
-          carItemList = new ArrayList();
-          for(int i=0; i < carts.length; i++ ) {
-            String[] cartsDetail = carts[i].split(",");
-            CarItem carItem = new CarItem();
-            /*
-            log.info("cart 0="+cartsDetail[0]);
-            log.info("cart 1="+cartsDetail[1]);
-            log.info("cart 2="+cartsDetail[2]);
-            log.info("cart 3="+cartsDetail[3]);
-            log.info("cart 4="+cartsDetail[4]);
-            log.info("cart 5="+cartsDetail[5]);
-            */            
-            carItem.setItemNm(cartsDetail[1]);
-            carItem.setItemNo(cartsDetail[0]);
-            carItem.setPrice(cartsDetail[2]);
-            carItem.setQty(cartsDetail[3]);
-            carItem.setSpec1(cartsDetail[4]);
-            carItem.setSpec2(cartsDetail[5]);
-            carItem.setSeqno(seqno);
-            if (StringUtils.isNotBlank(cartsDetail[0])) {
-              if (cartsDetail[0].startsWith("I")) {
-                _iceQ = _iceQ +Integer.parseInt(StringUtils.defaultIfEmpty(cartsDetail[3], "0")) ;
-              } else {
-                _iotQ = _iotQ +Integer.parseInt(StringUtils.defaultIfEmpty(cartsDetail[3], "0")) ;
-              }
+      } else if (StringUtils.defaultString(request.getParameter("func"))
+          .equals("ADDTOFU")) { // 檢視我的購物車
+        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo);
+        String[] carts = request.getParameterValues("cart");
+        log.info("cart size=" + carts.length);
+        int seqno = 1;
+        // if (carItemList == null ) { //新增
+        carItemList = new ArrayList();
+        for (int i = 0; i < carts.length; i++) {
+          String[] cartsDetail = carts[i].split(",");
+          CarItem carItem = new CarItem();
+          /*
+           * log.info("cart 0="+cartsDetail[0]);
+           * log.info("cart 1="+cartsDetail[1]);
+           * log.info("cart 2="+cartsDetail[2]);
+           * log.info("cart 3="+cartsDetail[3]);
+           * log.info("cart 4="+cartsDetail[4]);
+           * log.info("cart 5="+cartsDetail[5]);
+           */
+          carItem.setItemNm(cartsDetail[1]);
+          carItem.setItemNo(cartsDetail[0]);
+          carItem.setPrice(StringUtils.trim(cartsDetail[2]));
+          carItem.setQty(StringUtils.trim(cartsDetail[3]));
+          carItem.setSpec1(cartsDetail[4]);
+          carItem.setSpec2(cartsDetail[5]);
+          carItem.setSeqno(seqno);
+          if (StringUtils.isNotBlank(cartsDetail[0])) {
+            if (cartsDetail[0].startsWith("I")) {
+              _iceQ = _iceQ
+                  + Integer.parseInt(StringUtils.defaultIfEmpty(cartsDetail[3],
+                      "0"));
             } else {
-              _iotQ = _iotQ +Integer.parseInt(StringUtils.defaultIfEmpty(cartsDetail[3], "0")) ;
+              _iotQ = _iotQ
+                  + Integer.parseInt(StringUtils.defaultIfEmpty(cartsDetail[3],
+                      "0"));
             }
-            carItemList.add(carItem);
-            seqno++;
-          //}
+          } else {
+            _iotQ = _iotQ
+                + Integer.parseInt(StringUtils.defaultIfEmpty(cartsDetail[3],
+                    "0"));
+          }
+          carItemList.add(carItem);
+          seqno++;
+          // }
         }
         session.setAttribute("itemSeq", seqno);
         session.setAttribute(sellsNo, carItemList);
         request.setAttribute("car", carItemList);
-      } else { //新加入購物車
-        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo) ;
+      } else { // 新加入購物車
+        ArrayList carItemList = (ArrayList) session.getAttribute(sellsNo);
         CarItem carItem = new CarItem();
-        log.info("CharaEncoding:"+request.getCharacterEncoding());
-        log.info("getContentType:"+request.getContentType());
-        log.info("getHeader:"+request.getHeader("Content-Type"));
-        for (Enumeration enum1=request.getHeaderNames(); enum1.hasMoreElements();) {
-          String headerName = (String)enum1.nextElement();
-          log.info("Name = " + headerName+";header:"+request.getHeader(headerName));
+        log.info("CharaEncoding:" + request.getCharacterEncoding());
+        log.info("getContentType:" + request.getContentType());
+        log.info("getHeader:" + request.getHeader("Content-Type"));
+        for (Enumeration enum1 = request.getHeaderNames(); enum1
+            .hasMoreElements();) {
+          String headerName = (String) enum1.nextElement();
+          log.info("Name = " + headerName + ";header:"
+              + request.getHeader(headerName));
         }
-        carItem.setItemNm(java.net.URLDecoder.decode(StringUtils.defaultString(request.getParameter("itemNm")),"Utf-8"));
-        carItem.setItemNo(java.net.URLDecoder.decode(StringUtils.defaultString(request.getParameter("itemNo")),"Utf-8"));
-        carItem.setPrice(StringUtils.defaultString(request.getParameter("price")));
-        carItem.setQty(StringUtils.defaultString(request.getParameter("qty")));
-        carItem.setSpec1(java.net.URLDecoder.decode(StringUtils.defaultString(request.getParameter("spec1")),"Utf-8"));
-        carItem.setSpec2(java.net.URLDecoder.decode(StringUtils.defaultString(request.getParameter("spec2")),"Utf-8"));
-        int seqno = 1 ;
-        if (carItemList == null ){
+        carItem
+            .setItemNm(java.net.URLDecoder.decode(
+                StringUtils.defaultString(request.getParameter("itemNm")),
+                "Utf-8"));
+        carItem
+            .setItemNo(java.net.URLDecoder.decode(
+                StringUtils.defaultString(request.getParameter("itemNo")),
+                "Utf-8"));
+        carItem.setPrice(StringUtils.trim(StringUtils.defaultString(request
+            .getParameter("price"))));
+        carItem.setQty(StringUtils.trim(StringUtils.defaultString(request
+            .getParameter("qty"))));
+        carItem.setSpec1(java.net.URLDecoder.decode(
+            StringUtils.defaultString(request.getParameter("spec1")), "Utf-8"));
+        carItem.setSpec2(java.net.URLDecoder.decode(
+            StringUtils.defaultString(request.getParameter("spec2")), "Utf-8"));
+        int seqno = 1;
+        if (carItemList == null) {
           carItemList = new ArrayList();
           carItem.setSeqno(seqno);
         } else {
           try {
-            seqno = (Integer) session.getAttribute("itemSeq") ;
-          } catch(Exception e2) {
-            seqno = 1 ;
+            seqno = (Integer) session.getAttribute("itemSeq");
+          } catch (Exception e2) {
+            seqno = 1;
           }
           seqno++;
           carItem.setSeqno(seqno);
@@ -228,49 +257,45 @@ public class ShopcarAction extends Action {
         request.setAttribute("car", carItemList);
       }
       request.setAttribute("sells", sells);
-      String sellsNoFromSession = ObjectUtils.toString(session.getAttribute("icSells"));
+      String sellsNoFromSession = ObjectUtils.toString(session
+          .getAttribute("icSells"));
       String memNo = ObjectUtils.toString(session.getAttribute("icMem"));
       String memNm = ObjectUtils.toString(session.getAttribute("icMemNm"));
-      if ( sellsNoFromSession.equals(sellsNo)) {
+      if (sellsNoFromSession.equals(sellsNo)) {
         request.setAttribute("sess", "haveSess");
       } else {
         request.setAttribute("sess", "noSess");
       }
       session.setAttribute("icSells", sellsNoFromSession);
-      session.setAttribute("icMem",memNo);
-      session.setAttribute("icMemNm",memNm);
+      session.setAttribute("icMem", memNo);
+      session.setAttribute("icMemNm", memNm);
       if (sellsNo.equals("S0000000026")) {
         /*
-         * 運費計算規則
-         * 冰品：
-         * 　＜　２４　＝　１５０元
-         * 　＞＝２４　＜４８　＝２１０元
-         * 　＞＝４８　＝２７０元
-         * 非冰品：
-         * 　＜＝４　＠１０元
+         * 運費計算規則 冰品： 　＜　２４　＝　１５０元 　＞＝２４　＜４８　＝２１０元 　＞＝４８　＝２７０元 非冰品： 　＜＝４　＠１０元
          * 　＞４　８０元
          */
-        if (_iceQ > 0 ) {
-          if (_iceQ < 24 ) {
-            _toIcfare = 150 ;
-          } else if (_iceQ >=24 && _iceQ < 48) {
-            _toIcfare = 210 ;
+        if (_iceQ > 0) {
+          if (_iceQ < 24) {
+            _toIcfare = 150;
+          } else if (_iceQ >= 24 && _iceQ < 48) {
+            _toIcfare = 210;
           } else {
-            _toIcfare = 270 ;
+            _toIcfare = 270;
           }
         }
-        if (_iotQ > 0){
+        if (_iotQ > 0) {
           if (_iotQ <= 4) {
-            _toOtfare = _iotQ * 10 ;
+            _toOtfare = _iotQ * 10;
           } else {
-            _toOtfare = 80 ;
+            _toOtfare = 80;
           }
         }
         request.setAttribute("_toIcfare", _toIcfare);
         request.setAttribute("_toOtfare", _toOtfare);
         return mapping.findForward("successTofu");
-      }else {
-        if ( StringUtils.defaultString(request.getParameter("formtp")).equals("free")) {
+      } else {
+        if (StringUtils.defaultString(request.getParameter("formtp")).equals(
+            "free")) {
           return mapping.findForward("success2");
         } else {
           if (sellsNo.equals("S0000000135")) {
@@ -282,12 +307,13 @@ public class ShopcarAction extends Action {
           }
         }
       }
-    } catch (Exception e ) {
+    } catch (Exception e) {
       log.info("Shopcar e:" + e.toString());
       if (sellsNo.equals("S0000000026")) {
         return mapping.findForward("successTofu");
-      }else {
-        if ( StringUtils.defaultString(request.getParameter("formtp")).equals("free")) {
+      } else {
+        if (StringUtils.defaultString(request.getParameter("formtp")).equals(
+            "free")) {
           return mapping.findForward("success2");
         } else {
           if (sellsNo.equals("S0000000135")) {
@@ -300,5 +326,5 @@ public class ShopcarAction extends Action {
         }
       }
     }
-	}
+  }
 }
