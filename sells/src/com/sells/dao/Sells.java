@@ -41,6 +41,34 @@ public class Sells implements java.io.Serializable {
   private String payType711;
   private String payTypeHilife;
   private String payTypeFamily;
+  private String payType6;
+  private String encKey;
+  private String greenStoreId;
+  private Integer codeProcess;
+
+  public Integer getCodeProcess() {
+    return codeProcess;
+  }
+
+  public void setCodeProcess(Integer codeProcess) {
+    this.codeProcess = codeProcess;
+  }
+
+  public String getPayType6() {
+    return payType6;
+  }
+
+  public void setPayType6(String payType6) {
+    this.payType6 = payType6;
+  }
+
+  public String getEncKey() {
+    return encKey;
+  }
+
+  public void setEncKey(String encKey) {
+    this.encKey = encKey;
+  }
 
   // Constructors
   /** default constructor */
@@ -351,5 +379,13 @@ public class Sells implements java.io.Serializable {
 
   public void setPayTypeFamily(String payTypeFamily) {
     this.payTypeFamily = payTypeFamily;
+  }
+
+  public String getGreenStoreId() {
+    return greenStoreId;
+  }
+
+  public void setGreenStoreId(String greenStoreId) {
+    this.greenStoreId = greenStoreId;
   }
 }

@@ -108,5 +108,18 @@
         <property name="payTypeFamily" type="java.lang.String">
             <column name="PAY_TYPE_FAMILY" length="1" />
         </property>
+        
+        <property name="payType6" type="java.lang.String">
+            <column name="PAY_TYPE6" length="1" />
+        </property>
+        <property name="greenStoreId" type="java.lang.String">
+            <column name="GREEN_STORE_ID" length="20" />
+        </property>
+        <property name="encKey" type="java.lang.String">
+            <column name="ENC_KEY" length="30" />
+        </property>
+        <property name="codeProcess" type="java.lang.Integer">
+            <column name="CODE_PROCESS" />
+        </property>
     </class>
 </hibernate-mapping>
