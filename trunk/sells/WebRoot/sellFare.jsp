@@ -40,7 +40,12 @@ function checkForm(formObj){
      alert("貨到付款處理費 必須是數字!");
 	 formObj.process.focus();
 	 return false ;
-  } 
+  }
+  if(isNaN(formObj.codeProcess.value)) {
+	alert("超商代碼繳款處理費 必須是數字!");
+	formObj.codeProcess.focus();
+	return false ;
+  }
   if ( !(formObj.freightTp[0].checked || formObj.freightTp[1].checked || formObj.freightTp[2].checked 
   || formObj.freightTp[3].checked || formObj.freightTp[4].checked )){
      alert("請設定免運費方式!");
@@ -110,6 +115,12 @@ function checkForm(formObj){
       <td height="26" align="center" bgcolor="#FFFFFF" class="style5">貨到付款處理費<BR><span class="style1">（與免運費規則相同）</span></td>
 	  <td bgcolor="#FFFFFF">$
 	    <input name="process" size="9" value="${sessionScope.sells.process}" type="text">
+          <span class="style5">元</span> <span class="style1">(不設定請輸入0)</span></td>
+    </tr>
+	<tr>
+      <td height="26" align="center" bgcolor="#FFFFFF" class="style5">超商代碼繳款處理費<BR></td>
+	  <td bgcolor="#FFFFFF">$
+	    <input name="codeProcess" size="9" value="${sessionScope.sells.codeProcess}" type="text">
           <span class="style5">元</span> <span class="style1">(不設定請輸入0)</span></td>
     </tr>
         <tr>

@@ -151,7 +151,7 @@ V. 其他回應可能為所帶參數不正確，請查照交易狀態回覆碼�
           <c:set var="total" scope="request" value="${total + orders.process}"/>
         </tr>
 	      <tr>
-          <td height="28" colspan=6 bgcolor="#FFFFFF" class="style3" >貨到付款：${orders.process} </td>
+          <td height="28" colspan=6 bgcolor="#FFFFFF" class="style3" >處理費：${orders.process} </td>
         </tr>
         <tr>
           <td height="28" colspan=6 bgcolor="#FFFFFF" class="style3" >購物總金額：${total} </td>
@@ -182,11 +182,35 @@ V. 其他回應可能為所帶參數不正確，請查照交易狀態回覆碼�
           <td bgcolor="#FFFFFF" height="25"><span class="style55">手機︰</span></td>
           <td bgcolor="#FFFFFF"><span class="style55">${orders.mobile} </span></td>
         </tr>
-		        <tr>
+		<tr>
           <td bgcolor="#FFFFFF" height="25"><span class="style1">付款方式︰</span></td>
           <td bgcolor="#FFFFFF"><span class="style1">${orders.payTp} </span></td>
         </tr>
-		        <tr>
+        <c:if test="${orders.payTp == 'ibon代碼繳款' || orders.payTp == '全家.萊爾富.OK.代碼繳款'}">
+		<tr>
+          <td bgcolor="#FFFFFF" height="25"><span class="style1">繳費超商</span></td>
+          <td bgcolor="#FFFFFF"><span class="style1">${orders.payfrom}</span></td>
+        </tr>
+		<tr>
+          <td bgcolor="#FFFFFF" height="25"><span class="style1">處理時間</span></td>
+          <td bgcolor="#FFFFFF">${fn:substring(orders.procDate, 0, 4)}/${fn:substring(orders.procDate, 4, 6)}/${fn:substring(orders.procDate, 6, 8)} 
+  ${fn:substring(orders.procTime, 0, 2)}:${fn:substring(orders.procTime, 2, 4)}</td>
+        </tr>
+		<tr>
+          <td bgcolor="#FFFFFF" height="25"><span class="style1">繳費代碼</span></td>
+          <td bgcolor="#FFFFFF">${orders.payno}</td>
+        </tr>
+		<tr>
+          <td bgcolor="#FFFFFF" height="25"><span class="style1">交易單號</span></td>
+          <td bgcolor="#FFFFFF">${orders.tsr}</td>
+        </tr>
+        <tr>
+          <td bgcolor="#FFFFFF" height="25"><span class="style1">繳費期限</span></td>
+          <td bgcolor="#FFFFFF">${fn:substring(orders.expireDate, 0, 4)}/${fn:substring(orders.expireDate, 4, 6)}/${fn:substring(orders.expireDate, 6, 8)} 
+  ${fn:substring(orders.expireTime, 0, 2)}:${fn:substring(orders.expireTime, 2, 4)}</td>
+        </tr>
+        </c:if>
+		<tr>
           <td bgcolor="#FFFFFF" height="25"><span class="style1">轉出帳號後5碼︰</span></td>
           <td bgcolor="#FFFFFF"><span class="style1">${orders.exportAccount} </span></td>
         </tr>
