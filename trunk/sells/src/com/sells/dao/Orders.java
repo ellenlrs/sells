@@ -39,6 +39,70 @@ public class Orders implements java.io.Serializable {
   private String engName;
   private String createDt;
   private String modiDt;
+  private String tsr;
+  private String payno;
+  private String expireDate;
+  private String expireTime;
+  private String procDate;
+
+  public String getProcDate() {
+    return procDate;
+  }
+
+  public void setProcDate(String procDate) {
+    this.procDate = procDate;
+  }
+
+  public String getProcTime() {
+    return procTime;
+  }
+
+  public void setProcTime(String procTime) {
+    this.procTime = procTime;
+  }
+
+  private String procTime;
+  private String payfrom;
+
+  public String getTsr() {
+    return tsr;
+  }
+
+  public void setTsr(String tsr) {
+    this.tsr = tsr;
+  }
+
+  public String getPayfrom() {
+    return payfrom;
+  }
+
+  public void setPayfrom(String payfrom) {
+    this.payfrom = payfrom;
+  }
+
+  public String getPayno() {
+    return payno;
+  }
+
+  public void setPayno(String payno) {
+    this.payno = payno;
+  }
+
+  public String getExpireDate() {
+    return expireDate;
+  }
+
+  public void setExpireDate(String expireDate) {
+    this.expireDate = expireDate;
+  }
+
+  public String getExpireTime() {
+    return expireTime;
+  }
+
+  public void setExpireTime(String expireTime) {
+    this.expireTime = expireTime;
+  }
 
   // Constructors
   /** default constructor */

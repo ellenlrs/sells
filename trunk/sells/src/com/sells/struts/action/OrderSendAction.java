@@ -5,6 +5,7 @@
 package com.sells.struts.action;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.sells.common.mail.Mail;
 import com.sells.common.mail.MailBean;
+import com.sells.common.payment.GreenPayment;
 import com.sells.common.util.DateUtils;
 import com.sells.common.util.EcServer;
 import com.sells.dao.Orders;
@@ -133,6 +135,10 @@ public class OrderSendAction extends Action {
       if (StringUtils.defaultString(request.getParameter("payTp")).indexOf(
           "貨到付款") == -1
           && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+              "ibon代碼繳款") == -1
+          && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
+              "全家.萊爾富.OK.代碼繳款") == -1
+          && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
               "線上刷卡") == -1
           && StringUtils.defaultString(request.getParameter("payTp")).indexOf(
               "7-11繳款") == -1
@@ -177,10 +183,15 @@ public class OrderSendAction extends Action {
       orders.setZip(request.getParameter("zip"));
       orders.setCreateDt(DateUtils.getToday());
       orders.setProcess(0);
-      if (!request.getParameter("payTp").equals("線上刷卡")) {
-        orders.setOrderSt("00");
-      } else {
+      orders.setOrderSt("00");
+      if (request.getParameter("payTp").equals("線上刷卡")
+          || request.getParameter("payTp").equals("ibon代碼繳款")
+          || request.getParameter("payTp").equals("全家.萊爾富.OK.代碼繳款")) {
         orders.setOrderSt("80");
+        if (request.getParameter("payTp").equals("ibon代碼繳款")
+            || request.getParameter("payTp").equals("全家.萊爾富.OK.代碼繳款")) {
+          orders.setProcess(sells.getCodeProcess());
+        }
       }
       if (request.getParameter("payTp").startsWith("貨到付款")
           || request.getParameter("payTp").startsWith("7-11繳款")
@@ -225,38 +236,36 @@ public class OrderSendAction extends Action {
         item.add(obj);
       }
       orders.setAmt(amt);
-      System.out.println("specItem1:" + specItem1);
-      System.out.println("specItem2:" + specItem2);
-      System.out.println("datacompare:"
-          + "20110601".compareTo(DateUtils.getToday("yyyyMMdd")));
-      if ("S0000000136".equals(sells.getSellsNo())
-          && "20110601".compareTo(DateUtils.getToday("yyyyMMdd")) >= 0) { // lulu才有&
-                                                                          // 在20110601以前才有
-        if (!"".equals(specItem1)) {
-          OrdersItem obj = new OrdersItem();
-          obj.setItemNm("璐璐寶寶小背巾一件");
-          obj.setItemNo("MD0101");
-          obj.setItemSpec1("");
-          obj.setItemSpec2("");
-          obj.setQty(1);
-          obj.setPrice(0);
-          item.add(obj);
-          orderItemText = "MD0101  璐璐寶寶小背巾一件 數量:1 單價:0 小計0<BR>" + orderItemText;
-        } else if (!"".equals(specItem2)) {
-          OrdersItem obj = new OrdersItem();
-          obj.setItemNm("孩子就是要這樣玩-2266親子聚會指南一本");
-          obj.setItemNo("MD0202");
-          obj.setItemSpec1("");
-          obj.setItemSpec2("");
-          obj.setQty(1);
-          obj.setPrice(0);
-          item.add(obj);
-          orderItemText = "MD0202  孩子就是要這樣玩-2266親子聚會指南一本 數量:1 單價:0 小計0<BR>"
-              + orderItemText;
-        }
-      }
       // 再加上寫入訂單明細
       orders = sellsService.saveOrders(orders, item);
+      if (request.getParameter("payTp").startsWith("ibon代碼繳款")
+          || request.getParameter("payTp").startsWith("全家.萊爾富.OK.代碼繳款")) {
+        GreenPayment grPayment = new GreenPayment();
+        try {
+          Map rtnMap = grPayment.trade(orders, sells,
+              request.getParameter("payTp"));
+          log.error("os1:" + rtnMap);
+          orders.setOrderSt("00");
+          orders.setTsr(rtnMap.get("tsr").toString());
+          orders.setExpireDate(rtnMap.get("expire_date").toString());
+          orders.setExpireTime(rtnMap.get("expire_time").toString());
+          orders.setPayno(rtnMap.get("payno").toString());
+          sellsService.updateOrders(orders);
+        } catch (Exception e) {
+          StringBuffer checksum = new StringBuffer();
+          checksum.append(orders.getOrderNo()).append(orders.getSellsNo())
+              .append("iCart856069");
+          String icartChecksum = DigestUtils.md5Hex(checksum.toString());
+          request.setAttribute("orderNo", orders.getOrderNo());
+          request.setAttribute("checksum", icartChecksum);
+          request.setAttribute("sells", sells);
+          request.setAttribute("msg", e.getMessage());
+          request.setAttribute("payTp", orders.getPayTp());
+          log.error("os1:" + e.getMessage());
+          return mapping.findForward("paymentErr");
+          // 交易失敗
+        }
+      }
       // GetOrderNo
       // 發送Email:
       Sells admin = sellsService.findSellsById(EcServer.getAdminNo());
@@ -287,7 +296,13 @@ public class OrderSendAction extends Action {
             .append("<hr noshade size=1>\n");
         sb.append("   ").append(request.getParameter("name"))
             .append(" 您好您訂購的商品清單如下：<br>\n");
-        sb.append("   ").append(orderItemText).append("\n");
+        sb.append("   ").append(orderItemText).append("<br>\n");
+        sb.append("   運費︰").append(orders.getFreightfar()).append("元<br>\n");
+        sb.append("   處理費︰").append(orders.getProcess()).append("元<br>\n");
+        sb.append("   購物總金額︰<font color='#FF3300' size='5'>")
+            .append(
+                orders.getAmt() + orders.getProcess() + orders.getFreightfar())
+            .append("元</font>\n");
         sb.append("   <hr noshade size=1>\n");
         sb.append("   訂購人資料<br>   \n");
         sb.append("   姓名︰").append(request.getParameter("name")).append("\n");
@@ -308,7 +323,27 @@ public class OrderSendAction extends Action {
         sb.append("   手機︰").append(request.getParameter("mobile")).append("\n");
         sb.append("   <br>\n");
         sb.append("   付款方式︰").append(request.getParameter("payTp"))
-            .append("\n");
+            .append("<BR>\n");
+        if (("ibon代碼繳款".equals(orders.getPayTp()) || "全家.萊爾富.OK.代碼繳款"
+            .equals(orders.getPayTp()))
+            && StringUtils.isNotEmpty(orders.getPayno())) {
+          sb.append("  繳費金額︰ <font color='#FF3300' size='5'>")
+              .append(
+                  orders.getAmt() + orders.getProcess()
+                      + orders.getFreightfar()).append("元</font>   <br>\n");
+          sb.append("  繳費代碼︰ <font color='#FF3300' size='5'>")
+              .append(orders.getPayno()).append("</font>   <br>\n");
+          sb.append("  繳費期限︰ <font color='#FF3300' size='5'>")
+              .append(orders.getExpireDate().substring(0, 4)).append("/")
+              .append(orders.getExpireDate().substring(4, 6)).append("/")
+              .append(orders.getExpireDate().substring(6, 8)).append(" ");
+          sb.append(orders.getExpireTime().substring(0, 2)).append(":");
+          sb.append(orders.getExpireTime().substring(2, 4)).append("")
+              .append("</font>   <br><BR>\n");
+          sb.append(
+              "   >> <a href='http://www.icart.tw/Sells/payment01.jsp' target='_blank'>繳費方式說明</a> <<")
+              .append("<BR><BR>\n");
+        }
         sb.append("   <br>\n");
         sb.append("   轉出帳號後5碼︰").append(request.getParameter("exportId"))
             .append("\n");
@@ -391,6 +426,7 @@ public class OrderSendAction extends Action {
         request.setAttribute("exportId", request.getParameter("exportId"));
         request.setAttribute("payDesc", request.getParameter("payDesc"));
         request.setAttribute("orderItem", orderItemText);
+        request.setAttribute("orders", orders);
         request.setAttribute("sells", sells);
         if (sellsNo.equals("S0000000135")) {
           return mapping.findForward("successMagicshop");

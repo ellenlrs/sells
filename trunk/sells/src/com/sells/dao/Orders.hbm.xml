@@ -102,5 +102,26 @@
         <property name="modiDt" type="java.lang.String">
             <column name="MODI_DT" length="20" />
         </property>
+        <property name="tsr" type="java.lang.String">
+            <column name="TSR" length="30" />
+        </property>
+        <property name="payno" type="java.lang.String">
+            <column name="PAYNO" length="30" />
+        </property>
+        <property name="expireDate" type="java.lang.String">
+            <column name="EXPIRE_DATE" length="8" />
+        </property>
+        <property name="expireTime" type="java.lang.String">
+            <column name="EXPIRE_TIME" length="6" />
+        </property>
+        <property name="payfrom" type="java.lang.String">
+            <column name="PAYFROM" length="20" />
+        </property>
+        <property name="procDate" type="java.lang.String">
+            <column name="PROC_DATE" length="8" />
+        </property>
+        <property name="procTime" type="java.lang.String">
+            <column name="PROC_TIME" length="6" />
+        </property>
     </class>
 </hibernate-mapping>
