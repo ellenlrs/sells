@@ -96,6 +96,7 @@
       <forward name="success" path="/orderSend.jsp" />
       <forward name="payment" path="/paymentSend.jsp" />
       <forward name="successMagicshop" path="/orderSendMagic.jsp" />
+      <forward name="paymentErr" path="/paymentErr.jsp" />
     </action>
     <action path="/carCode5" type="com.sells.struts.action.CarCode5Action">
       <forward name="success" path="/carCode5.jsp" />
@@ -185,8 +186,6 @@
 
     <action path="/sellOrderMessageUpdate" type="com.sells.struts.action.order.SellOrderMessageUpdateAction" >
       
-      
-      
     </action>
 
     <action path="/sellOrderDetail" type="com.sells.struts.action.order.SellOrderDetailAction" >
@@ -226,10 +225,14 @@
       <forward name="success" path="/paymentFeedback.jsp" />
     </action>
     <action path="/paymentReceive" type="com.sells.struts.action.PaymentReceiveAction" >
-      
       <forward name="fail" path="/paymentErr.jsp" />
       <forward name="fail-check" path="/paymentErrCheck.jsp" />
       <forward name="success" path="/paymentReceive.jsp" />
+    </action>
+    
+    <action path="/greenPaymentReceive" type="com.sells.struts.action.GreenPaymentReceiveAction" >
+      <forward name="fail" path="/greenPaymentErr.jsp" />
+      <forward name="success" path="/greenPaymentReceive.jsp" />
     </action>
     <action path="/reOrder" type="com.sells.struts.action.ReOrderAction" >
       <forward name="success" path="/reOrder.jsp" />
@@ -242,24 +245,6 @@
     <action path="/sellOrderPrint" type="com.sells.struts.action.order.SellOrderPrintAction" >
       <forward name="success" path="/orderPrint.jsp" />
     </action>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
   </action-mappings>
 
