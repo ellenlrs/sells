@@ -63,23 +63,26 @@ function checkForm(formObj){
 	 formObj.payTp.focus();
 	 return false ;
   }  
-  if ( formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('貨到付款') == -1 && 
+  if ( formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('貨到付款') == -1 &&
+	   formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('ibon代碼繳款') == -1 &&
+	   formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('全家.萊爾富.OK.代碼繳款') == -1 && 
        formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('線上刷卡') == -1 && 
        formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('7-11繳款') == -1 && 
        formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('萊爾富繳款') == -1 && 
        formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('全家繳款') == -1 && 
        formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('無摺存款') == -1) {
     if ( formObj.exportId.value=="" ) {
-      alert("請輸入轉出帳號後5碼!");
+        alert("請輸入轉出帳號後5碼!");
 	    formObj.payTp.focus();
 	    return false ;
-	  }
+	}
   }
   if ( formObj.desc.value.length > 1500 ) {
     alert("備註不可超過1500字數,你目前字數:" +formObj.desc.value.length  );
     formObj.mobile.focus();
     return false ;
-  } 
+  }
+  
 }
 </script>
 </head>
@@ -128,32 +131,6 @@ function checkForm(formObj){
           <td align="center" width=55 bgcolor="#FFFFFF">${item.qty * item.price}</td>
         </tr>
 		</c:forEach>
-		<c:if test="${today <'20110601'}">
-		<c:if test="${lulutotal == 1}">
-		<tr>
-		  <td height="30" colspan=6 bgcolor="#FFFFFF"><label><input type=checkbox value="1" name="specItem1">我要索取好禮「璐璐寶寶小背巾一件」(活動至2011/05/31截止)</label></td>
-		</tr>
-		</c:if>
-		<c:if test="${lulutotal > 1}">
-    <tr>
-      <td height="78" colspan=6 bgcolor="#FFFFFF">
-      <script>
-      function specCheck(obj,se){
-      	if (se == '1') {
-      		obj.specItem2.checked = false ;
-      	} 
-      	if (se == '2') {
-      		obj.specItem1.checked = false ;
-      	}
-      }
-      </script>
-      好禮二選一(活動至2011/05/31截止)<br>
-      <label id=spec1><input type=checkbox value="1" name="specItem1" id=spec1 onClick="specCheck(this.form,'1')">「璐璐寶寶小背巾一件」</label><br>
-      <label id=spec1><input type=checkbox value="2" name="specItem2" id=spec2 onClick="specCheck(this.form,'2')">「孩子就是要這樣玩-2266親子聚會指南一本」</label><br>
-      </td>
-    </tr>
-    </c:if>
-		</c:if>
         <tr>
           <th height="28" colspan=6 class="tb2">您共買了 ${totQty} 個商品 </th>
         </tr>
@@ -231,25 +208,7 @@ function checkForm(formObj){
 <c:forEach items="${requestScope.car}" var="item" varStatus="s">
 ${item.itemNo}  ${item.itemNm}<c:if test="${item.spec1 != '' || item.spec2 != ''}">(${item.spec1}、${item.spec2})</c:if> 數量:${item.qty} 單價:${item.price} 小計${item.qty*item.price}<BR>
 </c:forEach><BR>
-運費金額為︰${requestScope.sells.freightFare}元<br>
 商品金額︰${total}元<BR>
-購物總金額為︰
-<c:if test="${requestScope.sells.freightTp == '0'}">
-${total+requestScope.sells.freightFare}元 (含運費) <BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if>
-</c:if><c:if test="${requestScope.sells.freightTp == '1'}">
-<c:if test="${total < requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (含運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${total >= requestScope.sells.nofreightFare}">${total}元 (免運費)<BR></c:if>
-</c:if><c:if test="${requestScope.sells.freightTp == '2'}">
-<c:if test="${totQty < requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (含運費)<BR>
-<c:if test="${requestScope.sells.process > '0'}">若您選擇的付款方式：貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${totQty >=requestScope.sells.nofreightQty}">${total}元 (免運費)<BR></c:if></c:if>
-<c:if test="${requestScope.sells.freightTp == '3'}">
-<c:if test="${total < requestScope.sells.nofreightFare}">${total + requestScope.sells.freightFare}元 (含運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${total >= requestScope.sells.nofreightFare}">${total}元 (免運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.process}元 (含貨到付款物流處理費) <BR></c:if></c:if>
-</c:if><c:if test="${requestScope.sells.freightTp == '4'}">
-<c:if test="${totQty < requestScope.sells.nofreightQty}">${total + requestScope.sells.freightFare}元 (含運費)<BR>
-<c:if test="${requestScope.sells.process > '0'}">若您選擇的付款方式：貨到付款 購物總金額為︰${total+requestScope.sells.freightFare+requestScope.sells.process}元 (含運費及貨到付款物流處理費) <BR></c:if></c:if>
-<c:if test="${totQty >=requestScope.sells.nofreightQty}">${total}元 (免運費)<BR><c:if test="${requestScope.sells.process > '0'}">若您選擇貨到付款 購物總金額為︰${total+requestScope.sells.process}元 (含貨到付款物流處理費) <BR></c:if></c:if></c:if>
 </textarea>
   </td>
     </tr>
@@ -317,7 +276,9 @@ ${total+requestScope.sells.freightFare}元 (含運費) <BR><c:if test="${request
         <b>*付款方式</b></td>
       <td width="56%" bgcolor="#ffffff" ><select size="1" name="payTp" >
 	  <option value="">請選擇付款方式</option>
-	  <c:if test="${requestScope.sells.payType5 == '1' }"><option value='線上刷卡'>線上刷卡</option></c:if> 
+	  <c:if test="${requestScope.sells.payType5 == '1' }"><option value='線上刷卡'>線上刷卡</option></c:if>
+	  <c:if test="${requestScope.sells.payType6 == '1' }"><option value='ibon代碼繳款'>ibon代碼繳款(交易金額限30～20,000元)-加收處理費${requestScope.sells.codeProcess}元</option></c:if>
+	  <c:if test="${requestScope.sells.payType6 == '1' }"><option value='全家.萊爾富.OK.代碼繳款'>全家.萊爾富.OK.代碼繳款(交易金額限30～20,000元)-加收處理費${requestScope.sells.codeProcess}元</option></c:if>  
 	  <c:if test="${requestScope.sells.payType1 == '1' }"><option value='ATM'>ATM</option></c:if> 
 	  <c:if test="${requestScope.sells.payType2 == '1' }"><option value='銀行匯款'>銀行匯款</option></c:if> 
 	  <c:if test="${requestScope.sells.payType3 == '1' }"><option value='郵政劃撥'>郵政劃撥</option></c:if> 

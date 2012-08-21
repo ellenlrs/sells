@@ -37,6 +37,9 @@
 	  <hr noshade size=1>訂單編號︰${requestScope.orderNo}<hr noshade size=1>
 	  ${requestScope.name} 您好您訂購的商品清單如下：<br><br>
 	  ${requestScope.orderItem}
+	  運費︰${requestScope.orders.freightfar}元<br>
+	  處理費︰${requestScope.orders.process}元<br>
+      購物總金額︰<span class="style1L">${requestScope.orders.amt+requestScope.orders.process+requestScope.orders.freightfar}元</span>
 	  <hr noshade size=1>
 	  訂購人資料<br>	  
 	  姓名︰${requestScope.name}
@@ -51,8 +54,16 @@
 	  <br>
 	  手機︰${requestScope.mobile}
 	  <br>
-	  付款方式︰${requestScope.payType}
-	  <br>
+	  付款方式︰${requestScope.payType} <br>
+<c:if test="${requestScope.payType == 'ibon代碼繳款' || requestScope.payType == '全家.萊爾富.OK.代碼繳款'}">
+<c:if test="${not empty requestScope.orders.payno }">
+  繳費金額︰<span class="style1L">${requestScope.orders.amt+requestScope.orders.process+requestScope.orders.freightfar }元</span><br>
+  繳費代碼︰<span class="style1L">${requestScope.orders.payno }</span><br>
+  繳費期限：<span class="style1L">${fn:substring(requestScope.orders.expireDate, 0, 4)}/${fn:substring(requestScope.orders.expireDate, 4, 6)}/${fn:substring(requestScope.orders.expireDate, 6, 8)} 
+  ${fn:substring(requestScope.orders.expireTime, 0, 2)}:${fn:substring(requestScope.orders.expireTime, 2, 4)}</span><br><br>
+   >> <a href='http://www.icart.tw/Sells/payment01.jsp' target='_blank'>繳費方式說明</a> << <br><BR>
+</c:if>
+</c:if>
 	  轉出帳號後5碼︰${requestScope.exportId}
 	  <br>
 	  備註︰
@@ -67,6 +78,7 @@
 	  </td>
     </tr>
 </table>
+<span align=center><input type=button name="aaa" value="我要列印" onclick="window.print();"></span>
 <%@ include file="footer.jsp"%>
 </center>
 </body>

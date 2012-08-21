@@ -57,14 +57,20 @@ function checkForm(formObj){
 	 formObj.payTp.focus();
 	 return false ;
   }
-  if ( formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('貨到付款') == -1 && 
-       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('線上刷卡') == -1) {
-    if ( formObj.exportId.value=="" ) {
-      alert("請輸入轉出帳號後5碼!");
-	    formObj.payTp.focus();
-	    return false ;
-	  }
-  }
+	if ( formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('貨到付款') == -1 &&
+		   formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('ibon代碼繳款') == -1 && 
+		   formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('全家.萊爾富.OK.代碼繳款') == -1 && 
+	       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('線上刷卡') == -1 && 
+	       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('7-11繳款') == -1 && 
+	       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('萊爾富繳款') == -1 && 
+	       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('全家繳款') == -1 && 
+	       formObj.payTp.options[formObj.payTp.selectedIndex].value.indexOf('無摺存款') == -1) {
+	    if ( formObj.exportId.value=="" ) {
+	        alert("請輸入轉出帳號後5碼!");
+		    formObj.payTp.focus();
+		    return false ;
+		}
+	}
   if ( formObj.desc.value.length > 1500 ) {
     alert("備註不可超過1500字數,你目前字數:" +formObj.desc.value.length  );
     formObj.mobile.focus();
@@ -273,7 +279,9 @@ ${item.itemNo}  ${item.itemNm}<c:if test="${item.spec1 != '' || item.spec2 != ''
         <b>*付款方式</b></td>
       <td width="56%" bgcolor="#ffffff" ><select size="1" name="payTp" >
 	  <option value="">請選擇付款方式</option>
-	  <c:if test="${requestScope.sells.payType5 == '1' }"><option value='線上刷卡' selected>線上刷卡</option></c:if> 
+	  <c:if test="${requestScope.sells.payType5 == '1' }"><option value='線上刷卡' selected>線上刷卡</option></c:if>
+	  <c:if test="${requestScope.sells.payType6 == '1' }"><option value='ibon代碼繳款'>ibon代碼繳款(交易金額限30～20,000元)</option></c:if>
+	  <c:if test="${requestScope.sells.payType6 == '1' }"><option value='全家.萊爾富.OK.代碼繳款'>全家.萊爾富.OK.代碼繳款(交易金額限30～20,000元)-加收處理費${requestScope.sells.codeProcess}元</option></c:if> 
 	  <c:if test="${requestScope.sells.payType1 == '1' }"><option value='ATM'>ATM</option></c:if> 
 	  <c:if test="${requestScope.sells.payType2 == '1' }"><option value='銀行匯款'>銀行匯款</option></c:if> 
 	  <c:if test="${requestScope.sells.payType3 == '1' }"><option value='郵政劃撥'>郵政劃撥</option></c:if> 
@@ -309,6 +317,10 @@ ${item.itemNo}  ${item.itemNm}<c:if test="${item.spec1 != '' || item.spec2 != ''
 		   </c:otherwise>
 		</c:choose>
 		</c:if>
+		<c:if test="${requestScope.sells.payTypeNobook == '1' }"><option value='無摺存款'>無摺存款</option></c:if> 
+		<c:if test="${requestScope.sells.payType711 == '1' }"><option value='7-11繳款'>7-11繳款</option></c:if> 
+		<c:if test="${requestScope.sells.payTypeHilife == '1' }"><option value='萊爾富繳款'>萊爾富繳款</option></c:if> 
+		<c:if test="${requestScope.sells.payTypeFamily == '1' }"><option value='全家繳款'>全家繳款</option></c:if
 	  </select>
 	  <c:if test="${requestScope.sells.payType4 == '1' }">
       <c:choose>
