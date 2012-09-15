@@ -167,7 +167,13 @@
     <action path="/sellOrderQuery" type="com.sells.struts.action.order.SellOrderQueryAction" >
       <forward name="success" path="/orderQ.jsp" />
     </action>
-
+    <action path="/sellReportQuery" type="com.sells.struts.action.order.SellReportQueryAction" >
+      <forward name="success" path="/report.jsp" />
+    </action>
+    <action path="/sellReportExport" type="com.sells.struts.action.order.SellReportExportAction" >
+     <forward name="success" path="/report.jsp" />
+    </action>
+    
     <action path="/memOrderQuery" type="com.sells.struts.action.order.MemOrderQueryAction">
       <forward name="success" path="/member/mOrderQ.jsp" />
     </action>
