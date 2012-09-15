@@ -1,14 +1,20 @@
 package com.sells.dao;
 
+import java.sql.SQLException;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
 import com.sells.common.util.PageControl;
 import com.sells.search.OrdersSearch;
 
@@ -85,8 +91,8 @@ public class OrdersDAO extends HibernateDaoSupport {
   public List findByExample(Orders instance) {
     log.debug("finding Orders instance by example");
     try {
-      List results = getSession().createCriteria("com.sells.dao.Orders").add(
-          Example.create(instance)).list();
+      List results = getSession().createCriteria("com.sells.dao.Orders")
+          .add(Example.create(instance)).list();
       log.debug("find by example successful, result size: " + results.size());
       return results;
     } catch (RuntimeException re) {
@@ -106,6 +112,69 @@ public class OrdersDAO extends HibernateDaoSupport {
       log.error("find by property name failed", re);
       throw re;
     }
+  }
+
+  public List findOrderReport(final String sellsNo, final String startDt,
+      final String endDt, final String[] orderSt, final String[] cols) {
+    return getHibernateTemplate().executeFind(new HibernateCallback() {
+      public Object doInHibernate(Session session) throws HibernateException,
+          SQLException {
+        StringBuffer sb = new StringBuffer();
+        StringBuffer groupby = new StringBuffer();
+        sb.append("select a.ORDER_ST ");
+        // if (null == orderSt || orderSt.length == 0) { // 使用全選
+        if (null == cols || cols.length == 0) { // 使用所有欄位
+          sb.append(",b.item_no,b.item_nm,a.member_no,a.name,date_format(a.order_dt,'%Y%m') ");
+          groupby
+              .append(",b.item_no,b.item_nm,a.member_no,a.name,date_format(a.order_dt,'%Y%m') ");
+        } else {
+          for (int i = 0; i < cols.length; i++) {
+            sb.append(",").append(cols[i]);
+            groupby.append(",").append(cols[i]);
+          }
+        }
+        sb.append(" ,sum(b.PRICE*b.QTY) ");
+        sb.append("from ORDERS_ITEM b,ORDERS a ");
+        sb.append("where a.ORDER_NO = b.order_no and ");
+        sb.append("a.sells_no = :sellsNo and ");
+        sb.append("date_format(a.order_dt,'%Y%m%d') >= :startDt and ");
+        sb.append("date_format(a.order_dt,'%Y%m%d') <= :endDt and ");
+        sb.append("a.order_st in (:orderSt) ");
+        sb.append(" group by a.order_st ").append(groupby.toString());
+        sb.append(" ORDER BY a.order_st ASC ").append(groupby.toString())
+            .append(",sum(b.price*b.qty) desc");
+        log.info("sql:" + sb.toString());
+        Query query = session.createSQLQuery(sb.toString());
+        query.setString("sellsNo", sellsNo);
+        query.setString("startDt", startDt);
+        query.setString("endDt", endDt);
+        if (null == orderSt || orderSt.length == 0) { // 使用全選
+          query.setParameterList("order_st", new String[] { "00", "10", "20",
+              "30", "99", "80", "85", "88" });
+          // <label><input type="checkbox" name="orderSt" checked value="00"
+          // />處理中</label>
+          // <label><input type="checkbox" name="orderSt" checked value="10"
+          // />出貨</label>
+          // <label><input type="checkbox" name="orderSt" checked value="20"
+          // />匯款已收到</label>
+          // <label><input type="checkbox" name="orderSt" checked value="30"
+          // />備貨中</label>
+          // <label><input type="checkbox" name="orderSt" checked value="99"
+          // />取消</label>
+          // <label><input type="checkbox" name="orderSt" checked value="80"
+          // />線上付款未完成</label>
+          // <label><input type="checkbox" name="orderSt" checked value="85"
+          // />線上付款成功</label>
+          // <label><input type="checkbox" name="orderSt" checked value="88"
+          // />線上付款失敗</label>
+        } else {
+          query.setParameterList("orderSt", orderSt);
+        }
+        List list = query.list();
+        sb = null;
+        return list;
+      }
+    });
   }
 
   public List findBySellsNo(Object sellsNo) {
@@ -287,32 +356,32 @@ public class OrdersDAO extends HibernateDaoSupport {
       StringBuffer sql = new StringBuffer();
       sql.append("SELECT count(*) FROM Orders A WHERE 1=1 ");
       if (StringUtils.isNotBlank(search.getStartDt())) {
-        sql.append(" AND date_format(A.orderDt,'%Y%m%d') >= '").append(
-            search.getStartDt()).append("' ");
+        sql.append(" AND date_format(A.orderDt,'%Y%m%d') >= '")
+            .append(search.getStartDt()).append("' ");
       }
       if (StringUtils.isNotBlank(search.getEndDt())) {
-        sql.append(" AND date_format(A.orderDt,'%Y%m%d') <= '").append(
-            search.getEndDt()).append("' ");
+        sql.append(" AND date_format(A.orderDt,'%Y%m%d') <= '")
+            .append(search.getEndDt()).append("' ");
       }
       if (StringUtils.isNotBlank(search.getName())) {
         sql.append(" AND A.name like '%").append(search.getName())
             .append("%' ");
       }
       if (StringUtils.isNotBlank(search.getOrderSt())) {
-        sql.append(" AND A.orderSt = '").append(search.getOrderSt()).append(
-            "' ");
+        sql.append(" AND A.orderSt = '").append(search.getOrderSt())
+            .append("' ");
       }
       if (StringUtils.isNotBlank(search.getOrderNo())) {
-        sql.append(" AND A.orderNo >= '").append(search.getOrderNo()).append(
-            "' ");
+        sql.append(" AND A.orderNo >= '").append(search.getOrderNo())
+            .append("' ");
       }
       if (StringUtils.isNotBlank(search.getMemeberNo())) {
-        sql.append(" AND A.memberNo = '").append(search.getMemeberNo()).append(
-            "' ");
+        sql.append(" AND A.memberNo = '").append(search.getMemeberNo())
+            .append("' ");
       }
       if (StringUtils.isNotBlank(search.getSellsNo())) {
-        sql.append(" AND A.sellsNo = '").append(search.getSellsNo()).append(
-            "' ");
+        sql.append(" AND A.sellsNo = '").append(search.getSellsNo())
+            .append("' ");
       }
       Object size = this.getHibernateTemplate().find(sql.toString()).get(0);
       sql.setLength(0);
