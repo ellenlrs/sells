@@ -37,7 +37,7 @@ function show(obj){
         <td><div id="menu" style="WIDTH: 580px; HEIGHT: 27px; visibility:visible; margin: 0px 0 0 0;">
 		<div id="me1" class="m2"  style="position:absolute;float:left;WIDTH: 580px; HEIGHT: 20px; visibility:visible; margin: 5px 0 0 0;"><a href="carCode1.jsp" class="m2" >購物車代碼產生器</a> | <a href="sellModi.jsp" class="m2" >帳號管理</a> | <a href="sellPasswd.jsp" class="m2" >修改密碼</a> | <a href="sellPayDesc.jsp" class="m2" >更新付款說明</a> | <a href="sellFare.jsp" class="m2" >修改運費設定</a> | <a href="orderCar.jsp" class="m2" >購買延長</a> | <a href="help1.jsp" class="m2" >問題反應</a></div>
         <div id="me2" class="m2"  style="position:absolute;float:left; WIDTH: 580px; HEIGHT: 20px; visibility:hidden; margin: 5px 0 0 0;"><a href='linkGene.jsp' class="m2">會員服務連結產生器</a> | <a href="memberQuery.do" class="m2" >會員管理</a> | <a href="memberQuery2.do" class="m2" >電子報匯出</a> | <a href="memberQuery3.do" class="m2" >生日名單</a></div>
-		<div id="me3" class="m2" style="position:absolute;float:left;WIDTH: 580px; HEIGHT: 20px; visibility:hidden; margin: 5px 0 0 0;"><a href='linkGene.jsp' class="m2">訂單查詢連結產生器</a> | <a href="sellOrderQuery.do" class="m2" >訂單查詢</a></div></div></td>
+		<div id="me3" class="m2" style="position:absolute;float:left;WIDTH: 580px; HEIGHT: 20px; visibility:hidden; margin: 5px 0 0 0;"><a href='linkGene.jsp' class="m2">訂單查詢連結產生器</a> | <a href="sellOrderQuery.do" class="m2" >訂單查詢</a>| <a href="sellReportQuery.do" class="m2" >訂單報表查詢</a></div></div></td>
       </tr>
     </table></td>
   </tr>
