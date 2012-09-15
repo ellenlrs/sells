@@ -2,6 +2,7 @@ package com.sells.service.imp;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.sells.common.util.PageControl;
 import com.sells.common.util.SellsSearch;
@@ -135,4 +136,7 @@ public interface SellsService {
   public Collection findOrdersMsg(String orderNo, String st);
 
   public boolean updateOrders(Orders vo) throws Exception;
+
+  public List findOrderReport(String sellsNo, String startDt, String endDt,
+      String[] orderSt, String[] cols);
 }

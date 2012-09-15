@@ -62,6 +62,12 @@ public class SellsServiceImp implements SellsService {
     return vo;
   }
 
+  @Override
+  public List findOrderReport(String sellsNo, String startDt, String endDt,
+      String[] orderSt, String[] cols) {
+    return ordersDAO.findOrderReport(sellsNo, startDt, endDt, orderSt, cols);
+  }
+
   public LoginData findLoginDataByLoginId(String loginId, String loginTp,
       String passwd, String remoteIp) throws Exception {
     LoginData vo = loginDataDAO.findLoginDataById(loginId, loginTp);
