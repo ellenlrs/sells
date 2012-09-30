@@ -80,52 +80,52 @@ public class OrderStUpdateAction extends Action {
         saveErrors(request, errors);
         return mapping.findForward("error3");
       }
-      Orders vo = sellsService.getOrdersById(StringUtils.defaultString(request
-          .getParameter("orderNo")), sells.getSellsNo(), null);
+      Orders vo = sellsService.getOrdersById(
+          StringUtils.defaultString(request.getParameter("orderNo")),
+          sells.getSellsNo(), null);
       vo.setOrderSt(StringUtils.defaultString(request.getParameter("orderSt")));
-      vo.setLogisticDesc(StringUtils.substring(request
-          .getParameter("logisticDesc"), 0, 150));
+      vo.setLogisticDesc(StringUtils.substring(
+          request.getParameter("logisticDesc"), 0, 150));
       if (sellsService.updateOrders(vo)) {
-        if (vo.getOrderSt().equals("10") || vo.getOrderSt().equals("20")) { // 代表出貨
-                                                                            // 或
-                                                                            // 匯款已收到
+        if (vo.getOrderSt().equals("10") || vo.getOrderSt().equals("20")
+            || vo.getOrderSt().equals("30")) { // 代表出貨 或 匯款已收到 備貨中
           StringBuffer sb = new StringBuffer();
           sb.append("<html>\n");
           sb.append("<head>\n");
-          sb
-              .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+          sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
           if (vo.getOrderSt().equals("10")) {
-            sb.append("<title>").append(sells.getStoreNm()).append(
-                "出貨通知</title>\n");
-          } else {
-            sb.append("<title>").append(sells.getStoreNm()).append(
-                "收到匯款通知</title>\n");
+            sb.append("<title>").append(sells.getStoreNm())
+                .append("出貨通知</title>\n");
+          } else if (vo.getOrderSt().equals("20")) {
+            sb.append("<title>").append(sells.getStoreNm())
+                .append("收到匯款通知</title>\n");
+          } else if (vo.getOrderSt().equals("30")) {
+            sb.append("<title>").append(sells.getStoreNm())
+                .append("備貨通知</title>\n");
           }
           sb.append("</head>\n");
           sb.append("<body >\n");
-          sb
-              .append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
+          sb.append("<table width=\"800\" border=\"0\" align=\"center\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C0C0C0\">\n");
           sb.append("  <tr>\n");
-          sb
-              .append(
-                  "    <td colspan=\"2\" align=\"center\" bgcolor=\"#F5F5F5\" ><font size=\"2\">")
+          sb.append(
+              "    <td colspan=\"2\" align=\"center\" bgcolor=\"#F5F5F5\" ><font size=\"2\">")
               .append(sells.getStoreNm());
           if (vo.getOrderSt().equals("10")) {
             sb.append("訂單出貨通知</font></td>\n");
-          } else {
+          } else if (vo.getOrderSt().equals("20")) {
             sb.append("匯款已收到</font></td>\n");
+          } else if (vo.getOrderSt().equals("30")) {
+            sb.append("商品備貨處理中</font></td>\n");
           }
           sb.append("  </tr>\n");
           sb.append("  <tr>\n");
-          sb
-              .append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">訂單編號：</font></td>\n");
+          sb.append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">訂單編號：</font></td>\n");
           sb.append(
               "    <td width=\"640\" bgcolor=\"#F5F5F5\" ><font size=\"2\">")
               .append(vo.getOrderNo()).append("</font></td>\n");
           sb.append("  </tr>\n");
           sb.append("  <tr>\n");
-          sb
-              .append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">物流說明：</font></td>\n");
+          sb.append("    <td width=\"137\" bgcolor=\"#F5F5F5\" ><font size=\"2\">物流說明：</font></td>\n");
           sb.append(
               "    <td width=\"640\" bgcolor=\"#F5F5F5\" ><font size=\"2\">")
               .append(vo.getLogisticDesc()).append("</font></td>\n");
@@ -150,9 +150,12 @@ public class OrderStUpdateAction extends Action {
           if (vo.getOrderSt().equals("10")) {
             mailBean.setSubject(sells.getStoreNm() + " - " + vo.getOrderNo()
                 + " 出貨通知");
-          } else {
+          } else if (vo.getOrderSt().equals("20")) {
             mailBean.setSubject(sells.getStoreNm() + " - " + vo.getOrderNo()
                 + " 收到匯款通知");
+          } else if (vo.getOrderSt().equals("30")) {
+            mailBean.setSubject(sells.getStoreNm() + " - " + vo.getOrderNo()
+                + " 備貨處理通知");
           }
           mailBean.setBody(sb.toString());
           mailBean.setCharset("UTF-8");

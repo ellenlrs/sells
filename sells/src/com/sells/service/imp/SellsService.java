@@ -138,5 +138,5 @@ public interface SellsService {
   public boolean updateOrders(Orders vo) throws Exception;
 
   public List findOrderReport(String sellsNo, String startDt, String endDt,
-      String[] orderSt, String[] cols);
+      String[] orderSt, String[] cols, String sort);
 }

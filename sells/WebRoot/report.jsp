@@ -40,14 +40,17 @@ function sendForm() {
 	  return false;
   }
   /* var startDate */
-	Date1=  new  Date(item.startDt.value.substring(0,4)  +  '-'  +  item.startDt.value.substring(4,6)  +  '-'  +  item.startDt.value.substring(6,8));   //轉換為2007-8-10格式
-	Date2=  new  Date(item.endDt.value.substring(0,4)  +  '-'  +  item.endDt.value.substring(4,6)  +  '-'  +  item.endDt.value.substring(6,8)); 
-    iDays  =  parseInt(Math.abs(Date1-  Date2)  /  1000  /  60  /  60  /24);    //轉換為天數
-    if (iDays > 100 ) {
+  Date1=  new  Date(item.startDt.value.substring(0,4)  +  '-'  +  item.startDt.value.substring(4,6)  +  '-'  +  item.startDt.value.substring(6,8));   //轉換為2007-8-10格式
+  Date2=  new  Date(item.endDt.value.substring(0,4)  +  '-'  +  item.endDt.value.substring(4,6)  +  '-'  +  item.endDt.value.substring(6,8)); 
+  iDays  =  parseInt(Math.abs(Date1-  Date2)  /  1000  /  60  /  60  /24);    //轉換為天數
+  if (iDays > 100 ) {
   	  alert("查詢天數不允許超過100天");
 	  return false;    	
-    }
-    
+  }
+  if (item.sort[1].checked || item.sort[2].checked ) {
+	  item.col[2].checked = true ;
+	  item.col[4].checked = true ;
+  } 
   item.submit();
 }
 var date0 = new Date();
@@ -97,11 +100,21 @@ function customRange(input) {
 			<tr>  
               <td align="left" class="style5">查詢欄位</td>
               <td align="left" class="style5" colspan="2" >
+              <label><input type="checkbox" name="col" checked value="a.order_st" />訂單狀態</label>
 			  <label><input type="checkbox" name="col" checked value="b.item_no,b.item_nm" />商品名稱</label>
               <label><input type="checkbox" name="col" checked value="a.member_no,a.name" />會員／訂購人</label>
               <label><input type="checkbox" name="col" checked value="date_format(a.order_dt,'%Y%m')" />訂購月份</label>
-              <input type="button" name="button" value="查詢" onclick="sendForm();">
+              <label><input type="checkbox" name="col" checked value="count(a.member_no)" />訂購次數</label>
               <BR><span class="style1">若全部未勾選視同全選</span>
+              </td>
+            </tr>
+			<tr>  
+              <td align="left" class="style5">排序</td>
+              <td align="left" class="style5" colspan="2" >
+			  <label><input type="radio" name="sort" checked value="0" />商品名稱</label><BR>
+              <label><input type="radio" name="sort" value="1" />會員訂購金額，會員訂購次數，<span class="style1">查詢欄位的會員／訂購人／訂購次數需要勾選</span></label><BR>
+              <label><input type="radio" name="sort" value="2" />會員訂購次數，會員訂購金額，<span class="style1">查詢欄位的會員／訂購人／訂購次數需要勾選</span></label>
+              <BR><input type="button" name="button" value="查詢" onclick="sendForm();">
               </td>
             </tr><!--
             <tr>

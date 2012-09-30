@@ -115,23 +115,41 @@ public class OrdersDAO extends HibernateDaoSupport {
   }
 
   public List findOrderReport(final String sellsNo, final String startDt,
-      final String endDt, final String[] orderSt, final String[] cols) {
+      final String endDt, final String[] orderSt, final String[] cols,
+      final String sort) {
     return getHibernateTemplate().executeFind(new HibernateCallback() {
       public Object doInHibernate(Session session) throws HibernateException,
           SQLException {
         StringBuffer sb = new StringBuffer();
         StringBuffer groupby = new StringBuffer();
-        sb.append("select a.ORDER_ST ");
+        StringBuffer orderby = new StringBuffer();
+        sb.append("select ");
         // if (null == orderSt || orderSt.length == 0) { // 使用全選
         if (null == cols || cols.length == 0) { // 使用所有欄位
-          sb.append(",b.item_no,b.item_nm,a.member_no,a.name,date_format(a.order_dt,'%Y%m') ");
+          sb.append(" a.order_st,b.item_no,b.item_nm,a.member_no,a.name,date_format(a.order_dt,'%Y%m'),count(a.member_no) ");
           groupby
-              .append(",b.item_no,b.item_nm,a.member_no,a.name,date_format(a.order_dt,'%Y%m') ");
+              .append(" a.order_st,b.item_no,b.item_nm,a.member_no,a.name,date_format(a.order_dt,'%Y%m') ");
+          orderby
+              .append(" a.order_st asc ,b.item_no,b.item_nm,a.member_no,a.name,date_format(a.order_dt,'%Y%m'),sum(b.price*b.qty) desc, count(a.member_no) desc ");
         } else {
           for (int i = 0; i < cols.length; i++) {
-            sb.append(",").append(cols[i]);
-            groupby.append(",").append(cols[i]);
+            if (i > 0) {
+              sb.append(",");
+              if (!cols[i].startsWith("count")) {
+                groupby.append(",");
+              }
+            }
+            sb.append(cols[i]);
+            if (!cols[i].startsWith("count")) {
+              groupby.append(cols[i]);
+            }
           }
+        }
+        if ("1".equals(sort)) {
+          orderby.append(" sum(b.price*b.qty) desc, count(a.member_no) desc ");
+        }
+        if ("2".equals(sort)) {
+          orderby.append(" count(a.member_no) desc,sum(b.price*b.qty) desc ");
         }
         sb.append(" ,sum(b.PRICE*b.QTY) ");
         sb.append("from ORDERS_ITEM b,ORDERS a ");
@@ -140,9 +158,8 @@ public class OrdersDAO extends HibernateDaoSupport {
         sb.append("date_format(a.order_dt,'%Y%m%d') >= :startDt and ");
         sb.append("date_format(a.order_dt,'%Y%m%d') <= :endDt and ");
         sb.append("a.order_st in (:orderSt) ");
-        sb.append(" group by a.order_st ").append(groupby.toString());
-        sb.append(" ORDER BY a.order_st ASC ").append(groupby.toString())
-            .append(",sum(b.price*b.qty) desc");
+        sb.append(" group by ").append(groupby.toString());
+        sb.append(" ORDER BY ").append(orderby.toString());
         log.info("sql:" + sb.toString());
         Query query = session.createSQLQuery(sb.toString());
         query.setString("sellsNo", sellsNo);

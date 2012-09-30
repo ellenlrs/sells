@@ -64,8 +64,9 @@ public class SellsServiceImp implements SellsService {
 
   @Override
   public List findOrderReport(String sellsNo, String startDt, String endDt,
-      String[] orderSt, String[] cols) {
-    return ordersDAO.findOrderReport(sellsNo, startDt, endDt, orderSt, cols);
+      String[] orderSt, String[] cols, String sort) {
+    return ordersDAO.findOrderReport(sellsNo, startDt, endDt, orderSt, cols,
+        sort);
   }
 
   public LoginData findLoginDataByLoginId(String loginId, String loginTp,
