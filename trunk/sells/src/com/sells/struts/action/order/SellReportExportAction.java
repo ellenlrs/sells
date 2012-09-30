@@ -86,21 +86,24 @@ public class SellReportExportAction extends Action {
         return mapping.findForward("sessionLost1");
       }
       Map<String, String> map = new HashMap();
+      map.put("a.order_st", "訂單狀態");
       map.put("b.item_no,b.item_nm", "商品編號,商品名稱");
       map.put("a.member_no,a.name", "會員編號,訂購人姓名");
       map.put("date_format(a.order_dt,'%Y%m')", "訂單月份");
+      map.put("count(a.member_no)", "訂購次數");
       // log.info("aaaaa1");
       String[] orderSt = request.getParameterValues("orderSt");
       String[] cols = request.getParameterValues("col");
       ArrayList<String> header = new ArrayList();
-      header.add("訂單狀態");
       int _row = 0;
       if (null == cols || cols.length == 0) { // 使用所有欄位
+        header.add("訂單狀態");
         header.add("商品編號");
         header.add("商品名稱");
         header.add("會員編號");
         header.add("訂購人姓名");
         header.add("訂單月份");
+        header.add("訂購次數");
       } else {
         for (int i = 0; i < cols.length; i++) {
           if (map.containsKey(cols[i])) {
@@ -113,6 +116,8 @@ public class SellReportExportAction extends Action {
       String endDt = StringUtils.defaultString(request.getParameter("endDt"));
       String startDt = StringUtils.defaultString(request
           .getParameter("startDt"));
+      String sort = StringUtils
+          .defaultString(request.getParameter("sort"), "0");
       // sells.getSellsNo();
       // for (int i = 0; i < cols.length; i++) {
       // log.info("cols-" + i + cols[i]);
@@ -134,7 +139,7 @@ public class SellReportExportAction extends Action {
       }
       // log.info("aaaaa3");
       List<Object[]> list = sellsService.findOrderReport(sells.getSellsNo(),
-          startDt, endDt, orderSt, cols);
+          startDt, endDt, orderSt, cols, sort);
       response.setContentType("APPLICATION/OCTET-STREAM;charset=Big5");
       response.setHeader("Content-Disposition",
           "attachment;filename=orderexport-" + DateUtils.getToday() + ".xls");
@@ -168,7 +173,7 @@ public class SellReportExportAction extends Action {
         for (int ii = 0; ii < header.size(); ii++) {
           cell = row.createCell(ii);
           cell.setCellStyle(bodyCellStyle);
-          if (ii == 0) {
+          if (header.indexOf("訂單狀態") > 0 && ii == 0) {
             if (ObjectUtils.toString(data[ii]).equals("00")) {
               cell.setCellValue(new HSSFRichTextString("處理中"));
             }
