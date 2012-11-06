@@ -82,23 +82,27 @@ function sendForm() {
   </tr>
 </table>
 
-        <table align="center" width="600" cellspacing="1" bgcolor="#0099FF">
+        <table align="center" width="700" cellspacing="1" bgcolor="#0099FF">
           <tr>
+          	<td height="25" align="center" bgcolor="#FFFFFF" class="style5" >自定<BR>編號 </td>
             <td height="25" align="center" bgcolor="#FFFFFF" class="style5" >姓名 </td>
             <td align="center" bgcolor="#FFFFFF" class="style5" >Email</td>
             <td align="center" bgcolor="#FFFFFF" class="style5" >生日 </td>
             <td align="center" bgcolor="#FFFFFF" class="style5" >電子報</td>
             <td align="center" bgcolor="#FFFFFF" class="style5" >狀態 </td>
+            <td align="center" bgcolor="#FFFFFF" class="style5" > 加入日期 </td>
             <td align="center" bgcolor="#FFFFFF" class="style5" > 管理項目 </td>
           </tr>
           <logic:iterate id="item" name="mainlist">
             <tr>
+               <td height="25" align="center" bgcolor="#FFFFFF" class="style5"> ${item.userSeq} </td>
               <td height="25" align="center" bgcolor="#FFFFFF" class="style5"> ${item.name} </td>
               <td align="center" bgcolor="#FFFFFF" class="style5"> ${item.email} </td>
               <td align="center" bgcolor="#FFFFFF" class="style5"> ${item.birthDt} </td>
               <td align="center" bgcolor="#FFFFFF" class="style5"> ${item.epYn} </td>
               <td align="center" bgcolor="#FFFFFF" class="style5"> ${item.status} </td>
-              <td align="center" bgcolor="#FFFFFF" class="style5"><a href="javascript:modi('${item.memberNo}','INFO');" >修改</a> | <a href="javascript:modi('${item.memberNo}','PWD');">變更密碼</a></td>
+              <td align="center" bgcolor="#FFFFFF" class="style5"> ${item.joinDt} </td>
+              <td align="center" bgcolor="#FFFFFF" class="style5"><a href="javascript:modi('${item.memberNo}','INFO');" >修改</a> <BR> <a href="javascript:modi('${item.memberNo}','PWD');">變更密碼</a></td>
             </tr>
           </logic:iterate>
         </table>
