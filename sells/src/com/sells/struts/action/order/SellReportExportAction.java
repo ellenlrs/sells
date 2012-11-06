@@ -133,10 +133,10 @@ public class SellReportExportAction extends Action {
       if ("".equals(startDt)) {
         return mapping.findForward("success");
       }
-      if (DateUtils.getDiffDays(startDt, endDt) > 100
-          || DateUtils.getDiffDays(startDt, endDt) < -100) {
-        return mapping.findForward("success");
-      }
+      // if (DateUtils.getDiffDays(startDt, endDt) > 100
+      // || DateUtils.getDiffDays(startDt, endDt) < -100) {
+      // return mapping.findForward("success");
+      // }
       // log.info("aaaaa3");
       List<Object[]> list = sellsService.findOrderReport(sells.getSellsNo(),
           startDt, endDt, orderSt, cols, sort);
