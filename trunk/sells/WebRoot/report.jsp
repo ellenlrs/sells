@@ -40,13 +40,13 @@ function sendForm() {
 	  return false;
   }
   /* var startDate */
-  Date1=  new  Date(item.startDt.value.substring(0,4)  +  '-'  +  item.startDt.value.substring(4,6)  +  '-'  +  item.startDt.value.substring(6,8));   //轉換為2007-8-10格式
+/*   Date1=  new  Date(item.startDt.value.substring(0,4)  +  '-'  +  item.startDt.value.substring(4,6)  +  '-'  +  item.startDt.value.substring(6,8));   //轉換為2007-8-10格式
   Date2=  new  Date(item.endDt.value.substring(0,4)  +  '-'  +  item.endDt.value.substring(4,6)  +  '-'  +  item.endDt.value.substring(6,8)); 
   iDays  =  parseInt(Math.abs(Date1-  Date2)  /  1000  /  60  /  60  /24);    //轉換為天數
   if (iDays > 100 ) {
   	  alert("查詢天數不允許超過100天");
 	  return false;    	
-  }
+  } */
   if (item.sort[1].checked || item.sort[2].checked ) {
 	  item.col[2].checked = true ;
 	  item.col[4].checked = true ;

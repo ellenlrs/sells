@@ -18,7 +18,7 @@
 </head>
 <body onload="document.payment.submit();">
 <center>
-<form name="payment" action="https://aquarius.neweb.com.tw/mPP5/TransServlet" method="post">
+<form name="payment" action="https://taurus.neweb.com.tw/NewebmPP/cdcard.jsp" method="post">
 <input type=hidden name="MerchantNumber" value="${requestScope.sells.storeId}">
 <input type=hidden name="OrderNumber" value="${requestScope.sslNo}">
 <input type=hidden name="Amount" value="${requestScope.order.amt+requestScope.order.process+requestScope.order.freightfar}.00">
