@@ -1,6 +1,7 @@
 package com.sells.dao;
 
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,6 +9,7 @@ import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
 import com.sells.common.util.PageControl;
 import com.sells.search.MemberSearch;
 
@@ -23,6 +25,7 @@ public class MemberDAO extends HibernateDaoSupport {
   public static final String IP = "ip";
   public static final String STATUS = "status";
   public static final String PASSWORD = "password";
+  public static final String USER_SEQ = "userSeq";
   public static final String NAME = "name";
   public static final String EMAIL = "email";
   public static final String TEL = "tel";
@@ -61,6 +64,40 @@ public class MemberDAO extends HibernateDaoSupport {
     }
   }
 
+  public void upgradeUserSeq() {
+    // Query query =
+    // getSession().createSQLQuery("select SELLS_NO,count(*) from MEMBER group by SELLS_NO ");
+    // List list = query.list();
+    String[] sells = new String[] { "S0000000010", "S0000000014",
+        "S0000000019", "S0000000026", "S0000000051", "S0000000061",
+        "S0000000064", "S0000000069", "S0000000071", "S0000000072",
+        "S0000000080", "S0000000082", "S0000000086", "S0000000088",
+        "S0000000118", "S0000000120", "S0000000128", "S0000000131",
+        "S0000000132", "S0000000134", "S0000000135", "S0000000140",
+        "S0000000142", "S0000000143", "S0000000149", "S0000000160",
+        "S0000000166", "S0000000172", "S0000000173", "S0000000202",
+        "S0000000203", "S0000000221", "S0000000261", "S0000000278",
+        "S0000000286", "S0000000288", "S0000000295", "S0000000296",
+        "S0000000297", "S0000000298", "S0000000304", "S0000000305",
+        "S0000000312", "S0000000313", "S0000000315", "S0000000330",
+        "S0000000345", "S0000000346", "S0000000349", "S0000000355",
+        "S0000000356", "S0000000357", "S0000000358", "S0000000364" };
+    StringBuffer sb = new StringBuffer();
+    sb.append("from Member as model where model.sellsNo = :sellsNo order by memberNo");
+    for (int k = 0; k < sells.length; k++) {
+      log.info("Start...:" + sells[k]);
+      Query query = getSession().createQuery(sb.toString());
+      query.setString("sellsNo", sells[k]);
+      List list = query.list();
+      for (int i = 0; i < list.size(); i++) {
+        Member vo = (Member) list.get(i);
+        vo.setUserSeq(String.valueOf(i + 1));
+        this.update(vo);
+      }
+      log.info("Final...:" + sells[k]);
+    }
+  }
+
   // 登入會員 //判斷此組Email是否已註冊
   public Member getMember(String memberNo, String sellsNo) {
     log.debug("login Member instance with property1: " + memberNo + ", value: "
@@ -69,16 +106,15 @@ public class MemberDAO extends HibernateDaoSupport {
         + sellsNo);
     try {
       StringBuffer sb = new StringBuffer();
-      sb
-          .append("from Member as model where model.sellsNo = :sellsNo and model.memberNo = :memberNo");
+      sb.append("from Member as model where model.sellsNo = :sellsNo and model.memberNo = :memberNo");
       Query query = getSession().createQuery(sb.toString());
       query.setString("sellsNo", sellsNo);
       query.setString("memberNo", memberNo);
-      Member list =(Member) query.list().get(0);
+      Member list = (Member) query.list().get(0);
       return list;
     } catch (RuntimeException re) {
       log.error("find by property name failed", re);
-      return null ;
+      return null;
     }
   }
 
@@ -90,8 +126,7 @@ public class MemberDAO extends HibernateDaoSupport {
         + sellsNo);
     try {
       StringBuffer sb = new StringBuffer();
-      sb
-          .append("from Member as model where model.sellsNo = :sellsNo and model.email = :email");
+      sb.append("from Member as model where model.sellsNo = :sellsNo and model.email = :email");
       Query query = getSession().createQuery(sb.toString());
       query.setString("sellsNo", sellsNo);
       query.setString("email", email);
@@ -102,7 +137,7 @@ public class MemberDAO extends HibernateDaoSupport {
       throw re;
     }
   }
-  
+
   public void delete(Member persistentInstance) {
     log.debug("deleting Member instance");
     try {
@@ -150,7 +185,7 @@ public class MemberDAO extends HibernateDaoSupport {
       throw re;
     }
   }
- 
+
   public List findByIp(Object ip) {
     return findByProperty(IP, ip);
   }
@@ -236,11 +271,13 @@ public class MemberDAO extends HibernateDaoSupport {
   public static MemberDAO getFromApplicationContext(ApplicationContext ctx) {
     return (MemberDAO) ctx.getBean("MemberDAO");
   }
-  public List findMemberSearch(MemberSearch search,String sellsNo,PageControl control ) {
+
+  public List findMemberSearch(MemberSearch search, String sellsNo,
+      PageControl control) {
     log.debug("finding Member instance by Search");
     try {
       StringBuffer sql = new StringBuffer();
-      sql.append("FROM Member A WHERE 1=1 ") ;
+      sql.append("FROM Member A WHERE 1=1 ");
       if (StringUtils.isNotBlank(search.getEmail())) {
         sql.append(" AND A.email like :email ");
       }
@@ -254,16 +291,16 @@ public class MemberDAO extends HibernateDaoSupport {
         sql.append(" AND A.status = :status ");
       }
       sql.append(" AND A.sellsNo = :sellsNo ");
-//      if (StringUtils.isNotBlank(control.getSortField())){
-//        sql.append(" Order by ").append(control.getSortField()).append(" ").append(control.getAsc());
-//      }
+      // if (StringUtils.isNotBlank(control.getSortField())){
+      // sql.append(" Order by ").append(control.getSortField()).append(" ").append(control.getAsc());
+      // }
       sql.append(" Order by A.memberNo desc ");
       Query query = getSession().createQuery(sql.toString());
       if (StringUtils.isNotBlank(search.getEmail())) {
-        query.setString("email", "%"+search.getEmail()+"%");
+        query.setString("email", "%" + search.getEmail() + "%");
       }
       if (StringUtils.isNotBlank(search.getName())) {
-        query.setString("name", "%"+search.getName()+"%");
+        query.setString("name", "%" + search.getName() + "%");
       }
       if (StringUtils.isNotBlank(search.getEpYn())) {
         query.setString("epYn", search.getEpYn());
@@ -283,12 +320,12 @@ public class MemberDAO extends HibernateDaoSupport {
       throw re;
     }
   }
-  
-  public List findMemberSearch2(MemberSearch search,String sellsNo ) {
+
+  public List findMemberSearch2(MemberSearch search, String sellsNo) {
     log.debug("finding Member instance by Search");
     try {
       StringBuffer sql = new StringBuffer();
-      sql.append("FROM Member A WHERE 1=1 ") ;
+      sql.append("FROM Member A WHERE 1=1 ");
       if (StringUtils.isNotBlank(search.getBirthDt())) {
         sql.append(" AND SUBSTR(A.birthDt,5,2) = :birthDt ");
       }
@@ -300,22 +337,22 @@ public class MemberDAO extends HibernateDaoSupport {
       }
       sql.append(" AND A.sellsNo = :sellsNo ");
       sql.append(" Order by A.memberNo desc ");
-      log.debug("MemberSearch2:"+sql.toString());
+      log.debug("MemberSearch2:" + sql.toString());
       Query query = getSession().createQuery(sql.toString());
       if (StringUtils.isNotBlank(search.getBirthDt())) {
         query.setString("birthDt", search.getBirthDt());
-        log.debug("MemberSearch2:"+search.getBirthDt());
+        log.debug("MemberSearch2:" + search.getBirthDt());
       }
       if (StringUtils.isNotBlank(search.getEpYn())) {
         query.setString("epYn", search.getEpYn());
-        log.debug("epYn:"+search.getEpYn());
+        log.debug("epYn:" + search.getEpYn());
       }
       if (StringUtils.isNotBlank(search.getStatus())) {
         query.setString("status", search.getStatus());
-        log.debug("status:"+search.getStatus());
+        log.debug("status:" + search.getStatus());
       }
       query.setString("sellsNo", sellsNo);
-      log.debug("sellsNo:"+sellsNo);
+      log.debug("sellsNo:" + sellsNo);
       List results = query.list();
       return results;
     } catch (RuntimeException re) {
@@ -323,16 +360,15 @@ public class MemberDAO extends HibernateDaoSupport {
       throw re;
     }
   }
-  
-  
-  public int findMemberSearchSize(MemberSearch search,String sellsNo) {
+
+  public int findMemberSearchSize(MemberSearch search, String sellsNo) {
     log.debug("finding Member size instance by Search");
-    
     try {
       StringBuffer sql = new StringBuffer();
-      sql.append("SELECT count(*) FROM Member A WHERE 1=1 ") ;
+      sql.append("SELECT count(*) FROM Member A WHERE 1=1 ");
       if (StringUtils.isNotBlank(search.getEmail())) {
-        sql.append(" AND A.email like '%").append(search.getEmail()).append("%'");
+        sql.append(" AND A.email like '%").append(search.getEmail())
+            .append("%'");
       }
       if (StringUtils.isNotBlank(search.getName())) {
         sql.append(" AND A.name like '%").append(search.getName()).append("%'");
