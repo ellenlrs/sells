@@ -16,6 +16,9 @@
 					</generator>
 
         </id>
+        <property name="userSeq" type="java.lang.String">
+            <column name="USER_SEQ" length="20" />
+        </property>
         <property name="joinDt" type="java.util.Date">
             <column name="JOIN_DT" length="0" />
         </property>

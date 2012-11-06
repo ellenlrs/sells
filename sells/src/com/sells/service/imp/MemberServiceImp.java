@@ -3,8 +3,10 @@ package com.sells.service.imp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.sells.common.util.PageControl;
 import com.sells.dao.Member;
 import com.sells.dao.MemberDAO;
@@ -72,10 +74,16 @@ public class MemberServiceImp implements MemberService {
     }
   }
 
+  public void updateMemberUserSeq() {
+    memberDAO.upgradeUserSeq();
+  }
+
   public Member saveMember(Member vo) throws Exception {
     List col = memberDAO.login(vo.getEmail(), vo.getSellsNo());
     try {
       if (col.isEmpty()) {
+        vo.setUserSeq(String.valueOf(findMemberBySearchSize(new MemberSearch(),
+            vo.getSellsNo()) + 1));
         memberDAO.save(vo);
         return vo;
       } else {
@@ -110,16 +118,19 @@ public class MemberServiceImp implements MemberService {
   public void setMemberDAO(MemberDAO memberDAO) {
     this.memberDAO = memberDAO;
   }
-  
-  public Collection findMemberBySearch(MemberSearch search,String sellsNo,PageControl control ) throws Exception {
-    return memberDAO.findMemberSearch(search,sellsNo, control);
+
+  public Collection findMemberBySearch(MemberSearch search, String sellsNo,
+      PageControl control) throws Exception {
+    return memberDAO.findMemberSearch(search, sellsNo, control);
   }
 
-  public Collection findMemberBySearch2(MemberSearch search,String sellsNo ) throws Exception {
-    return memberDAO.findMemberSearch2(search,sellsNo);
+  public Collection findMemberBySearch2(MemberSearch search, String sellsNo)
+      throws Exception {
+    return memberDAO.findMemberSearch2(search, sellsNo);
   }
-  
-  public int findMemberBySearchSize(MemberSearch search,String sellsNo) throws Exception {
-    return memberDAO.findMemberSearchSize(search,sellsNo);
+
+  public int findMemberBySearchSize(MemberSearch search, String sellsNo)
+      throws Exception {
+    return memberDAO.findMemberSearchSize(search, sellsNo);
   }
 }
