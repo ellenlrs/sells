@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>無標題文件</title>
+</head>
+
+<body><form name="a1" >
+轉碼前
+<textarea name="textarea1" cols="30" rows="10"></textarea>
+<label>
+<input type="button" name="Submit" value="送出" onclick="trans();"/>
+</label>
+<br />
+轉碼後
+<textarea name="textarea2" cols="30" rows="10"></textarea>
+</form>
+<script>
+function trans() {
+  document.a1.textarea2.value = encodeURIComponent(document.a1.textarea1.value) ;
+}
+</script>
+</body>
+</html>
